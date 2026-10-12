@@ -1,0 +1,15 @@
+{
+  "name": "siddhi-kale-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portfolio of Siddhi Kale, full-stack and AI engineer. Static site generated from content.mjs.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node serve.mjs",
+    "start": "node serve.mjs"
+  }
+}
