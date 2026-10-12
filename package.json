@@ -5,11 +5,10 @@
   "type": "module",
   "description": "Portfolio of Siddhi Kale, full-stack and AI engineer. Static site generated from content.mjs.",
   "engines": {
-    "node": ">=18"
+    "node": "20.x"
   },
   "scripts": {
     "build": "node build.mjs",
-    "dev": "node serve.mjs",
-    "start": "node serve.mjs"
+    "dev": "node serve.mjs"
   }
 }

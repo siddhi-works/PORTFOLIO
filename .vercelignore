@@ -1,0 +1,6 @@
+.claude
+.git
+README.md
+serve.mjs
+dist
+*.log
