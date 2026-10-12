@@ -11,7 +11,7 @@
   const SRC = { video: '/media/intro/avatar.webm', music: '/media/intro/theme.mp3' };
   const KEY = 'sk-sound'; // 'off' when the visitor chose silence
   const T_KEY = 'sk-music-t';
-  const BASE = 0.24, LAPTOP = 0.096, DUCK = 0.036; // 20% quieter than before
+  const BASE = 0.144, LAPTOP = 0.12, DUCK = 0.022; // 40% quieter than the previous mix
 
   const mem = {
     get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
@@ -139,9 +139,10 @@
       music.addEventListener('loadedmetadata', () => { try { music.currentTime = at % (music.duration || at + 1); } catch { /* ignore */ } }, { once: true });
       resumeAt = 0;
     }
-    return music.play().then(() => { ramp(level(), secs); return true; }).catch(() => false);
+    return music.play().then(() => { audioLive = true; ramp(level(), secs); if (typeof syncToggles === 'function') syncToggles(); return true; }).catch(() => false);
   }
   let userAsked = false;
+  let audioLive = false;
   const apply = (secs = 1.4) => { if (soundOn && music.paused) startMusic(secs); else ramp(level(), secs); };
 
   setInterval(() => { if (!music.paused) ses.set(T_KEY, String(music.currentTime)); }, 1000);
@@ -155,11 +156,13 @@
       b.setAttribute('aria-label', soundOn ? 'Turn the sound off' : 'Turn the sound on');
       b.classList.toggle('is-off', !soundOn);
       const l = $('.snd-l', b);
-      if (l) l.textContent = soundOn ? 'Sound on' : 'Sound off';
+      if (l) l.textContent = !soundOn ? 'Sound off' : audioLive ? 'Sound on' : 'Tap for sound';
     });
   }
   function flipSound() {
     userAsked = true;
+    // sound is wanted but the browser is still holding it back: this press is the permission
+    if (soundOn && !audioLive) { hideHint(); unlock(); startMusic(1.2); if (video) video.muted = false; sfx.pop(); return; }
     soundOn = !soundOn;
     ses.set(KEY, soundOn ? 'on' : 'off');
     if (master) master.gain.value = soundOn ? 0.7 : 0;
@@ -204,7 +207,7 @@
     if (gestureArmed) return;
     gestureArmed = true;
     const go = () => {
-      removeEventListener('pointerdown', go, true); removeEventListener('keydown', go, true); removeEventListener('touchstart', go, true);
+      ['pointerdown', 'keydown', 'touchstart', 'touchend', 'click'].forEach((t) => removeEventListener(t, go, true));
       gestureArmed = false;
       hideHint();
       if (!soundOn) return;
@@ -213,7 +216,7 @@
       if (video) video.muted = false;
       sfx.powerUp();
     };
-    addEventListener('pointerdown', go, true); addEventListener('keydown', go, true); addEventListener('touchstart', go, true);
+    ['pointerdown', 'keydown', 'touchstart', 'touchend', 'click'].forEach((t) => addEventListener(t, go, true));
   }
 
   /* ---------- the cinematic stage ---------- */

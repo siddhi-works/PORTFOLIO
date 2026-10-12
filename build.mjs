@@ -650,6 +650,7 @@ function resumePage() {
     return `
     <li class="role-card">
       <h2 class="role-title">${esc(r.title)}</h2>
+      ${r.tag ? `<p class="role-tag">${esc(r.tag)}</p>` : ''}
       <p class="role-sum">${esc(r.summary)}</p>
       <ul class="role-points">${r.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
       <div class="btns">
@@ -673,7 +674,7 @@ function resumePage() {
   </section>
 </main>`;
   return page({
-    file: 'resume/index.html', title: 'Résumé', desc: `Résumés for ${site.name}: AI/ML engineer, full-stack Python engineer, content editor and marketing.`,
+    file: 'resume/index.html', title: 'Résumé', desc: `Résumés for ${site.name}: AI/ML engineer (main résumé), software development, AI research and product intern, and marketing.`,
     current: 'resume', body,
   });
 }
@@ -811,7 +812,7 @@ function servicePage(s) {
     <h1 class="page-title page-title-md"><span class="line"><span>${esc(s.name)}</span></span></h1>
     <p class="page-sub">${esc(s.line)}</p>
     <p class="svc-pitch">${esc(s.pitch)}</p>
-    <p class="svc-cta"><a class="cta" href="mailto:${contact.email}?subject=${encodeURIComponent(s.name)}">Start a conversation</a></p>
+    <p class="svc-cta"><a class="cta" href="/#contact" data-label="Contact">Start a conversation</a></p>
   </header>
 
   <section class="svc-block" aria-labelledby="get-h">

@@ -1786,3 +1786,10 @@ html.is-portal .snd.snd-pill.snd-intro, html.is-cinema .snd.snd-pill.snd-intro {
 @media (prefers-reduced-motion: reduce) { .frame-art * { animation: none !important; stroke-dashoffset: 0 !important; opacity: 1 !important; } }
 
 .case-gallery img { aspect-ratio: 16 / 10; object-fit: contain; background: #0c0b09; }
+
+.role-tag { display: inline-block; margin: 0 0 0.6rem; padding: 2px 10px; border: 1px solid rgba(245, 165, 36, 0.55); border-radius: 999px; font: 600 0.78rem/1.5 var(--f-display); color: var(--amber-hi); }
+
+/* the sound prompt is easy to see while the laptop loads */
+.sound-hint { bottom: clamp(70px, 12vh, 120px); padding: 0.75em 1.3em; font-size: 1rem; box-shadow: 0 0 0 0 rgba(245, 165, 36, 0.5); animation: hint-pulse 1.8s ease-out infinite; }
+@keyframes hint-pulse { to { box-shadow: 0 0 0 18px rgba(245, 165, 36, 0); } }
+@media (prefers-reduced-motion: reduce) { .sound-hint { animation: none; } }
