@@ -27,7 +27,7 @@
   let ticking = false;
 
   /* ---------- Web Audio: effects ---------- */
-  let ctx = null, master = null, noiseBuf = null;
+  let ctx = null, master = null, noiseBuf = null, pendingCue = null;
   function unlock() {
     if (!ctx) {
       try {
@@ -37,7 +37,13 @@
         master.connect(ctx.destination);
       } catch { ctx = null; }
     }
-    if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().then(() => {
+        const p = pendingCue;
+        pendingCue = null;
+        if (p && performance.now() - p.t < 4500 && soundOn) sfx[p.n](...p.a);
+      }).catch(() => {});
+    }
     return !!ctx;
   }
   const live = () => !!ctx && soundOn && ctx.state === 'running';
@@ -110,6 +116,15 @@
     pop() { if (!live()) return; tone('sine', 520, 980, 0.14, 0.07, 0.006); },
     chime() { if (!live()) return; tone('sine', 784, 783, 0.9, 0.09, 0.005); setTimeout(() => { if (live()) tone('sine', 1175, 1174, 1.0, 0.08, 0.005); }, 120); },
   };
+
+  // before the first click the browser keeps audio suspended: remember the last big cue and play it once allowed
+  ['riser', 'hit', 'whoosh', 'down', 'chime', 'ping'].forEach((n) => {
+    const f = sfx[n];
+    sfx[n] = (...a) => {
+      if (live()) { f(...a); return; }
+      if (soundOn) pendingCue = { n, a, t: performance.now() };
+    };
+  });
 
   /* ---------- music ---------- */
   const music = new Audio();
@@ -218,6 +233,18 @@
     };
     ['pointerdown', 'keydown', 'touchstart', 'touchend', 'click'].forEach((t) => addEventListener(t, go, true));
   }
+
+  const GESTURES = ['pointerdown', 'keydown', 'touchend', 'click'];
+  function onFirstGesture() {
+    hideHint();
+    if (!soundOn) return;
+    unlock();
+    if (video) video.muted = false;
+    if (music.paused) startMusic(1.6);
+    if (ctx && ctx.state === 'running') GESTURES.forEach((t) => removeEventListener(t, onFirstGesture, true));
+  }
+  GESTURES.forEach((t) => addEventListener(t, onFirstGesture, true));
+  music.addEventListener('playing', () => { audioLive = true; syncToggles(); });
 
   /* ---------- the cinematic stage ---------- */
   let stage = null, video = null;
@@ -577,6 +604,7 @@
       if (eligible()) preloadVideo();
     },
     phase(p) { phase = p; },
+    debug() { return { ctx: ctx && ctx.state, musicPaused: music.paused, volume: +music.volume.toFixed(3), soundOn, audioLive, phase, level: level(), readyState: music.readyState, error: music.error && music.error.code }; },
   };
 
   /* ---------- every page ---------- */
