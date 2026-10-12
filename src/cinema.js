@@ -112,6 +112,8 @@
     blip(f = 1700, v = 0.045) { if (!live()) return; tone('square', f, f * 0.8, 0.05, v, 0.003, [6000, 1200]); },
     ping() { if (!live()) return; tone('sine', 1320, 1318, 1.1, 0.16, 0.004); tone('sine', 1980, 1976, 0.8, 0.07, 0.004); },
     tick() { if (!live()) return; tone('sine', 2600, 2100, 0.03, 0.018, 0.002); },
+    lid() { if (!live()) return; swept(160, 620, 1.0, 0.14, 2.4, 'bandpass', 0.3); tone('sawtooth', 70, 140, 0.9, 0.04, 0.3, [500, 900]); },
+    boot(i = 0) { if (!live()) return; tone('square', 900 + i * 420, 900 + i * 420, 0.07, 0.05, 0.004, [5000, 2500]); },
     soft() { if (!live()) return; swept(900, 2600, 0.28, 0.05, 1.4, 'bandpass', 0.1); },
     pop() { if (!live()) return; tone('sine', 520, 980, 0.14, 0.07, 0.006); },
     chime() { if (!live()) return; tone('sine', 784, 783, 0.9, 0.09, 0.005); setTimeout(() => { if (live()) tone('sine', 1175, 1174, 1.0, 0.08, 0.005); }, 120); },
@@ -558,6 +560,8 @@
     addEventListener('keydown', esc);
 
     // act one: the name arrives in depth
+    sfx.riser(0.75);
+    for (let i = 0; i < 7; i++) later(() => sfx.blip(260 + (6 - i) * 70, 0.045), 120 + (6 - i) * 85 + 260);
     later(() => stageEl.classList.add('is-in'), 40);
     later(() => { sfx.hit(); stageEl.classList.add('is-glitch'); later(() => stageEl.classList.remove('is-glitch'), 420); }, 700);
 

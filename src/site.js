@@ -455,6 +455,7 @@
     const gate = $('.portal-gate', el);
     const cin = window.SKCinema;
     let started = still != null, fxRise = false, fxHit = false;
+    const score = {};
     let ready = false, done = false, t = 0, last = performance.now();
     fontsReady.then(() => { ready = true; });
     setTimeout(() => { ready = true; }, 2600);
@@ -512,6 +513,12 @@
       if (!started) { last = now; requestAnimationFrame(frame); return; }
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
       t = Math.min(ready ? DUR : 3.05, t + dt * 1.7); // the laptop runs about 1.7x: the avatar is the main act
+      if (cin) {
+        if (!score.lid && t > 0.45) { score.lid = 1; cin.sfx.lid(); }
+        if (!score.b0 && t > 1.8) { score.b0 = 1; cin.sfx.boot(0); }
+        if (!score.b1 && t > 2.3) { score.b1 = 1; cin.sfx.boot(1); }
+        if (!score.b2 && t > 2.75) { score.b2 = 1; cin.sfx.boot(2); }
+      }
       if (cin && !fxRise && t > 3.0) { fxRise = true; cin.sfx.riser(1.8); }
       if (cin && !fxHit && t > 4.4) { fxHit = true; cin.phase('laptop'); }
       render(t);
