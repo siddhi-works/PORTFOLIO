@@ -80,7 +80,7 @@ which are synthesised in `src/cinema.js`, so there are no extra audio files.
 
 ## The hero cartoon
 
-The picture beside the name in the hero is a cartoon of Siddhi drawn in SVG (`src/toon.js`, mounted into `[data-hero-toon]` by `build.mjs`). It is a head-and-shoulders chibi: it blinks, sways, twinkles and looks toward the pointer. Colours (skin, hair, blazer) are in the `C` palette at the top of the file. The real photo stays on the ID card and in the social preview.
+The picture beside the name in the hero is a cartoon of Siddhi drawn in SVG (`src/toon.js`, mounted into `[data-hero-toon]` by `build.mjs`). It is a sticker-style chibi (white outline, brown line art): it blinks, sways, twinkles and looks toward the pointer. Colours (skin, hair, blazer) are in the `C` palette at the top of the file. The real photo stays on the ID card and in the social preview.
 
 ## Accessibility and motion
 
