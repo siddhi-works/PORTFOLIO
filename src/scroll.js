@@ -21,7 +21,7 @@
   const home = $('main.home');
   let spineLinks = [], sections = [];
   if (home) {
-    const names = { about: 'About', experience: 'Experience', stack: 'Stack', work: 'Projects', services: 'Services', records: 'Records', beyond: 'Humanity', contact: 'Contact' };
+    const names = { about: 'About', work: 'Projects', experience: 'Experience', stack: 'Stack', services: 'Services', records: 'Records', beyond: 'Humanity', contact: 'Contact' };
     sections = Object.keys(names).map((id) => document.getElementById(id)).filter(Boolean);
     const nav = document.createElement('nav');
     nav.className = 'spine';

@@ -80,3 +80,26 @@ Sound effects are synthesised in `src/cinema.js`, so there are no extra files.
 - The intro plays once per session and has a Skip button (Esc also skips).
 - Projects sit side by side on a rail with arrow buttons. Keyboard, touch and mouse-drag all work.
   With reduced motion, clicking a card is a plain link.
+
+## Phones and Android
+
+The site is a normal responsive website, with no install step. On phones the project orbit becomes a 2x2 grid, tap targets are at least 44 px, and Android Chrome shows the address bar in the site's dark colour (the `theme-color` tag). There is no service worker, so every visit loads the latest deploy.
+
+## Security, performance and search
+
+- Every page carries a Content-Security-Policy (a `<meta>` tag built in `build.mjs`). It allows only this site's own files, Google Fonts, and the form endpoint's origin. If you add a new third-party script, font or image host, add it to the `CSP` list in `build.mjs`, or the browser will block it.
+- `vercel.json` adds the other security headers (nosniff, referrer policy, frame protection, permissions policy).
+- The avatar clip is about 7 MB. The cinematic intro is skipped on data saver or a 2G connection.
+- Images get their width and height from the file at build time, so the page does not jump while they load.
+- Meta descriptions are cut to 160 characters, and the 404 page is marked `noindex`.
+- `site.url` in `content.mjs` must match the live domain. It feeds the canonical links, sitemap, robots.txt and social previews.
+
+## Typography
+
+**Sora** for headings, numbers and buttons, **Inter** for body text (so body copy never reads like a headline), and **JetBrains Mono** only for tech chips and terminal titles.
+Weights: 400 and 500 for body, 600 to 800 for display. 
+Sizes come from tokens at the end of `src/site.css` (`--t-micro` to `--t-h2`), so change a token to change every place that uses it.
+
+## Image credits
+
+The four round images on the Projects orbit (`media/orbit/`) are free-to-use photos from Pexels (Pexels licence): robotic hand and network (photo 8386440), tablet analytics (20206391), MRI scan (7089298), code on a screen (6424584).

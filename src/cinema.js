@@ -473,8 +473,14 @@
     return video;
   }
 
+  // The avatar clip is about 7 MB, so skip the cinematic on data saver or a 2G connection.
+  function lightConnection() {
+    const c = navigator.connection;
+    return !!c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''));
+  }
+
   function eligible() {
-    return !reduce && !!$('.hero .name') && !!document.createElement('video').canPlayType('video/webm');
+    return !reduce && !lightConnection() && !!$('.hero .name') && !!document.createElement('video').canPlayType('video/webm');
   }
 
   function play() {

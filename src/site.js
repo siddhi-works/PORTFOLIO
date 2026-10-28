@@ -385,8 +385,7 @@
   }
 
   // the project rail: cards side by side, arrows scroll for more
-  const railWrap = $('[data-rail]');
-  if (railWrap) {
+  $$('[data-rail]').forEach((railWrap) => {
     const rail = $('.rail', railWrap), prev = $('[data-rail-prev]', railWrap), next = $('[data-rail-next]', railWrap);
     const thumb = $('.rail-track i', railWrap), now = $('[data-rail-now]', railWrap);
     const cards = $$('.hcard', rail);
@@ -400,6 +399,7 @@
       thumb.style.width = (ratio * 100).toFixed(1) + '%';
       thumb.style.transform = `translateX(${(max > 0 ? (rail.scrollLeft / max) * (100 / ratio - 100) : 0).toFixed(1)}%)`;
       if (now) now.textContent = String(Math.min(cards.length, Math.round(rail.scrollLeft / step()) + 1));
+      railWrap.classList.toggle('is-short', rail.scrollWidth <= rail.clientWidth + 4);
     };
     const by = (dir) => rail.scrollBy({ left: dir * step() * (window.innerWidth > 900 ? 2 : 1), behavior: reduce ? 'auto' : 'smooth' });
     prev.addEventListener('click', () => by(-1));
@@ -421,7 +421,7 @@
     window.addEventListener('pointerup', () => { down = false; setTimeout(() => rail.classList.remove('is-drag'), 0); });
     rail.addEventListener('click', (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); moved = 0; } }, true);
     update();
-  }
+  });
 
   // local time, as a quiet proof that someone is actually there
   const clocks = $$('[data-clock]');

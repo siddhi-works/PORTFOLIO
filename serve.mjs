@@ -12,7 +12,7 @@ execFileSync(process.execPath, [path.join(root, 'build.mjs')], { stdio: 'inherit
 
 const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.json': 'application/json', '.webmanifest': 'application/manifest+json','.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.webp': 'image/webp', '.pdf': 'application/pdf', '.woff2': 'font/woff2', '.webm': 'video/webm', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml',
 };
 
@@ -28,7 +28,7 @@ http.createServer((req, res) => {
   }
   const type = types[path.extname(file)] || 'application/octet-stream';
   const size = fs.statSync(file).size;
-  const range = /bytes=(d*)-(d*)/.exec(req.headers.range || '');
+  const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range || '');
   if (range) {
     const start = range[1] ? Number(range[1]) : 0;
     const end = range[2] ? Math.min(Number(range[2]), size - 1) : size - 1;

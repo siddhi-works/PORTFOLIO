@@ -90,7 +90,7 @@
 
   /* ---------- tilt on boxes ---------- */
   if (fine && !reduce) {
-    $$('.cbox, .flow-boxes li, .svc-card-link, .tl-body').forEach((el) => {
+    $$('.cbox, .flow-boxes li, .rec').forEach((el) => {
       el.classList.add('fx-tilt');
       el.addEventListener('pointermove', (e) => {
         const r = el.getBoundingClientRect();

@@ -21,7 +21,7 @@ export default {
     role: 'Full-stack and AI engineer',
     place: 'Pune, India',
     timeZone: 'Asia/Kolkata',
-    url: 'https://siddhikale.vercel.app', // CONFIRM: set to your real domain after deploying
+    url: 'https://siddhi-kale.vercel.app', // feeds canonical links, sitemap, social preview; change it if you add a custom domain
     status: 'Open to work',
     openTo: ['Internships', 'Full-time roles', 'Freelance projects', 'Collaborations'],
     description:
@@ -39,6 +39,7 @@ export default {
     linkedin: 'https://www.linkedin.com/in/siddhikale25/',
     linkedinHandle: 'siddhikale25',
     resume: '/media/Siddhi-Kale-Resume.pdf',
+    formEndpoint: null, // SLOT: paste a Formspree URL (https://formspree.io/f/xxxx) so the form sends mail directly; empty opens the visitor's email app instead
     whatsapp: null, // SLOT: e.g. 'https://wa.me/918530182828' (hidden until set)
   },
 
@@ -58,10 +59,10 @@ export default {
   // Let the numbers speak. All from your resume and project notes.
   // Four metrics in one strip. `fill` is unused now; kept so old data still builds.
   numbers: [
-    { id: 'accuracy', href: '/work/bot-detection/', n: 90, unit: '%', label: 'accuracy detecting social media bots', sub: 'Published with Springer Nature' }, // from the repo: 4,184 + 4,817 correct of about 10,000 held-out accounts
-    { id: 'projects', href: '#work', n: 20, plus: true, label: 'projects worked on', sub: '8 live in production' },
-    { id: 'hackathons', href: '#records', n: 10, plus: true, label: 'hackathons entered', sub: 'SIH internal hackathon winner' },
-    { id: 'cgpa', href: '#about', n: 9.02, dec: 2, label: 'CGPA out of 10', sub: 'BTech in Artificial Intelligence and Data Science (final year), Ajeenkya DY Patil University' },
+    { id: 'wins', href: '#records', n: 2, label: 'wins in 2026' },
+    { id: 'paper', href: '/records/icaiml-ae-2026/', n: 1, label: 'research paper published at an international conference' },
+    { id: 'cgpa', href: '#about', n: 9.02, dec: 2, label: 'academic CGPA up to the 6th semester' },
+    { id: 'projects', href: '#work', n: 10, plus: true, label: 'projects, interdomain and multidisciplinary' },
   ],
 
   // What the avatar says in the opening. Paste her exact words into `speech`; the captions appear on the left
@@ -99,8 +100,8 @@ export default {
   // Tech stack cards. Everything here appears on your resume or project notes.
   stackCards: [
     { title: 'Languages', items: ['Python', 'R', 'SQL', 'TypeScript'] },
-    { title: 'AI and ML', items: ['TensorFlow', 'Keras', 'scikit-learn', 'OpenCV', 'NLTK', 'NumPy', 'pandas', 'Matplotlib', 'ResNet-50'] },
-    { title: 'Agents and LLMs', items: ['LangGraph', 'LangChain', 'Gemini 2.5 Flash', 'Anthropic API', 'arXiv API', 'PyPDF2'] },
+    { title: 'AI and ML', items: ['TensorFlow', 'Keras', 'scikit-learn', 'OpenCV', 'NLTK', 'NumPy', 'pandas'] },
+    { title: 'Agents and LLMs', items: ['LangGraph', 'LangChain'] },
     { title: 'Web and data', items: ['React', 'Node.js', 'Express', 'Flask', 'Streamlit', 'REST APIs', 'SQLite', 'MySQL'] },
   ],
   stackCore: [
@@ -108,7 +109,20 @@ export default {
     { title: 'Engineering', items: ['API design', 'Data structures and algorithms', 'Database management', 'Git and GitHub', 'CI/CD with GitHub Actions', 'Deployment on Vercel'] },
     { title: 'Working style', items: ['Problem solving', 'Analytical thinking', 'Teamwork', 'Communication', 'Leadership'] },
   ],
-  stackR: ['dplyr', 'caret', 'Shiny', 'ggplot2', 'tidyr', 'data.table'],
+  stackR: [],
+  // Which projects each core concept shows up in (hover a concept to see them).
+  conceptUse: {
+    'Machine learning': ['bot-detection', 'resolve-iq', 'chicago-crime'],
+    'Deep learning': ['skin-lesion', 'chest-xray'],
+    'Natural language processing': ['bot-detection', 'resolve-iq', 'plagiarism'],
+    'Generative AI': ['claimmate', 'aria', 'censusguru'],
+    'Large language models': ['claimmate', 'aria', 'verdict', 'censusguru'],
+    'Agentic AI': ['claimmate', 'aria', 'verdict', 'resolve-iq'],
+    'API design': ['claimmate', 'land-gpt', 'censusguru'],
+    'Database management': ['resolve-iq', 'land-gpt'],
+    'CI/CD with GitHub Actions': ['devops-demo'],
+    'Deployment on Vercel': ['chicago-crime', 'censusguru'],
+  },
 
   // Projects. `top` ones are the stacking cards on the home page. `page` ones get a detail page.
   // `map` places the project on the /work/ map (0-100). `tags` draw the links between them.
@@ -279,7 +293,7 @@ export default {
       map: [62, 18],
       tags: ['multilingual', 'gis', 'winner'],
       tools: ['Python', 'FastAPI', 'React', 'GIS', 'GeoJSON', 'SQLite', 'REST APIs', 'ULPIN', 'RBAC', 'Anthropic API'],
-      repo: 'LAND-GPT',
+      repo: 'BhuSamhita',
       live: null,
       demo: 'https://youtu.be/CldL2wF95Po',
       extra: [{ label: 'Earlier prototype', href: 'https://github.com/siddhi-works/land-administration-digitisation' }],
@@ -480,7 +494,6 @@ export default {
       live: 'https://resolveiq-bs1s.onrender.com',
       extra: [{ label: 'Original repository', href: 'https://github.com/akritiib30/ai-ticket-routing-agent' }],
       post: 'https://www.linkedin.com/posts/siddhikale25_thegreatagenthackathon-ai-aiagents-ugcPost-7504510671020064768-3HgA/',
-      badge: 'More work',
       builtFor: 'The Great Agent Hackathon',
       team: 'With Akriti Biswas',
       when: '2026',
@@ -521,7 +534,6 @@ export default {
       slug: 'skin-lesion',
       card: 'CNN that classifies skin lesions as benign or malignant. 88 to 92% accuracy.',
       name: 'Skin Lesion Classifier',
-      badge: 'More work',
       line: 'A CNN in TensorFlow and Keras that classifies dermoscopic images as benign or malignant, with augmentation, early stopping and a Streamlit interface that returns a confidence score. 88 to 92% validation accuracy.',
       cluster: 'Models',
       map: [18, 70],
@@ -539,7 +551,6 @@ export default {
       slug: 'chest-xray',
       card: 'ResNet-50 sorting chest X-rays into four classes through a Flask app.',
       name: 'Chest X-Ray Detection',
-      badge: 'More work',
       line: 'ResNet-50 with transfer learning that sorts chest X-rays into COVID-19, viral pneumonia, lung opacity and normal, served through a Flask app for real-time prediction. 88 to 92% accuracy.',
       cluster: 'Models',
       map: [30, 82],
@@ -555,7 +566,6 @@ export default {
       slug: 'plagiarism',
       card: 'TF-IDF and cosine similarity plagiarism detector. 90% on 1,000 documents.',
       name: 'Plagiarism Detector',
-      badge: 'More work',
       line: 'NLP with TF-IDF and cosine similarity that finds duplicated content across a document set. 90% accuracy on 1,000 documents.',
       cluster: 'Models',
       map: [12, 88],
@@ -568,7 +578,6 @@ export default {
       slug: 'devops-demo',
       card: 'A three-tier app shipped through GitHub Actions and Kubernetes.',
       name: 'SkillPulse DevOps pipeline',
-      badge: 'More work',
       line: 'A three-tier app taken from commit to running update through GitHub Actions, with Kubernetes on a local kind cluster, worked through from the TrainWithShubham masterclass.',
       cluster: 'Data',
       map: [88, 86],
@@ -576,6 +585,15 @@ export default {
       tools: ['GitHub Actions', 'Docker', 'Kubernetes', 'CI/CD'],
       repo: 'github-actions-demo',
     },
+  ],
+
+  // The Projects section is split by the technology behind the work. Cards are the same as before.
+  projectGroups: [
+    { id: 'agentic', image: '/media/orbit/agentic.jpg', title: 'Agentic AI and LLM systems', line: 'Multi-agent workflows, LangGraph and LangChain, language models with checks and human fallbacks.', projects: ['claimmate', 'aria', 'verdict', 'resolve-iq'] },
+    { id: 'data', image: '/media/orbit/data.jpg', title: 'Data analytics and research ML', line: 'Large datasets, dashboards, feature engineering, classical machine learning, a published paper.', projects: ['chicago-crime', 'bot-detection'] },
+    { id: 'deep', image: '/media/orbit/deep.jpg', title: 'Deep learning (CV, NLP, etc.)', line: 'CNNs and transfer learning (ResNet-50), image pipelines, models served through a web app.', projects: ['skin-lesion', 'chest-xray'] },
+    { id: 'platforms', image: '/media/orbit/platforms.jpg', title: 'Full-stack platforms and integration', line: 'APIs, multilingual interfaces, GIS, data integration, deployed apps for real users.', projects: ['land-gpt', 'censusguru'] },
+    { id: 'more', title: 'More work', line: 'Smaller builds, each with its code on GitHub.', projects: ['plagiarism', 'devops-demo'] },
   ],
 
   clusters: [

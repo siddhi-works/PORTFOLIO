@@ -1,6 +1,7 @@
 // build.mjs — zero-dependency static site generator.
 //   node build.mjs   → writes ./dist (real HTML page per URL)
 // Content lives in content.mjs. Styles and scripts live in src/.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -162,7 +163,67 @@ function footer() {
 </footer>`;
 }
 
-function page({ file, title, desc, current, theme = '', body, ogTitle, jsonld }) {
+// Image dimensions read from the file header, so the browser can reserve space before the image loads.
+const dimCache = new Map();
+function dims(p) {
+  if (dimCache.has(p)) return dimCache.get(p);
+  let r = null;
+  try {
+    const b = fs.readFileSync(path.join(root, p.replace(/^\//, '')));
+    if (b.toString('latin1', 1, 4) === 'PNG') r = [b.readUInt32BE(16), b.readUInt32BE(20)];
+    else if (b.toString('latin1', 0, 4) === 'RIFF' && b.toString('latin1', 8, 12) === 'WEBP') {
+      const k = b.toString('latin1', 12, 16);
+      if (k === 'VP8 ') r = [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+      else if (k === 'VP8L') { const v = b.readUInt32LE(21); r = [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1]; }
+      else if (k === 'VP8X') r = [b.readUIntLE(24, 3) + 1, b.readUIntLE(27, 3) + 1];
+    } else if (b[0] === 0xff && b[1] === 0xd8) {
+      for (let i = 2; i < b.length - 9;) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const m = b[i + 1];
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) { r = [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)]; break; }
+        i += 2 + b.readUInt16BE(i + 2);
+      }
+    }
+  } catch { /* no size: the image still renders */ }
+  dimCache.set(p, r);
+  return r;
+}
+const size = (p) => { const d = dims(p); return d ? ` width="${d[0]}" height="${d[1]}"` : ''; };
+
+// Search engines cut descriptions near 160 characters, so end on a whole word.
+const clip = (s, n = 160) => {
+  s = String(s).replace(/\s+/g, ' ').trim();
+  if (s.length <= n) return s;
+  const cut = s.slice(0, n - 1);
+  return cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\s]+$/, '') + '…';
+};
+
+// The one inline script in every <head>. It is allowed by hash in the Content-Security-Policy below.
+const BOOT = `
+(function(){var d=document.documentElement;d.classList.add('js');
+var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var seen=false;try{seen=sessionStorage.getItem('portal-seen')==='1'}catch(e){}
+try{var nv=performance.getEntriesByType('navigation')[0];if(nv&&nv.type==='reload'){seen=false;sessionStorage.removeItem('portal-seen');}}catch(e){}
+var shot=false;try{shot=!!sessionStorage.getItem('shoot')}catch(e){}
+var home=location.pathname==='/'||location.pathname==='';
+if(!r){d.classList.add(shot?'is-shot':(seen||!home?'is-veiled':'is-portal'));}})();
+`;
+const origin = (u) => { try { return new URL(u).origin; } catch { return ''; } };
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' 'sha256-${crypto.createHash('sha256').update(BOOT).digest('base64')}'`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self' data:",
+  "media-src 'self'",
+  `connect-src 'self' ${origin(contact.formEndpoint)}`.trim(),
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');
+
+function page({ file, title, desc, current, theme = '', body, ogTitle, jsonld, noindex = false }) {
+  desc = clip(desc);
   const isHome = file === 'index.html';
   const fullTitle = isHome ? `${site.name}: ${site.role}, ${site.place}` : `${title} | ${site.name}`;
   const ogPortrait = resolveMedia(portrait.src);
@@ -175,8 +236,9 @@ function page({ file, title, desc, current, theme = '', body, ogTitle, jsonld })
 <html lang="en" class="${theme}">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(fullTitle)}</title>
+<title>${esc(fullTitle)}</title>${noindex ? '\n<meta name="robots" content="noindex">' : ''}
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#0c0b09">
 <meta property="og:type" content="website">
@@ -187,22 +249,14 @@ function page({ file, title, desc, current, theme = '', body, ogTitle, jsonld })
 ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="${ogImage}">` : '<meta name="twitter:card" content="summary">'}
-<link rel="canonical" href="${url}">
+${noindex ? '' : `<link rel="canonical" href="${url}">`}
 <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="Full site content as Markdown">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230c0b09'/%3E%3Crect x='14' y='5' width='4' height='22' rx='2' fill='%23e4a73f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;600&family=Unbounded:wght@600;800&family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,300..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="/assets/site.css">
-<script>
-(function(){var d=document.documentElement;d.classList.add('js');
-var r=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var seen=false;try{seen=sessionStorage.getItem('portal-seen')==='1'}catch(e){}
-try{var nv=performance.getEntriesByType('navigation')[0];if(nv&&nv.type==='reload'){seen=false;sessionStorage.removeItem('portal-seen');}}catch(e){}
-var shot=false;try{shot=!!sessionStorage.getItem('shoot')}catch(e){}
-var home=location.pathname==='/'||location.pathname==='';
-if(!r){d.classList.add(shot?'is-shot':(seen||!home?'is-veiled':'is-portal'));}})();
-</script>
+<script>${BOOT}</script>
 ${ld}
 </head>
 <body data-page="${current}">
@@ -217,7 +271,8 @@ ${hud()}
 <script src="/assets/cinema.js" defer></script>
 <script src="/assets/fx.js" defer></script>
 <script src="/assets/scroll.js" defer></script>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/form.js" defer></script>
+<script src="/assets/interact.js" defer></script><script src="/assets/site.js" defer></script>
 </body>
 </html>`;
 }
@@ -268,7 +323,6 @@ function idCard() {
           <p class="id-role">${esc(site.role)}</p>
           <dl class="id-fields">
             <div><dt>Base</dt><dd>${esc(site.place)}</dd></div>
-            <div><dt>Status</dt><dd><span class="lamp" aria-hidden="true"></span>${esc(site.status)}</dd></div>
             <div><dt>Handle</dt><dd>${esc(contact.githubHandle)}</dd></div>
           </dl>
           ${barcode(contact.githubHandle)}
@@ -306,13 +360,13 @@ function marquee(words, cls = '') {
 
 // One project card for the sideways rail. The front is short; hovering flips it to the details.
 const railProjects = [...top, ...C.projects.filter((p) => !p.top)];
-function hcard(p, i) {
+function hcard(p, i, lv = 3) {
   const shot = resolveMedia(p.shot);
   const href = p.page ? caseUrl(p) : github(p.repo);
   const external = !!href && !p.page;
   const tilt = [-1.4, 1.1, -0.8, 1.5, -1.2][i % 5];
   const art = shot
-    ? `<img src="${shot}" alt="Screenshot of ${esc(p.name)}">`
+    ? `<img src="${shot}" alt="Screenshot of ${esc(p.name)}"${size(shot)} loading="lazy" decoding="async">`
     : `<canvas data-visual="${p.visual || 'generic'}" data-seed="${i + 3}" aria-hidden="true"></canvas>`;
   const attrs = external ? ' target="_blank" rel="noopener"' : ` data-shoot data-label="${esc(p.short || p.name)}"`;
   const facts = (p.facts || []).slice(0, 3);
@@ -334,12 +388,12 @@ function hcard(p, i) {
           ${p.badge ? `<p class="hcard-badge"><span class="lamp" aria-hidden="true"></span>${esc(p.badge)}</p>` : ''}
         </div>
         <div class="hcard-body">
-          <h3 class="hcard-name">${href ? `<a class="stretch" href="${href}"${attrs}>${esc(p.name)}</a>` : esc(p.name)}</h3>
+          <h${lv} class="hcard-name">${href ? `<a class="stretch" href="${href}"${attrs}>${esc(p.name)}</a>` : esc(p.name)}</h${lv}>
           <p class="hcard-line">${esc(p.card || p.line)}</p>
         </div>
       </div>
       <div class="hcard-face hcard-back">
-        <h3 class="hcard-name hcard-name-sm">${esc(p.name)}</h3>
+        <p class="hcard-name hcard-name-sm">${esc(p.name)}</p>
         <p class="hcard-line hcard-line-full">${esc(p.line)}</p>
         ${factHtml}
         ${(p.tools || []).length ? `<ul class="chips">${p.tools.slice(0, 5).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
@@ -396,11 +450,12 @@ function linkify(text) {
     return `<a class="inline-link" href="${hit[1]}"${hit[2] ? ' target="_blank" rel="noopener"' : ` data-label="${esc(m)}"`}>${m}</a>`;
   });
 }
-const toolIndex = C.projects.map((p) => ({ name: p.short || p.name, tools: (p.tools || []).map((x) => x.toLowerCase()) }));
+const toolIndex = C.projects.map((p) => ({ slug: p.slug, name: p.short || p.name, tools: (p.tools || []).map((x) => x.toLowerCase()) }));
 function chip(t) {
   const c = t.toLowerCase();
-  const used = toolIndex.filter((p) => p.tools.some((x) => x === c || (c.length > 3 && x.length > 3 && (x.includes(c) || c.includes(x))))).map((p) => p.name).slice(0, 4);
-  return used.length ? `<li tabindex="0" data-used="Used in ${esc(used.join(', '))}">${esc(t)}</li>` : `<li>${esc(t)}</li>`;
+  const hit = toolIndex.filter((p) => p.tools.some((x) => x === c || (c.length > 3 && x.length > 3 && (x.includes(c) || c.includes(x)))));
+  const used = hit.map((p) => p.name).slice(0, 4);
+  return used.length ? `<li tabindex="0" data-used="Used in ${esc(used.join(', '))}" data-slugs="${hit.map((p) => p.slug).join(',')}">${esc(t)}</li>` : `<li>${esc(t)}</li>`;
 }
 
 
@@ -414,6 +469,41 @@ const beyondArt = {
   book: '<svg viewBox="0 0 240 150" aria-hidden="true"><g ' + S + '><path class="a-draw" d="M120 46c-18-12-44-14-72-8v76c28-6 54-4 72 8 18-12 44-14 72-8V38c-28-6-54-4-72 8z"/><path class="a-draw" d="M120 46v76"/><path class="a-draw" d="M64 60c10-2 20-1 30 3M64 78c10-2 20-1 30 3M146 63c10-4 20-5 30-3M146 81c10-4 20-5 30-3"/></g><g class="a-spark" ' + S + '><path d="M120 16v10M104 22l6 8M136 22l-6 8"/></g><circle class="a-dot d2" cx="208" cy="124" r="3"/></svg>',
 };
 const artFor = (b) => beyondArt[b.art] || beyondArt.plant;
+
+
+/* ---------- projects grouped by technology ---------- */
+const orbitIds = ['agentic', 'data', 'deep', 'platforms'];
+const groupsForOrbit = (C.projectGroups || []).filter((g) => orbitIds.includes(g.id)).map((g) => {
+  const items = g.projects.map(bySlug).filter(Boolean);
+  return { ...g, items, thumb: resolveMedia(g.image) || items.map((p) => resolveMedia(p.shot)).find(Boolean) || null };
+});
+
+function groupPage(g) {
+  const i = groupsForOrbit.findIndex((x) => x.id === g.id);
+  const prev = groupsForOrbit[(i + groupsForOrbit.length - 1) % groupsForOrbit.length];
+  const next = groupsForOrbit[(i + 1) % groupsForOrbit.length];
+  const body = `
+<main id="main" class="page group">
+  <header class="page-head">
+    <p class="sec-tag">${scr('Projects')}</p>
+    <h1 class="page-title page-title-md"><span class="line"><span>${esc(g.title)}</span></span></h1>
+    <p class="page-sub">${esc(g.line)}</p>
+  </header>
+  <ul class="gcards">${g.items.map((p, k) => hcard(p, k, 2)).join('')}</ul>
+  <nav class="gnav" aria-label="More project groups">
+    <a class="textlink" href="/projects/${prev.id}/" data-label="${esc(prev.title)}">\u2190 ${esc(prev.title)}</a>
+    <a class="textlink" href="/#work" data-label="Projects">All groups</a>
+    <a class="textlink" href="/projects/${next.id}/" data-label="${esc(next.title)}">${esc(next.title)} \u2192</a>
+  </nav>
+</main>`;
+  return page({ file: `projects/${g.id}/index.html`, title: g.title, desc: `${g.title}: ${g.line}`, current: 'work', body });
+}
+
+function conceptItem(t) {
+  const slugs = (C.conceptUse || {})[t] || [];
+  const names = slugs.map(bySlug).filter(Boolean).map((p) => p.short || p.name);
+  return names.length ? `<li tabindex="0" data-used="Used in ${esc(names.join(', '))}" data-slugs="${slugs.join(',')}">${esc(t)}</li>` : `<li>${esc(t)}</li>`;
+}
 
 /* ---------- home ---------- */
 function home() {
@@ -431,7 +521,6 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
       <div class="hero-actions">
         <a class="cta" href="#work">See the work</a>
         <a class="ghost" href="#contact">Contact me</a>
-        <a class="ghost ghost-quiet" href="/resume/" data-label="Résumé">Résumé</a>
       </div>
     </div>
 
@@ -466,83 +555,92 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
     </div>
   </section>
 
+  ${marquee(C.marqueeProof, 'marquee-b')}
+
+  <section class="sec work" id="work" aria-labelledby="work-h">
+    <div class="proj-orbit" data-orbit>
+      <div class="orbit-core"><h2 class="orbit-title" id="work-h">Selected projects.</h2></div>
+      <div class="orbit-ring">
+        ${groupsForOrbit.map((g, i) => `
+        <div class="orbit-item" style="--a:${i * 90}deg">
+          <div class="orbit-card">
+            <div class="orbit-card-in">
+              <a class="orbit-link" href="/projects/${g.id}/" data-label="${esc(g.title)}">
+                <span class="orbit-thumb">${g.thumb ? `<img src="${g.thumb}" alt="" width="164" height="164">` : '<canvas data-visual="generic" aria-hidden="true"></canvas>'}</span>
+                <span class="orbit-name">${esc(g.title)}</span>
+                <span class="orbit-count">${g.items.length} projects</span>
+              </a>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <p class="also-more"><a class="textlink" href="/work/" data-label="Every project">See every project on the map</a></p>
+  </section>
+
   <section class="sec experience" id="experience" aria-labelledby="exp-h">
+    ${secHead('Experience', 'Experience and volunteering.', 'Roles where I led, built and gave back, newest first.', 'exp-h')}
     <div class="exp">
-      <h2 class="band-title" id="exp-h">Experience and volunteering</h2>
       <ol class="tl" aria-label="Experience and volunteering, newest first">
-        ${C.experience.map((x) => `
-        <li class="tl-item">
+        ${C.experience.map((x, i) => `
+        <li class="tl-item${i === 0 ? ' is-open' : ''}">
           <span class="tl-when">${esc(x.when)}</span>
           <span class="tl-mid" aria-hidden="true"><i class="tl-dot"></i><i class="tl-line"></i></span>
           <div class="tl-body">
-            <h4 class="tl-role">${esc(x.role)}</h4>
-            <p class="tl-org">${esc(x.org)}${x.type ? `<span class="tl-type">${esc(x.type)}</span>` : ''}</p>
-            <p class="tl-what">${esc(x.what)}</p>
+            <h3 class="tl-h"><button class="tl-head" type="button" aria-expanded="${i === 0}" aria-controls="tl-d-${i}">
+              <span class="tl-role">${esc(x.role)}</span>
+              <span class="tl-org">${esc(x.org)}${x.type ? `<span class="tl-type">${esc(x.type)}</span>` : ''}</span>
+              <span class="tl-chev" aria-hidden="true"></span>
+            </button></h3>
+            <div class="tl-detail" id="tl-d-${i}"><div class="tl-detail-in"><p class="tl-what">${esc(x.what)}</p></div></div>
           </div>
         </li>`).join('')}
       </ol>
     </div>
   </section>
 
-  <section class="sec stack" id="stack\" aria-labelledby="stack-h">
+  <section class="sec stack" id="stack" aria-labelledby="stack-h">
     ${secHead('Core stack', 'Technical skills.', 'Languages, frameworks and concepts I work with.', 'stack-h')}
     <div class="tcards">
       ${C.stackCards.map((c, i) => `
       <article class="tcard">
         <h3 class="tcard-title">${esc(c.title)}</h3>
         <ul class="tchips">${c.items.map((t) => chip(t)).join('')}</ul>
-        ${i === 0 ? `<p class="tcard-note">R tooling: ${C.stackR.map(esc).join(', ')}</p>` : ''}
+        ${i === 0 && C.stackR.length ? `<p class="tcard-note">R tooling: ${C.stackR.map(esc).join(', ')}</p>` : ''}
       </article>`).join('')}
     </div>
     <article class="tcore">
       ${C.stackCore.map((c) => `
       <div class="tcore-col">
         <h3 class="tcard-title">${esc(c.title)}</h3>
-        <ul class="tcore-list">${c.items.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+        <ul class="tcore-list">${c.items.map((t) => conceptItem(t)).join('')}</ul>
       </div>`).join('')}
     </article>
-  </section>
-
-  ${marquee(C.marqueeProof, 'marquee-b')}
-
-  <section class="sec work" id="work" aria-labelledby="work-h">
-    ${secHead('Work', 'Selected projects.', 'Hover a card for details, or scroll sideways for more.', 'work-h')}
-    <div class="rail-wrap" data-rail>
-      <div class="rail-tools">
-        <p class="rail-count" aria-live="polite"><span data-rail-now>1</span> of ${railProjects.length}</p>
-        <div class="rail-btns">
-          <button class="rail-btn" type="button" data-rail-prev aria-label="Previous projects" disabled>${icon.svc.left}</button>
-          <button class="rail-btn" type="button" data-rail-next aria-label="More projects">${icon.svc.arrow}</button>
-        </div>
-      </div>
-      <ul class="rail" tabindex="0" aria-label="Projects. Scroll sideways for more.">${railProjects.map(hcard).join('')}</ul>
-      <div class="rail-track" aria-hidden="true"><i></i></div>
+    <div class="pmap">
+      <p class="pmap-hint"><span class="hint-fine">Hover a skill to see where it was used.</span><span class="hint-touch">Tap a skill to see where it was used.</span></p>
+      <ul class="pmap-list">${C.projects.filter((p) => p.page || p.repo).map((p) => { const h = p.page ? caseUrl(p) : github(p.repo); return `<li data-slug="${p.slug}"><a href="${h}"${p.page ? ` data-label="${esc(p.short || p.name)}"` : ' target="_blank" rel="noopener"'}>${esc(p.short || p.name)}</a></li>`; }).join('')}</ul>
     </div>
-    <p class="also-more"><a class="textlink" href="/work/" data-label="Every project">See every project on the map</a></p>
   </section>
 
   <section class="sec services" id="services" aria-labelledby="svc-h">
     ${secHead('Services', 'What I can build for you.', 'Each service is backed by work I have already shipped.', 'svc-h')}
-    <ul class="sgrid">
-      ${C.services.map((s) => `
-      <li class="svc-card">
-        <a class="svc-card-link" href="${serviceUrl(s)}" data-label="${esc(s.short)}">
-          <span class="svc-ic">${icon.svc[s.icon] || icon.svc.agent}</span>
-          <h3 class="svc-title">${esc(s.titleParts[0])} <em>${esc(s.titleParts[1])}</em></h3>
-          <p class="svc-text">${esc(s.line)}</p>
-          <span class="svc-proof2">${s.projects.slice(0, 3).map((x) => esc(bySlug(x).name)).join(', ')}</span>
-          <span class="svc-arrow" aria-hidden="true">${icon.svc.arrow}</span>
-        </a>
-      </li>`).join('')}
-      <li class="svc-card svc-card-cta">
-        <a class="svc-card-link" href="#contact">
-          <span class="svc-ic">${icon.mail}</span>
-          <h3 class="svc-title">A different project <em>in mind?</em></h3>
-          <p class="svc-text">Describe what you need and I will tell you how I can help.</p>
-          <span class="svc-arrow" aria-hidden="true">${icon.svc.arrow}</span>
-        </a>
-      </li>
-    </ul>
+    <div class="svc-panel" data-svc>
+      <div class="svc-tabs" role="tablist" aria-label="Services">
+        ${C.services.map((s, i) => `<button class="svc-tab" type="button" role="tab" id="svc-t-${i}" aria-selected="${i === 0}" aria-controls="svc-p-${i}" tabindex="${i === 0 ? 0 : -1}"><span class="svc-tab-ic">${icon.svc[s.icon] || icon.svc.agent}</span><span class="svc-tab-name">${esc(s.titleParts.join(' '))}</span></button>`).join('')}
+      </div>
+      <div class="svc-views">
+        ${C.services.map((s, i) => `
+        <article class="svc-view" role="tabpanel" id="svc-p-${i}" aria-labelledby="svc-t-${i}"${i === 0 ? '' : ' hidden'}>
+          <h3 class="svc-view-title">${esc(s.name)}</h3>
+          <p class="svc-view-line">${esc(s.line)}</p>
+          <p class="svc-view-pitch">${esc(s.pitch)}</p>
+          <ul class="svc-proof">${s.projects.map(bySlug).filter(Boolean).map((p) => { const h = p.page ? caseUrl(p) : github(p.repo); const inner = `<b>${esc(p.short || p.name)}</b><span>${esc(p.card || p.line)}</span>`; return h ? `<li><a href="${h}"${p.page ? ` data-label="${esc(p.short || p.name)}"` : ' target="_blank" rel="noopener"'}>${inner}</a></li>` : `<li><div>${inner}</div></li>`; }).join('')}</ul>
+          <ul class="chips">${s.tools.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+          <a class="cta" href="${serviceUrl(s)}" data-label="${esc(s.short)}">See the full page</a>
+        </article>`).join('')}
+      </div>
+    </div>
+    <p class="svc-more"><a class="textlink" href="#contact">A different project in mind? Say hello.</a></p>
   </section>
 
   <section class="sec proof" id="records" aria-labelledby="records-h">
@@ -569,7 +667,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
         const ph = resolveMedia(b.photo);
         return `
       <li class="frame" style="--tilt:${[-1.2, 0.8, -0.6, 1.1, -0.9][i % 5]}deg">
-        <div class="frame-photo${ph ? '' : ' is-art'}">${ph ? `<img src="${ph}" alt="${esc(b.org)}" loading="lazy">` : `<span class="frame-art" role="img" aria-label="${esc(b.org)}">${artFor(b)}</span>`}</div>
+        <div class="frame-photo${ph ? '' : ' is-art'}">${ph ? `<img src="${ph}" alt="${esc(b.org)}"${size(ph)} loading="lazy" decoding="async">` : `<span class="frame-art" role="img" aria-label="${esc(b.org)}">${artFor(b)}</span>`}</div>
         <h3 class="frame-org">${esc(b.org)}</h3>
         <p class="frame-role">${esc(b.role)}${b.when ? `, ${esc(b.when)}` : ''}</p>
         <ul class="frame-facts">${b.facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
@@ -582,12 +680,25 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
     <div class="cpanel">
       <div class="cpanel-main">
         <p class="sec-tag">${scr('Contact')}</p>
-        <h2 class="cpanel-title" id="contact-h">Let's work together.</h2>
+        <h2 class="cpanel-title" id="contact-h"><span class="q" aria-hidden="true">“</span>Great collaborations start with a hello.<span class="q" aria-hidden="true">”</span></h2>
         <p class="sec-sub">${esc(openLine)} Based in ${esc(site.place)}.</p>
-        <div class="contact-actions">
-          <a class="cta" href="mailto:${contact.email}">Contact me</a>
-          <a class="ghost" href="/resume/" data-label="Résumé">Résumé</a>
-        </div>
+        <form class="cform" novalidate data-endpoint="${esc(contact.formEndpoint || '')}" data-to="${(contact.emails || [contact.email]).join(',')}" aria-describedby="cform-status">
+          <div class="cform-row">
+            <label class="cf"><span>Your name</span><input name="name" type="text" autocomplete="name" required placeholder="Ada Lovelace"></label>
+            <label class="cf"><span>Organisation</span><input name="organisation" type="text" autocomplete="organization" placeholder="Company, college or team"></label>
+          </div>
+          <fieldset class="cf-purpose">
+            <legend>What brings you here?</legend>
+            ${['Internship', 'Full-time role', 'Freelance project', 'Collaboration', 'Something else'].map((p, i) => `<label class="chip-radio"><input type="radio" name="purpose" value="${p}"${i === 0 ? ' required' : ''}><span>${p}</span></label>`).join('')}
+          </fieldset>
+          <label class="cf"><span>Message</span><textarea name="message" rows="4" required placeholder="A line or two about what you have in mind"></textarea></label>
+          <label class="cf-trap" aria-hidden="true">Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+          <div class="cform-actions">
+            <button class="cta" type="submit">Send message</button>
+            <a class="ghost" href="/resume/" data-label="Résumé">Read the résumé first</a>
+          </div>
+          <p class="cform-status" id="cform-status" role="status" aria-live="polite"></p>
+        </form>
       </div>
       <ul class="ctiles">
         ${[
@@ -694,7 +805,7 @@ function work() {
   const clusters = [...new Set(C.projects.map((p) => p.cluster))];
   const list = clusters.map((cl) => `
     <section class="group" aria-labelledby="g-${cl.replace(/\W+/g, '-')}">
-      <h3 id="g-${cl.replace(/\W+/g, '-')}" class="group-title">${esc(cl)}</h3>
+      <h2 id="g-${cl.replace(/\W+/g, '-')}" class="group-title">${esc(cl)}</h2>
       <ul class="rows">
         ${C.projects.filter((p) => p.cluster === cl).map((p) => {
           const h = nodeHref(p);
@@ -719,7 +830,7 @@ function work() {
       <svg class="map-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
       ${nodes.join('')}
     </div>
-    <p class="map-hint">Hover or focus a project to see what it shares with the others.</p>
+    <p class="map-hint"><span class="hint-fine">Hover or focus a project to see what it shares with the others.</span><span class="hint-touch">Tap a project to see what it shares with the others.</span></p>
   </section>
   <section class="list" aria-label="All projects">${list}</section>
 </main>`;
@@ -748,8 +859,8 @@ function caseStudy(p) {
 <main id="main" class="page case">
   <header class="case-hero${shot ? " has-shot" : ""}">
     ${shot
-      ? `<img class="case-hero-shot" src="${shot}" alt="Screenshot of ${esc(p.name)}">`
-      : `<canvas data-visual="${p.visual || "generic"}" aria-hidden="true"></canvas>`}
+      ? `<img class="case-hero-shot" src="${shot}" alt="Screenshot of ${esc(p.name)}"${size(shot)} decoding="async">`
+      :`<canvas data-visual="${p.visual || "generic"}" aria-hidden="true"></canvas>`}
     <div class="case-head">
       ${p.badge ? `<p class="badge-line"><span class="lamp" aria-hidden="true"></span>${esc(p.badge)}</p>` : ""}
       <h1 class="page-title"><span class="line"><span>${esc(p.name)}</span></span></h1>
@@ -779,7 +890,7 @@ function caseStudy(p) {
   </section>` : ''}
 
   ${(p.gallery || []).length ? `<section class="case-gallery" aria-label="Screens and results">
-    ${p.gallery.filter((g) => exists(g)).map((g, i) => `<figure><img src="${g}" alt="${esc(p.name)}, screen ${i + 1}" loading="lazy"></figure>`).join("")}
+    ${p.gallery.filter((g) => exists(g)).map((g, i) => `<figure><img src="${g}" alt="${esc(p.name)}, screen ${i + 1}"${size(g)} loading="lazy" decoding="async"></figure>`).join("")}
   </section>` : ""}
 
   <section class="case-flow" aria-labelledby="flow-h">
@@ -859,7 +970,7 @@ function notFound() {
     <p><a class="cta" href="/" data-label="Home">Back to the start</a></p>
   </header>
 </main>`;
-  return page({ file: '404.html', title: 'Not found', desc: 'Page not found.', current: '404', body });
+  return page({ file: '404.html', title: 'Not found', desc: 'This page does not exist on the site. Go back to the home page.', current: '404', body, noindex: true });
 }
 
 
@@ -983,7 +1094,7 @@ function markdownSite(full) {
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 
-for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js'])
+for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js'])
   fs.copyFileSync(path.join(root, 'src', f), path.join(out, 'assets', f));
 if (fs.existsSync(path.join(root, 'media'))) fs.cpSync(path.join(root, 'media'), path.join(out, 'media'), { recursive: true });
 
@@ -991,6 +1102,7 @@ write('index.html', home());
 write('resume/index.html', resumePage());
 C.records.filter((r) => C.recordPages[r.slug]).forEach((r) => write(`records/${r.slug}/index.html`, recordPage(r)));
 write('work/index.html', work());
+groupsForOrbit.forEach((g) => write(`projects/${g.id}/index.html`, groupPage(g)));
 withPage.forEach((p) => write(`work/${p.slug}/index.html`, caseStudy(p)));
 C.services.forEach((s) => write(`services/${s.slug}/index.html`, servicePage(s)));
 write('404.html', notFound());
