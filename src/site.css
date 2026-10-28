@@ -1996,3 +1996,7 @@ html:not(.js) .pan { flex: 1 1 0; }
   :root .cform.is-sheet .cform-actions .ghost { display: none; }
 }
 @media (max-width: 760px) and (prefers-reduced-motion: reduce) { .cform.is-sheet { animation: none; } .ripple { display: none; } }
+
+/* services: the original tabbed panel on larger screens, the tap-through bars on phones */
+@media (min-width: 761px) { .svc-bars { display: none; } }
+@media (max-width: 760px) { .svc-panel { display: none; } }

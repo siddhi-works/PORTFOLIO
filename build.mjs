@@ -640,7 +640,23 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec services" id="services" aria-labelledby="svc-h">
-    ${secHead('Services', 'What I can build for you.', 'Pick one to see what I deliver, how I work and the projects behind it.', 'svc-h')}
+    ${secHead('Services', 'What I can build for you.', 'Each service is backed by work I have already shipped.', 'svc-h')}
+    <div class="svc-panel" data-svc>
+      <div class="svc-tabs" role="tablist" aria-label="Services">
+        ${C.services.map((s, i) => `<button class="svc-tab" type="button" role="tab" id="svc-t-${i}" aria-selected="${i === 0}" aria-controls="svc-p-${i}" tabindex="${i === 0 ? 0 : -1}"><span class="svc-tab-ic">${icon.svc[s.icon] || icon.svc.agent}</span><span class="svc-tab-name">${esc(s.titleParts.join(' '))}</span></button>`).join('')}
+      </div>
+      <div class="svc-views">
+        ${C.services.map((s, i) => `
+        <article class="svc-view" role="tabpanel" id="svc-p-${i}" aria-labelledby="svc-t-${i}"${i === 0 ? '' : ' hidden'}>
+          <h3 class="svc-view-title">${esc(s.name)}</h3>
+          <p class="svc-view-line">${esc(s.line)}</p>
+          <p class="svc-view-pitch">${esc(s.pitch)}</p>
+          <ul class="svc-proof">${s.projects.map(bySlug).filter(Boolean).map((p) => { const h = p.page ? caseUrl(p) : github(p.repo); const inner = `<b>${esc(p.short || p.name)}</b><span>${esc(p.card || p.line)}</span>`; return h ? `<li><a href="${h}"${p.page ? ` data-label="${esc(p.short || p.name)}"` : ' target="_blank" rel="noopener"'}>${inner}</a></li>` : `<li><div>${inner}</div></li>`; }).join('')}</ul>
+          <ul class="chips">${s.tools.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+          <a class="cta" href="${serviceUrl(s)}" data-label="${esc(s.short)}">See the full page</a>
+        </article>`).join('')}
+      </div>
+    </div>
     <ul class="svc-bars">
       ${C.services.map((s) => `
       <li><a class="svc-bar" href="${serviceUrl(s)}" data-label="${esc(s.short)}">
