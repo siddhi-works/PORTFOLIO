@@ -2005,11 +2005,7 @@ html:not(.js) .pan { flex: 1 1 0; }
    Sizes follow the height of the window, not only its width, so a heading and its content are on screen together.
    Jumping to a section lands its heading below the top bar. */
 @media (min-width: 761px) {
-  :root .sec { padding-top: clamp(22px, 3.6vh, 42px); padding-bottom: clamp(22px, 3.6vh, 42px); scroll-margin-top: 76px; }
   main.home > section[id] { scroll-margin-top: 70px; }
-
-  /* projects: the orbit scales to the window height */
-  .proj-orbit { --r: clamp(120px, min(22vw, 27vh), 285px); width: min(100%, 880px, calc(80vh * 1.12)); }
 
   /* wins: the frame height follows the window */
   .triptych { height: clamp(320px, 54vh, 560px); }
@@ -2034,7 +2030,6 @@ html:not(.js) .pan { flex: 1 1 0; }
 }
 
 @media (min-width: 761px) {
-  .proj-orbit { --r: clamp(120px, min(22vw, 25vh), 285px); width: min(100%, 880px, calc(73vh * 1.12)); }
   :root .tcore { padding: 12px 24px 14px; margin-top: 10px; }
   .tcore-list li { padding-top: 2px; padding-bottom: 2px; }
   :root .tcard { padding-bottom: 12px; }
@@ -2045,3 +2040,6 @@ html:not(.js) .pan { flex: 1 1 0; }
 .svc-views { display: grid; }
 .svc-views > .svc-view { grid-area: 1 / 1; }
 .svc-views > .svc-view[hidden] { display: block; visibility: hidden; pointer-events: none; }
+
+/* jumping to a section lands its heading just under the top bar */
+@media (min-width: 761px) { main.home > section[id] { scroll-margin-top: 84px; } }
