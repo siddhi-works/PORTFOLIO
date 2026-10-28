@@ -2000,3 +2000,44 @@ html:not(.js) .pan { flex: 1 1 0; }
 /* services: the original tabbed panel on larger screens, the tap-through bars on phones */
 @media (min-width: 761px) { .svc-bars { display: none; } }
 @media (max-width: 760px) { .svc-panel { display: none; } }
+
+/* ============ v46: every section fits one window on desktop ============
+   Sizes follow the height of the window, not only its width, so a heading and its content are on screen together.
+   Jumping to a section lands its heading below the top bar. */
+@media (min-width: 761px) {
+  :root .sec { padding-top: clamp(22px, 3.6vh, 42px); padding-bottom: clamp(22px, 3.6vh, 42px); scroll-margin-top: 76px; }
+  main.home > section[id] { scroll-margin-top: 70px; }
+
+  /* projects: the orbit scales to the window height */
+  .proj-orbit { --r: clamp(120px, min(22vw, 27vh), 285px); width: min(100%, 880px, calc(80vh * 1.12)); }
+
+  /* wins: the frame height follows the window */
+  .triptych { height: clamp(320px, 54vh, 560px); }
+
+  /* services: a shorter panel */
+  .svc-views { min-height: 0; }
+  :root .svc-panel { max-height: clamp(380px, 62vh, 590px); }
+
+  /* contact: a smaller headline, a tighter form, quick links in a 2 by 2 grid */
+  :root .sec.contact { padding-top: clamp(22px, 3.6vh, 42px); padding-bottom: clamp(22px, 3.6vh, 42px); }
+  :root .cpanel { padding: clamp(18px, 2.8vh, 30px) clamp(20px, 2.6vw, 36px); gap: clamp(18px, 2.4vw, 36px); align-items: center; }
+  :root .cpanel-title { font-size: clamp(1.9rem, min(3.4vw, 6.4vh), 3.1rem); line-height: 1.05; }
+  .cpanel-main .sec-sub { font-size: 1rem; margin: 8px 0 14px; }
+  .cform { gap: 12px; }
+  .cform .cf textarea { min-height: 4.4rem; }
+  .cf input, .cf textarea { padding: 0.6em 0.9em; }
+  .chip-radio span { min-height: 38px; font-size: 0.9rem; }
+  .ctiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: center; }
+  .ctile { padding: 12px 14px; min-height: 0; }
+  .ctile .copy { padding: 6px; }
+  .ctile .copy-t { display: none; }
+  .ctile-v { font-size: 0.95rem; overflow-wrap: anywhere; }
+}
+
+@media (min-width: 761px) {
+  .proj-orbit { --r: clamp(120px, min(22vw, 25vh), 285px); width: min(100%, 880px, calc(73vh * 1.12)); }
+  :root .tcore { padding: 12px 24px 14px; margin-top: 10px; }
+  .tcore-list li { padding-top: 2px; padding-bottom: 2px; }
+  :root .tcard { padding-bottom: 12px; }
+  .pmap { margin-top: 8px; }
+}
