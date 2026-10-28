@@ -579,9 +579,9 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec experience" id="experience" aria-labelledby="exp-h">
-    ${secHead('Experience', 'Experience and volunteering.', 'Roles where I led, built and gave back, newest first.', 'exp-h')}
+    ${secHead('Experience', 'Experience.', 'Roles where I led, built and gave back, newest first.', 'exp-h')}
     <div class="exp">
-      <ol class="tl" aria-label="Experience and volunteering, newest first">
+      <ol class="tl" aria-label="Experience, newest first">
         ${C.experience.map((x, i) => `
         <li class="tl-item${i === 0 ? ' is-open' : ''}">
           <span class="tl-when">${esc(x.when)}</span>
@@ -644,7 +644,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec proof" id="records" aria-labelledby="records-h">
-    ${secHead('Records', 'Achievements and research.', 'Open a card for details.', 'records-h')}
+    ${secHead('Records', 'Wins and published research.', 'Open a card for the full story.', 'records-h')}
     <ul class="records">
       ${C.records.map((r) => `
       <li class="rec rec-${r.kind}">
@@ -661,7 +661,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec beyond" id="beyond" aria-labelledby="beyond-h">
-    ${secHead('Beyond the code', 'Community and volunteering.', 'Volunteer work and community programmes.', 'beyond-h')}
+    ${secHead('Humanity', 'Community and volunteering.', 'Volunteer work and community programmes.', 'beyond-h')}
     <ul class="frames">
       ${C.beyond.map((b, i) => {
         const shots = (b.photos && b.photos.length ? b.photos : [b.photo]).map(resolveMedia).filter(Boolean);

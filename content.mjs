@@ -25,7 +25,7 @@ export default {
     status: 'Open to work',
     openTo: ['Internships', 'Full-time roles', 'Freelance projects', 'Collaborations'],
     description:
-      'Siddhi Kale is a full-stack and AI engineer in Pune. TECHVERSE 2026 First Prize winner, published at ICAIML-AE 2026 (Springer Nature). Builds AI agents, data dashboards and production web apps.',
+      'Siddhi Kale is a full-stack and AI engineer in Pune. TechVerse 2026 First Prize winner, published at ICAIML-AE 2026 (Springer Nature). Builds AI agents, data dashboards and production web apps.',
     showSlotHints: false, // true shows marked slots for missing photos and files
   },
 
@@ -39,7 +39,7 @@ export default {
     linkedin: 'https://www.linkedin.com/in/siddhikale25/',
     linkedinHandle: 'siddhikale25',
     resume: '/media/Siddhi-Kale-Resume.pdf',
-    formEndpoint: null, // SLOT: paste a Formspree URL (https://formspree.io/f/xxxx) so the form sends mail directly; empty opens the visitor's email app instead
+    formEndpoint: null, // SLOT: paste a Formspree URL (https://formspree.io/f/xxxx) so the form sends mail directly; empty opens the visitor’s email app instead
     whatsapp: null, // SLOT: e.g. 'https://wa.me/918530182828' (hidden until set)
   },
 
@@ -53,7 +53,7 @@ export default {
   hero: {
     // *word* gets the highlight.
     quote: 'I build systems that actually make a *difference*.',
-    lede: 'TECHVERSE 2026 First Prize. Published with Springer Nature. 20+ projects, 8 live in production.',
+    lede: 'TechVerse 2026 First Prize. Published with Springer Nature. 20+ projects, 8 live in production.',
   },
 
   // Let the numbers speak. All from your resume and project notes.
@@ -77,9 +77,9 @@ export default {
   marqueeProof: ['Generative AI', 'Natural language processing', 'Deep learning', 'API design', 'Computer vision', 'Data pipelines', 'Published research'],
 
   about: {
-    title: "Hi, I'm Siddhi.",
+    title: "Hi, I’m Siddhi.",
     paragraphs: [
-      "I'm a full-stack and AI engineer who builds, automates and evolves. I don't just solve a problem; I look for the most efficient way to solve it. I lead, I take responsibility, I work smart and I love what I do. If I make mistakes, I learn from them, which is why I'm not rigid: I adapt and evolve.",
+      "I’m a full-stack and AI engineer who builds, automates and evolves. I don’t just solve a problem; I look for the most efficient way to solve it. I lead, I take responsibility, I work smart and I love what I do. If I make mistakes, I learn from them, which is why I’m not rigid: I adapt and evolve.",
       "I build the whole thing: the model, the API and the interface, on LangGraph, Gemini, React, TypeScript, Node.js and Python. Each project is built to run for real users, not just a demo.",
     ],
     facts: [
@@ -170,7 +170,7 @@ export default {
         ],
         build: [
           'About 60% of the effort went into preparing the data, around 35% into testing different approaches, and the remaining 5% into debugging, visualisation and documentation. The repository also contains the data-preparation step in full, including the part that adjusts counts and adds phrases for a 65% sample of records, so the way the dataset was shaped can be inspected.',
-          'Supervised models beat unsupervised ones, and combining behavioural and text features beat using either on its own. The lesson I took away is that understanding the data usually pays off more than trying another algorithm.',
+          'Supervised models beat unsupervised ones, and combining behavioural and text features beat using either alone. The takeaway: understanding the data pays off more than trying another algorithm.',
         ],
         result: [
           'On roughly 10,000 held-out accounts the model reaches 90.0% accuracy. It correctly flagged 4,184 bots and cleared 4,817 real accounts, with 179 real accounts wrongly flagged and 819 bots missed. The work was written up with co-author Akriti Biswas and faculty advisor Dr. Vishal Shirsath and published at ICAIML-AE 2026.',
@@ -181,12 +181,12 @@ export default {
     },
     {
       slug: 'chicago-crime',
-      card: 'TECHVERSE First Prize. 1.05M crime records, 8 KPIs, 10 charts and a district map.',
+      card: 'TechVerse First Prize. 1.05M crime records, 8 KPIs, 10 charts and a district map.',
       name: 'Chicago Crime Analytics',
       short: 'Chicago Crime',
-      line: 'TECHVERSE 2026 First Prize winner. 8 KPIs, 10 charts and a district map over 1,048,575 crime reports, with an assistant called Detective Dot and a data-trust page.',
-      badge: 'TECHVERSE 2026 First Prize',
-      role: 'Team leader. Built nearly all of it, from cleaning and visualising the data to drawing the insights and shipping the dashboard.',
+      line: 'A dashboard that turns 1,048,575 crime reports into 8 KPIs, 10 charts and a district map, with an assistant called Detective Dot and a page that shows exactly how the data was cleaned.',
+      badge: 'TechVerse 2026 First Prize',
+      role: 'Team leader, in charge of cleaning and visualising the data and drawing the insights.',
       top: true,
       page: true,
       visual: 'chicago',
@@ -196,7 +196,7 @@ export default {
       tools: ['Python', 'pandas', 'React', 'TypeScript', 'Vite', 'd3', 'Vercel'],
       repo: 'ChicagoCrime-DataAnalytics',
       live: 'https://chicago-crime-data-analytics.vercel.app',
-      builtFor: 'TECHVERSE 2026 at Ajeenkya DY Patil University, Pune',
+      builtFor: 'TechVerse 2026 at Ajeenkya DY Patil University, Pune',
       team: 'Team Moleculens',
       when: '2026',
       facts: [
@@ -213,7 +213,7 @@ export default {
       ],
       study: {
         problem: [
-          'The organisers of TECHVERSE supplied an extract of the City of Chicago crime data: more than a million police reports with 22 columns, mixed types, swapped dates and large gaps in the coordinates. The brief was to turn it into something a person could actually read, with a fixed set of KPIs and charts.',
+          'The organisers of TechVerse supplied an extract of the City of Chicago crime data: more than a million police reports with 22 columns, mixed types, swapped dates and large gaps in the coordinates. The brief was to turn it into something a person could actually read, with a fixed set of KPIs and charts.',
           'The risk with data this size is a dashboard that looks convincing but hides how much has been cleaned, inferred or left out. We wanted the numbers to be both easy to read and easy to question.',
         ],
         solution: [
@@ -225,7 +225,7 @@ export default {
           'Charts are hand-built in SVG and Canvas with d3 for scales and shapes, with Motion for animation, and the whole dashboard is deployed on Vercel.',
         ],
         result: [
-          'The project won the TECHVERSE 2026 First Prize at Ajeenkya DY Patil University as the leader of Team Moleculens, and the live dashboard is open for anyone to filter and question.',
+          'The project took First Prize at TechVerse 2026 at Ajeenkya DY Patil University, with me leading Team Moleculens. The live dashboard is open for anyone to filter and question.',
         ],
       },
       shot: '/media/projects/chicago-crime.png',
@@ -274,7 +274,7 @@ export default {
           'The README is explicit that generated papers must be reviewed and cited properly before any academic use. The roadmap includes a vector database, research knowledge graphs and IEEE and ACM formatting.',
         ],
         result: [
-          'The result is a working end-to-end research assistant: topic in, structured and compiled paper out. It was shared publicly on LinkedIn and the source is open on GitHub.',
+          'Topic in, finished paper out: a working research assistant, shared publicly on LinkedIn with the source open on GitHub.',
         ],
       },
       shot: '/media/projects/aria.png',
@@ -285,8 +285,8 @@ export default {
       card: 'One layer over land records in 3 states and 4 languages, tied by ULPIN and GIS.',
       name: 'BhuSamhita',
       short: 'BhuSamhita',
-      line: 'One parcel, one ULPIN, every connected land record. A common layer over fragmented land-record systems. Parcels are tied together by ULPIN across Maharashtra, Uttar Pradesh and Gujarat, with GIS, validation and 4 languages. SIH internal hackathon winner.',
-      badge: 'SIH internal hackathon winner',
+      line: 'One parcel, one ULPIN, every connected land record. A single layer across the separate land systems of Maharashtra, Uttar Pradesh and Gujarat, with GIS, validation and four languages. Winner of the Smart India Hackathon internal round.',
+      badge: 'Smart India Hackathon internal winner',
       top: true,
       page: true,
       visual: 'landgpt',
@@ -306,7 +306,7 @@ export default {
       facts: [
         { n: '3', label: 'states', count: 3 },
         { n: '4', label: 'languages', count: 4 },
-        { n: 'SIH', label: 'internal hackathon winner' },
+        { n: 'SIH', label: 'Smart India Hackathon internal winner' },
       ],
       flow: [
         ['Adapters', 'One adapter each for Maharashtra, Uttar Pradesh and Gujarat keeps every state’s own data structure'],
@@ -321,15 +321,15 @@ export default {
           'Replacing those systems is not realistic. The problem the hackathon asked us to solve was how to let them speak to each other without forcing every state to rebuild.',
         ],
         solution: [
-          'BhuSamhita is an integrated, GIS-based digital infrastructure for land governance: one parcel, one ULPIN, every connected land record. It federates instead of replacing. A canonical land model sits in the middle, and state adapters for Maharashtra, Uttar Pradesh and Gujarat translate each state’s records into it. Parcels are identified through a ULPIN-based registry, so the same plot can be traced across land records, registration, mutation, planning, tax and utility data.',
+          'BhuSamhita is an integrated, GIS-based digital infrastructure for land governance: one parcel, one ULPIN (Unique Land Parcel Identification Number), every connected land record. It federates instead of replacing. A canonical land model sits in the middle, and state adapters for Maharashtra, Uttar Pradesh and Gujarat translate each state’s records into it. Parcels are identified through a ULPIN-based registry, so the same plot can be traced across land records, registration, mutation, planning, tax and utility data.',
           'On top of that sit Unified Land Profiles that bring land records, registration, mutation, land use and encumbrance together for one parcel, GIS-based parcel visualisation, and a cross-record validation engine that surfaces actionable data-quality findings for government officers. Two portals use it: a citizen portal and a government officer portal with parcel search, e-services, analytics, role-based access and audit trails. The interface runs in English, Hindi, Marathi and Gujarati.',
         ],
         build: [
-          'I built everything except the frontend. That is the integrations that connect three states’ land systems, and the whole Python backend behind them: the state adapters, the canonical land model, the ULPIN parcel registry, the validation engine, glossary and translation, analytics and workflow, role-based access and the audit trail. Tests cover normalisation, validation, immutability, GIS and the API. An optional AI assistant, built on the Anthropic API, uses the selected parcel’s records and validation findings as its context.',
+          'I built everything except the frontend: the integrations that connect three states’ land systems, and the Python backend behind them. That covers the state adapters, the canonical land model, the ULPIN parcel registry, the validation engine, glossary and translation, analytics and workflow, role-based access and the audit trail. Tests cover normalisation, validation, immutability, GIS and the API. An optional AI assistant, built on the Anthropic API, uses the selected parcel’s records and validation findings as its context.',
           'All data in the demo is replicated government-system data used for demonstration only.',
         ],
         result: [
-          'BhuSamhita won the internal round of the Smart India Hackathon.',
+          'BhuSamhita won the internal round of the Smart India Hackathon (SIH) at Ajeenkya DY Patil University.',
         ],
       },
       shot: '/media/projects/bhusamhita.png',
@@ -368,7 +368,7 @@ export default {
       study: {
         problem: [
           'People file insurance claims at the worst moments: after an accident, during a hospital stay, under financial stress. The insurer’s portal tells them which document to upload. It does not explain what is wrong, who has to act or what happens afterwards.',
-          'The hackathon revealed its problem statement at the start of the day. I chose to work on that gap between a process built to handle claims and a person who just wants to know what to do next.',
+          'The problem statement arrived at the start of the day, and I took on the gap between a process built to handle claims and a person who needs to know what to do next.',
         ],
         solution: [
           'ClaimMate splits a claim across four specialised agents instead of asking one language model to do everything: a Policy agent, a Claim agent, a Document agent and an Audit agent. A Supervisor turns their outputs into a single plan: what is happening, what is missing, who needs to act, what to do now and what happens next.',
@@ -379,7 +379,7 @@ export default {
           'The project states plainly that it gives informational guidance and does not guarantee approval or replace the insurer, a lawyer or the regulator.',
         ],
         result: [
-          'A working claim companion, live on Render, built and deployed in a single day at HackDeVengers 1.0.',
+          'Live on Render, and built from problem statement to deployment in a single day at HackDeVengers 1.0.',
         ],
       },
       shot: '/media/projects/claimmate.png',
@@ -467,7 +467,7 @@ export default {
       study: {
         problem: [
           'A census asks every household to take part, and many people are unsure what will be asked, who is allowed to ask it and which messages are genuine. That uncertainty is where rumours and scams spread.',
-          'The challenge at PromptWars was to build something useful with generative AI in four hours. I picked the part of Census 2027 that matters most to an ordinary citizen: understanding it and doing it safely.',
+          'PromptWars gave four hours to build something useful with generative AI. I went for the part of Census 2027 that matters most to an ordinary citizen: understanding it and taking part safely.',
         ],
         solution: [
           'CensusGuru is a citizen-first guide. It explains the census phases, lists state and UT schedules, lets people rehearse the digital self-enumeration process with demo data, and shows privacy and enumerator-safety guidance on how to recognise a suspicious request. Public Insights visualises reference statistics.',
@@ -478,7 +478,7 @@ export default {
           'The repository includes a test file for the census logic. The front end is React, TypeScript and Vite, deployed on Vercel.',
         ],
         result: [
-          'A working, deployed, five-language product shipped inside a four-hour hackathon. The experience also changed how I work with AI tools: with half an hour left, repeated AI-assisted edits broke a working build. A working build is an asset, and every untested change is a risk, so I now protect what works and test each change before the next.',
+          'A deployed, five-language product, shipped inside a four-hour hackathon. It also set a rule I still follow: with half an hour left, repeated AI-assisted edits broke a working build, so every change is now tested before the next one.',
         ],
       },
       shot: '/media/projects/censusguru.png',
@@ -524,10 +524,10 @@ export default {
         ],
         build: [
           'The system has a ticket submission and queue interface, ticket history with search and filters, an analytics dashboard, CSV export and PDF reports, and pages that show each pipeline stage. Its modules are separated by stage: preprocessing, classification, confidence, routing, retrieval, resolution, escalation and recurring-issue detection.',
-          'The classifier is trained on a generated, enterprise-style ticket dataset. It reached perfect validation accuracy on the current split, and we are open that this is a clean dataset: the next step is testing against noisy, real-world tickets. The roadmap includes semantic retrieval with embeddings, LLM-written resolution steps and integrations with tools like ServiceNow and Jira.',
+          'The classifier is trained on a generated, enterprise-style ticket dataset. The data is clean and generated, so its perfect validation accuracy on the current split says little about real tickets. The next step is testing against noisy, real-world ones. The roadmap includes semantic retrieval with embeddings, LLM-written resolution steps and integrations with tools like ServiceNow and Jira.',
         ],
         result: [
-          'A working end-to-end triage agent with a full pipeline, a dashboard and a clear human escalation path, built with Akriti Biswas for The Great Agent Hackathon.',
+          'An end-to-end triage agent with a full pipeline, a dashboard and a clear path to a human, built with Akriti Biswas for The Great Agent Hackathon.',
         ],
       },
       shot: '/media/projects/resolve-iq.png',
@@ -616,7 +616,7 @@ export default {
       titleParts: ['AI agents and', 'LLM apps'],
       icon: 'agent',
       line: 'Multi-agent assistants and LLM applications that automate real workflows.',
-      pitch: 'Built for insurance claims, research papers and IT tickets with Gemini 2.5 Flash, LangGraph and LangChain.',
+      pitch: 'Agents already at work on insurance claims, research papers and IT tickets, built with Gemini 2.5 Flash, LangGraph and LangChain.',
       deliver: [
         'A working agent scoped to one real task, end to end',
         'Specialised agents with clear roles, orchestrated with LangGraph or LangChain',
@@ -639,7 +639,7 @@ export default {
       titleParts: ['Data dashboards and', 'analytics'],
       icon: 'chart',
       line: 'Interactive dashboards and analytics that turn large datasets into clear insight.',
-      pitch: 'The dashboard that won the TECHVERSE 2026 First Prize turns 1.05 million records into 8 KPIs, 10 charts and a district map.',
+      pitch: 'The dashboard that took First Prize at TechVerse 2026 turns 1.05 million records into 8 KPIs, 10 charts and a district map.',
       deliver: [
         'A dashboard with the KPIs that matter and the detail behind them',
         'Maps and charts that answer a question',
@@ -694,7 +694,7 @@ export default {
       ],
       steps: [
         ['Map', 'Write down the manual steps and where the time goes.'],
-        ['Automate', 'Replace the tedious steps and keep judgment calls with a person.'],
+        ['Automate', 'Replace the tedious steps and keep judgement calls with a person.'],
         ['Observe', 'Add logs and checks so nothing runs unseen.'],
         ['Hand over', 'Document it so your team can own it.'],
       ],
@@ -780,53 +780,57 @@ export default {
   // The records section: three cards, each opens to its detail.
   records: [
     {
-      slug: 'techverse-2026', kind: 'prize', title: 'TECHVERSE 2026', result: 'First Prize winner',
-      line: 'Chicago Crime Analytics, by Team Moleculens at Ajeenkya DY Patil University. I was the team leader.',
+      slug: 'techverse-2026', kind: 'prize', title: 'TechVerse 2026', result: 'First Prize',
+      line: 'I led Team Moleculens to first place at Ajeenkya DY Patil University with Chicago Crime Analytics: 1.05 million crime records turned into a dashboard anyone can question.',
       href: '/records/techverse-2026/',
     },
     {
-      slug: 'sih-internal-2026', kind: 'rank', title: 'SIH internal hackathon', result: 'Winner',
-      line: 'BhuSamhita: one trusted layer across land records, GIS, courts, tax and payment.',
+      slug: 'sih-internal-2026', kind: 'rank', title: 'Smart India Hackathon 2026', result: 'Internal winner',
+      line: 'BhuSamhita: one trusted layer across land records, GIS, courts, tax and payment. I built its backend and every integration.',
       href: '/work/bhusamhita/',
     },
     {
-      slug: 'icaiml-ae-2026', kind: 'paper', title: 'Research publication', result: 'ICAIML-AE 2026',
-      line: 'A machine learning bot-detection paper, published by Atlantis Press (Springer Nature).',
+      slug: 'icaiml-ae-2026', kind: 'paper', title: 'Published research', result: 'ICAIML-AE 2026',
+      line: 'Co-authored a machine learning paper on spotting coordinated bot accounts, published by Atlantis Press (Springer Nature).',
       href: '/records/icaiml-ae-2026/',
     },
   ],
 
   recordPages: {
     'techverse-2026': {
-      headline: 'TECHVERSE 2026',
-      result: 'First Prize winner',
+      headline: 'TechVerse 2026',
+      result: 'First Prize',
       facts: [
         ['Result', 'First Prize'],
+        ['Event', 'Skill Carnival 2026, organised by SkillSurge Club'],
+        ['Date', '7 October 2026'],
         ['Location', 'Ajeenkya DY Patil University, Pune, India'],
         ['Team', 'Moleculens, ADYPU'],
         ['Role', 'Team leader'],
-        ['My contribution', 'Nearly all of the build: data cleaning, visualisation, insights and the live dashboard'],
+        ['My contribution', 'Data cleaning, visualisation and insights'],
         ['Project', 'Chicago Crime Analytics'],
       ],
       body: [
-        'I led Team Moleculens to the First Prize at TECHVERSE 2026, held at Ajeenkya DY Patil University in Pune.',
-        'I led the team and built nearly all of Chicago Crime Analytics myself: cleaning about 1.05 million raw crime records, visualising them into the KPIs, charts and district map, drawing out the insights, and shipping the dashboard live.',
-        'The winning project, Chicago Crime Analytics, turns about 1.05 million crime records into 8 KPIs, 10 charts and a district map, with an assistant and a data-trust page.',
+        'I led Team Moleculens to first place at TechVerse 2026, held at Ajeenkya DY Patil University in Pune as part of Skill Carnival 2026.',
+        'As team leader I owned the data: cleaning about 1.05 million raw crime records, visualising them, and drawing out the insights the dashboard tells.',
+        'Chicago Crime Analytics turned those records into 8 KPIs, 10 charts and a district map, with a built-in assistant and a data-trust page that shows every cleaning step.',
       ],
       project: 'chicago-crime',
     },
     'icaiml-ae-2026': {
       headline: 'ICAIML-AE 2026',
-      result: 'Research publication',
+      result: 'Published research',
       facts: [
         ['Conference', 'International Conference on Artificial Intelligence and Machine Learning for Agro-Ecosystems (ICAIML-AE 2026)'],
+        ['Dates', '2 to 3 July 2026'],
         ['Organised by', 'Vishwakarma University, with Binghamton University, USA'],
         ['Published by', 'Atlantis Press (Springer Nature)'],
+        ['Role', 'Co-author'],
         ['Related project', 'Bot Detection in R'],
       ],
       body: [
-        'Published the research paper “Hybrid Feature-Based Comparative Analysis of Supervised and Unsupervised ML-Based Intelligent Bot Detection Model for Social Media Data” in the proceedings of the International Conference on Artificial Intelligence and Machine Learning for Agro-Ecosystems (ICAIML-AE 2026), organised by Vishwakarma University in collaboration with Binghamton University, USA, and published by Atlantis Press (Springer Nature).',
-        'The paper compares supervised and unsupervised approaches to finding coordinated bot accounts, built on the R pipeline behind the Bot Detection project.',
+        'I co-authored “Hybrid Feature-Based Comparative Analysis of Supervised and Unsupervised ML-Based Intelligent Bot Detection Model for Social Media Data”. It was presented at the International Conference on Artificial Intelligence and Machine Learning for Agro-Ecosystems (ICAIML-AE 2026) and published in the proceedings by Atlantis Press, part of Springer Nature.',
+        'The paper compares supervised and unsupervised ways of finding coordinated bot accounts. It builds on the R pipeline behind the Bot Detection project, which reaches 90% accuracy on about 10,000 held-out accounts.',
       ],
       project: 'bot-detection',
     },
@@ -834,18 +838,18 @@ export default {
 
   achievements: [
     {
-      title: 'TECHVERSE 2026',
+      title: 'TechVerse 2026',
       result: 'First Prize',
-      detail: 'Team leader, Moleculens, ADYPU. Chicago Crime Analytics.',
+      detail: 'Led Team Moleculens to first place with Chicago Crime Analytics.',
       href: '/work/chicago-crime/',
     },
     {
-      title: 'SIH internal hackathon 2026',
-      result: 'Winner',
-      detail: 'BhuSamhita.',
+      title: 'Smart India Hackathon 2026',
+      result: 'Internal round winner',
+      detail: 'Built the backend and every integration for BhuSamhita.',
       href: '/work/bhusamhita/',
     },
-    { title: 'ADYPU internal hackathon', result: 'Winner', detail: 'Semester 1.' },
+    { title: 'ADYPU internal hackathon', result: 'Winner', detail: 'Won in my first semester.' },
   ],
 
   publication: {
@@ -861,16 +865,16 @@ export default {
   path: [
     { when: 'Nov 2021 to Mar 2023', what: 'Content and marketing volunteer at Bindu Non-Profit. Led 5 creators. Content output up 25%, organic traffic up 15%.' },
     { when: 'Sep 2024', what: 'Research volunteer with NSS at ADYPU. 8 youth programmes, 100+ children a year.' },
-    { when: '2026', what: 'SIH internal hackathon winner, with BhuSamhita.' },
-    { when: '2026', what: 'TECHVERSE First Prize with Chicago Crime Analytics.' },
-    { when: '2026', what: 'Published at ICAIML-AE 2026, Springer Nature.' },
+    { when: '2026', what: 'Won the Smart India Hackathon internal round with BhuSamhita.' },
+    { when: '2026', what: 'Led Team Moleculens to the TechVerse First Prize with Chicago Crime Analytics.' },
+    { when: '2026', what: 'Co-authored a paper published at ICAIML-AE 2026 (Springer Nature).' },
   ],
 
   // Where each volunteering photo is centred in its frame (CSS object-position), so faces stay in view.
   photoFocus: {
     '/media/beyond/nss/1.jpg': '50% 24%', '/media/beyond/nss/2.jpg': '50% 50%', '/media/beyond/nss/3.jpg': '50% 55%',
     '/media/beyond/ivolunteer/1.jpg': '50% 50%', '/media/beyond/ivolunteer/2.jpg': '55% 40%', '/media/beyond/ivolunteer/3.jpg': '50% 46%',
-    '/media/beyond/swabhiman/1.jpg': '50% 40%', '/media/beyond/swabhiman/2.jpg': '50% 36%', '/media/beyond/swabhiman/3.jpg': '50% 24%', '/media/beyond/swabhiman/4.jpg': '50% 50%',
+    '/media/beyond/swabhiman/1.jpg': '50% 40%', '/media/beyond/swabhiman/2.jpg': '50% 36%', '/media/beyond/swabhiman/3.jpg': '50% 30%', '/media/beyond/swabhiman/4.jpg': '50% 50%',
     '/media/beyond/mad/1.jpg': '50% 50%', '/media/beyond/mad/2.jpg': '50% 15%',
   },
 
@@ -906,9 +910,9 @@ export default {
       org: 'Swabhiman Empowerment Foundation',
       role: 'Volunteer',
       when: '',
-      facts: ["Children's Day"],
+      facts: ["Children’s Day"],
       photo: '/media/beyond/swabhiman.jpg',
-      photos: ['/media/beyond/swabhiman/1.jpg', '/media/beyond/swabhiman/2.jpg', '/media/beyond/swabhiman/3.jpg', '/media/beyond/swabhiman/4.jpg'],
+      photos: ['/media/beyond/swabhiman/3.jpg', '/media/beyond/swabhiman/4.jpg', '/media/beyond/swabhiman/1.jpg', '/media/beyond/swabhiman/2.jpg'],
       art: 'balloons',
     },
     {

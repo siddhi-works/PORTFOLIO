@@ -742,7 +742,6 @@ html.is-shot { clip-path: circle(0px at 50% 38%); animation: shot-failsafe 0.01s
 
 @media (max-width: 1100px) {
   .sgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .records { grid-template-columns: 1fr; }
   .rec-link { min-height: 0; }
   .rec-detail { grid-template-columns: 1fr; }
 }
@@ -1697,11 +1696,6 @@ body { font-family: var(--f-text); font-weight: 400; font-variation-settings: no
 /* records: cards sized to their content */
 :root .rec-link { min-height: 0; }
 .rec .art { height: 150px; }
-@media (min-width: 641px) and (max-width: 1100px) {
-  .rec-link { grid-template-columns: minmax(170px, 0.7fr) minmax(0, 1.3fr); column-gap: 22px; align-content: center; padding: 16px 84px 16px 16px; }
-  .rec-link > .art { grid-row: 1 / span 3; height: 100%; min-height: 150px; margin: 0; }
-  .rec-link > .rec-k, .rec-link > .rec-v, .rec-link > .rec-line { grid-column: 2; }
-}
 
 /* v40: one floating tooltip for "used in" hints. It stays inside the screen and fades smoothly. */
 .tchips li[data-used]::after, .tcore-list li[data-used]::after { display: none; }
@@ -1740,3 +1734,6 @@ body { font-family: var(--f-text); font-weight: 400; font-variation-settings: no
 .fp-arrow:disabled { opacity: 0.25; cursor: default; }
 .fp-arrow:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 @media (hover: hover) { .fp-arrow { opacity: 0; } .frame-photo:hover .fp-arrow:not(:disabled), .frame-photo:focus-within .fp-arrow:not(:disabled) { opacity: 1; } .frame-photo:hover .fp-arrow:disabled, .frame-photo:focus-within .fp-arrow:disabled { opacity: 0.25; } }
+
+/* the three wins stay side by side down to tablets; they stack only on phones */
+@media (max-width: 700px) { .records { grid-template-columns: 1fr; } }
