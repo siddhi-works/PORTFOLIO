@@ -14,57 +14,57 @@
   const art = `
 <svg class="toon-svg" viewBox="0 0 400 460" xmlns="${NS}" role="img" aria-label="A cartoon of Siddhi">
   <defs>
-    <linearGradient id="tn-hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.hairHi}"/><stop offset=".55" stop-color="${C.hair}"/><stop offset="1" stop-color="#2a170f"/></linearGradient>
+    <linearGradient id="tn-hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.hairHi}"/><stop offset=".55" stop-color="${C.hair}"/><stop offset="1" stop-color="#1e100a"/></linearGradient>
     <clipPath id="tn-mouth-clip"><path id="tn-mouth-in" d=""/></clipPath>
   </defs>
 
   <g class="toon-body"><g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M200 26 C108 24 50 86 52 172 C54 238 34 292 42 352 C48 394 38 420 54 440 C76 452 94 432 98 412 C112 434 140 432 150 406 L250 406 C260 432 288 434 302 412 C306 432 324 452 346 440 C362 420 352 394 358 352 C366 292 346 238 348 172 C350 86 292 24 200 26 Z" fill="url(#tn-hair)"/>
-    <rect x="178" y="226" width="44" height="46" rx="14" fill="${C.skinShade}"/>
-    <path d="M144 276 C144 266 256 266 256 276 L280 372 C284 398 268 414 246 416 L154 416 C132 414 116 398 120 372 Z" fill="${C.top}"/>
-    <path d="M150 288 C124 300 112 330 110 372" fill="none" stroke="${C.line}" stroke-width="34"/>
-    <path d="M150 288 C124 300 112 330 110 372" fill="none" stroke="${C.top}" stroke-width="29"/>
-    <path d="M250 288 C276 300 288 330 290 372" fill="none" stroke="${C.line}" stroke-width="34"/>
-    <path d="M250 288 C276 300 288 330 290 372" fill="none" stroke="${C.top}" stroke-width="29"/>
-    <circle cx="110" cy="388" r="14" fill="${C.skin}"/><circle cx="290" cy="388" r="14" fill="${C.skin}"/>
-    <path d="M176 270 C182 296 194 306 200 308 C206 306 218 296 224 270" fill="${C.skin}"/>
-    <path d="M188 306 C192 320 208 320 212 306" fill="none" stroke="${C.silver}" stroke-width="2" stroke-linecap="round"/>
-    <path d="M200 322 l4.4 6.6 l-4.4 6.6 l-4.4 -6.6 z" fill="${C.spark}" stroke-width="1.6"/>
+    <path d="M200 26 C130 24 84 78 86 160 C88 226 70 280 76 336 C80 380 72 412 86 436 C104 448 118 430 122 410 C134 430 156 428 164 404 L236 404 C244 428 266 430 278 410 C282 430 296 448 314 436 C328 412 320 380 324 336 C330 280 312 226 314 160 C316 78 270 24 200 26 Z" fill="url(#tn-hair)"/>
+    <rect x="186" y="228" width="28" height="48" rx="10" fill="${C.skinShade}"/>
+    <path d="M160 282 C160 272 240 272 240 282 L250 352 C252 384 248 410 244 424 L156 424 C152 410 148 384 150 352 Z" fill="${C.top}"/>
+    <path d="M160 288 C146 300 140 330 138 374" fill="none" stroke="${C.line}" stroke-width="25"/>
+    <path d="M160 288 C146 300 140 330 138 374" fill="none" stroke="${C.top}" stroke-width="20"/>
+    <path d="M240 288 C254 300 260 330 262 374" fill="none" stroke="${C.line}" stroke-width="25"/>
+    <path d="M240 288 C254 300 260 330 262 374" fill="none" stroke="${C.top}" stroke-width="20"/>
+    <circle cx="138" cy="386" r="10.5" fill="${C.skin}"/><circle cx="262" cy="386" r="10.5" fill="${C.skin}"/>
+    <path d="M182 276 C188 298 196 306 200 308 C204 306 212 298 218 276" fill="${C.skin}"/>
+    <path d="M190 304 C194 316 206 316 210 304" fill="none" stroke="${C.silver}" stroke-width="2" stroke-linecap="round"/>
+    <path d="M200 320 l4 6 l-4 6 l-4 -6 z" fill="${C.spark}" stroke-width="1.6"/>
   </g></g>
 
   <g class="toon-head">
     <g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M92 130 C92 66 138 40 200 40 C262 40 308 66 308 130 C308 198 262 240 200 240 C138 240 92 198 92 130 Z" fill="${C.skin}"/>
+      <path d="M114 128 C114 68 150 40 200 40 C250 40 286 68 286 128 C286 178 258 224 226 238 C212 244 188 244 174 238 C142 224 114 178 114 128 Z" fill="${C.skin}"/>
     </g>
-    <ellipse cx="124" cy="184" rx="18" ry="10" fill="${C.blush}" opacity=".6"/><ellipse cx="276" cy="184" rx="18" ry="10" fill="${C.blush}" opacity=".6"/>
+    <ellipse cx="140" cy="178" rx="14" ry="8" fill="${C.blush}" opacity=".6"/><ellipse cx="260" cy="178" rx="14" ry="8" fill="${C.blush}" opacity=".6"/>
 
-    <g class="toon-brows" fill="none" stroke="${C.line}" stroke-width="4" stroke-linecap="round">
-      <path d="M138 118 C148 110 162 109 172 113"/>
-      <path d="M262 118 C252 110 238 109 228 113"/>
+    <g class="toon-brows" fill="none" stroke="${C.line}" stroke-width="3.6" stroke-linecap="round">
+      <path d="M146 112 C154 105 166 104 174 108"/>
+      <path d="M254 112 C246 105 234 104 226 108"/>
     </g>
     <g class="toon-eyes">
-      <g class="toon-eye" style="transform-origin:152px 148px">
-        <ellipse cx="152" cy="148" rx="24" ry="28" fill="#fff"/>
+      <g class="toon-eye" style="transform-origin:162px 142px">
+        <ellipse cx="162" cy="142" rx="19" ry="23" fill="#fff"/>
         <g class="toon-iris">
-          <ellipse cx="152" cy="150" rx="21" ry="25.5" fill="${C.iris}"/>
-          <ellipse cx="152" cy="153" rx="12" ry="15" fill="#1e0f08" opacity=".55"/>
-          <circle cx="143" cy="139" r="7.5" fill="#fff"/><circle cx="162" cy="162" r="3.6" fill="#fff" opacity=".95"/>
+          <ellipse cx="162" cy="144" rx="16.5" ry="20.5" fill="${C.iris}"/>
+          <ellipse cx="162" cy="146" rx="9.5" ry="12" fill="#1e0f08" opacity=".55"/>
+          <circle cx="155" cy="135" r="6" fill="#fff"/><circle cx="170" cy="153" r="3" fill="#fff" opacity=".95"/>
         </g>
-        <path d="M126 144 C131 118 173 118 178 144" fill="none" stroke="${C.line}" stroke-width="5.4" stroke-linecap="round"/>
-        <path d="M127 146 C122 144 119 140 118 135" fill="none" stroke="${C.line}" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M141 139 C145 118 179 118 183 139" fill="none" stroke="${C.line}" stroke-width="4.6" stroke-linecap="round"/>
+        <path d="M142 141 C138 139 136 136 135 132" fill="none" stroke="${C.line}" stroke-width="2.8" stroke-linecap="round"/>
       </g>
-      <g class="toon-eye" style="transform-origin:248px 148px">
-        <ellipse cx="248" cy="148" rx="24" ry="28" fill="#fff"/>
+      <g class="toon-eye" style="transform-origin:238px 142px">
+        <ellipse cx="238" cy="142" rx="19" ry="23" fill="#fff"/>
         <g class="toon-iris">
-          <ellipse cx="248" cy="150" rx="21" ry="25.5" fill="${C.iris}"/>
-          <ellipse cx="248" cy="153" rx="12" ry="15" fill="#1e0f08" opacity=".55"/>
-          <circle cx="239" cy="139" r="7.5" fill="#fff"/><circle cx="258" cy="162" r="3.6" fill="#fff" opacity=".95"/>
+          <ellipse cx="238" cy="144" rx="16.5" ry="20.5" fill="${C.iris}"/>
+          <ellipse cx="238" cy="146" rx="9.5" ry="12" fill="#1e0f08" opacity=".55"/>
+          <circle cx="231" cy="135" r="6" fill="#fff"/><circle cx="246" cy="153" r="3" fill="#fff" opacity=".95"/>
         </g>
-        <path d="M274 144 C269 118 227 118 222 144" fill="none" stroke="${C.line}" stroke-width="5.4" stroke-linecap="round"/>
-        <path d="M273 146 C278 144 281 140 282 135" fill="none" stroke="${C.line}" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M259 139 C255 118 221 118 217 139" fill="none" stroke="${C.line}" stroke-width="4.6" stroke-linecap="round"/>
+        <path d="M258 141 C262 139 264 136 265 132" fill="none" stroke="${C.line}" stroke-width="2.8" stroke-linecap="round"/>
       </g>
     </g>
-    <path d="M198 180 C197 184 199 186 202 185" fill="none" stroke="${C.line}" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+    <path d="M198 174 C197 178 199 180 202 179" fill="none" stroke="${C.line}" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
 
     <g class="toon-mouth">
       <path class="toon-mouth-bg" d="" fill="${C.mouth}"/>
@@ -74,21 +74,21 @@
     </g>
 
     <g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" fill="url(#tn-hair)">
-      <path d="M182 36 C112 34 76 84 80 150 C84 190 76 224 66 256 C58 280 74 292 90 276 C112 252 108 214 112 182 C116 152 128 124 146 104 C162 88 176 66 182 36 Z"/>
-      <path d="M190 36 C268 32 326 84 320 150 C316 190 324 224 334 256 C342 280 326 292 310 276 C288 252 292 214 288 182 C284 152 274 124 254 104 C234 86 200 74 190 36 Z"/>
+      <path d="M184 36 C130 36 98 82 100 140 C102 182 94 216 86 248 C80 270 94 280 106 266 C124 244 122 206 124 178 C126 150 134 124 150 104 C164 88 178 66 184 36 Z"/>
+      <path d="M192 36 C256 34 302 82 300 140 C298 182 306 216 314 248 C320 270 306 280 294 266 C276 244 278 206 276 178 C274 150 266 124 250 104 C234 86 202 74 192 36 Z"/>
       <path d="M200 30 C192 8 214 -2 230 12 C218 14 212 24 214 38 Z"/>
     </g>
-    <path d="M176 46 C130 48 96 84 92 140" fill="none" stroke="${C.hairHi}" stroke-width="3.4" stroke-linecap="round" opacity=".7"/>
-    <path d="M196 46 C250 46 296 84 308 140" fill="none" stroke="${C.hairHi}" stroke-width="3.4" stroke-linecap="round" opacity=".7"/>
-    <path d="M84 196 C90 220 84 242 80 262" fill="none" stroke="${C.hairHi}" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-    <path d="M316 196 C310 220 316 242 320 262" fill="none" stroke="${C.hairHi}" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-    <g class="toon-clip" transform="translate(292 102) rotate(18)"><path d="M0 -13 L3.6 -4 L13 -3.6 L5.6 2.4 L8 12 L0 6.6 L-8 12 L-5.6 2.4 L-13 -3.6 L-3.6 -4 Z" fill="${C.spark}" stroke="#9a6a1c" stroke-width="1.6" stroke-linejoin="round"/></g>
+    <path d="M172 46 C132 50 110 84 106 136" fill="none" stroke="${C.hairHi}" stroke-width="3.2" stroke-linecap="round" opacity=".7"/>
+    <path d="M206 46 C250 48 290 84 294 136" fill="none" stroke="${C.hairHi}" stroke-width="3.2" stroke-linecap="round" opacity=".7"/>
+    <path d="M97 196 C101 220 97 240 92 256" fill="none" stroke="${C.hairHi}" stroke-width="2.8" stroke-linecap="round" opacity=".5"/>
+    <path d="M303 196 C299 220 303 240 308 256" fill="none" stroke="${C.hairHi}" stroke-width="2.8" stroke-linecap="round" opacity=".5"/>
+    <g class="toon-clip" transform="translate(276 98) rotate(18)"><path d="M0 -12 L3.3 -3.7 L12 -3.3 L5.2 2.2 L7.4 11 L0 6 L-7.4 11 L-5.2 2.2 L-12 -3.3 L-3.3 -3.7 Z" fill="${C.spark}" stroke="#9a6a1c" stroke-width="1.5" stroke-linejoin="round"/></g>
   </g>
 
   <g class="toon-sparks" fill="${C.spark}">
-    <path class="toon-spark" style="transform-origin:34px 96px" d="M34 80 L38 91 L50 96 L38 101 L34 112 L30 101 L18 96 L30 91 Z"/>
-    <path class="toon-spark s2" style="transform-origin:366px 74px" d="M366 62 L369 71 L378 74 L369 77 L366 86 L363 77 L354 74 L363 71 Z"/>
-    <path class="toon-spark s3" style="transform-origin:370px 300px" d="M370 292 L372 298 L378 300 L372 302 L370 308 L368 302 L362 300 L368 298 Z"/>
+    <path class="toon-spark" style="transform-origin:44px 110px" d="M44 94 L48 105 L60 110 L48 115 L44 126 L40 115 L28 110 L40 105 Z"/>
+    <path class="toon-spark s2" style="transform-origin:356px 84px" d="M356 72 L359 81 L368 84 L359 87 L356 96 L353 87 L344 84 L353 81 Z"/>
+    <path class="toon-spark s3" style="transform-origin:352px 320px" d="M352 312 L354 318 L360 320 L354 322 L352 328 L350 322 L344 320 L350 318 Z"/>
   </g>
 </svg>`;
 
