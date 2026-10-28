@@ -88,3 +88,61 @@
     $$('.rec').forEach((r) => io.observe(r));
   }
 })();
+
+/* ---- "used in" hints: a single tooltip that is placed inside the screen and fades in smoothly ---- */
+(() => {
+  'use strict';
+  const tip = document.createElement('div');
+  tip.className = 'sk-tip';
+  tip.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(tip);
+  let current = null;
+  const place = (el) => {
+    const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect(), m = 8;
+    let x = r.left + r.width / 2 - t.width / 2;
+    x = Math.max(m, Math.min(x, innerWidth - t.width - m));
+    let y = r.top - t.height - 10;
+    if (y < m) y = r.bottom + 10;
+    tip.style.left = Math.round(x) + 'px';
+    tip.style.top = Math.round(y) + 'px';
+  };
+  const show = (e) => {
+    const el = e.target.closest && e.target.closest('[data-used]');
+    if (!el || el === current) return;
+    current = el;
+    tip.textContent = el.dataset.used;
+    place(el);
+    tip.classList.add('is-on');
+  };
+  const hide = (e) => {
+    if (e.pointerType === 'touch') return;
+    const el = e.target.closest && e.target.closest('[data-used]');
+    if (!el || el !== current) return;
+    current = null;
+    tip.classList.remove('is-on');
+  };
+  document.addEventListener('pointerover', show);
+  document.addEventListener('pointerout', hide);
+  document.addEventListener('focusin', show);
+  document.addEventListener('focusout', (e) => { if (e.target === current) { current = null; tip.classList.remove('is-on'); } });
+  addEventListener('scroll', () => { if (current) place(current); }, { passive: true });
+})();
+
+/* ---- volunteering galleries: dots follow the swipe, and tapping a dot moves to that photo ---- */
+(() => {
+  'use strict';
+  document.querySelectorAll('.frame-photo').forEach((box) => {
+    const track = box.querySelector('.fp-track');
+    const dots = Array.from(box.querySelectorAll('.fp-dot'));
+    if (!track || !dots.length) return;
+    dots.forEach((d, i) => d.addEventListener('click', () => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' })));
+    let t = 0;
+    track.addEventListener('scroll', () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        const at = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        dots.forEach((d, i) => d.classList.toggle('is-on', i === at));
+      }, 60);
+    }, { passive: true });
+  });
+})();

@@ -664,10 +664,12 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
     ${secHead('Beyond the code', 'Community and volunteering.', 'Volunteer work and community programmes.', 'beyond-h')}
     <ul class="frames">
       ${C.beyond.map((b, i) => {
-        const ph = resolveMedia(b.photo);
+        const shots = (b.photos && b.photos.length ? b.photos : [b.photo]).map(resolveMedia).filter(Boolean);
+      const ph = shots[0];
+      const gallery = `<div class="fp-track" tabindex="0" role="group" aria-label="Photos from ${esc(b.org)}">${shots.map((s, k) => `<figure class="fp-slide"><img src="${s}" alt="${esc(b.org)}, photo ${k + 1} of ${shots.length}"${size(s)}${k ? ' loading="lazy"' : ''} decoding="async"></figure>`).join('')}</div>${shots.length > 1 ? `<div class="fp-dots">${shots.map((_, k) => `<button type="button" class="fp-dot${k ? '' : ' is-on'}" aria-label="Photo ${k + 1} of ${shots.length}"></button>`).join('')}</div>` : ''}`;
         return `
       <li class="frame" style="--tilt:${[-1.2, 0.8, -0.6, 1.1, -0.9][i % 5]}deg">
-        <div class="frame-photo${ph ? '' : ' is-art'}">${ph ? `<img src="${ph}" alt="${esc(b.org)}"${size(ph)} loading="lazy" decoding="async">` : `<span class="frame-art" role="img" aria-label="${esc(b.org)}">${artFor(b)}</span>`}</div>
+        <div class="frame-photo${ph ? '' : ' is-art'}">${ph ? gallery : `<span class="frame-art" role="img" aria-label="${esc(b.org)}">${artFor(b)}</span>`}</div>
         <h3 class="frame-org">${esc(b.org)}</h3>
         <p class="frame-role">${esc(b.role)}${b.when ? `, ${esc(b.when)}` : ''}</p>
         <ul class="frame-facts">${b.facts.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>
@@ -736,7 +738,7 @@ function recordPage(r) {
     <p class="page-sub">${esc(d.result)}</p>
   </header>
   <section class="rec-detail">
-    <div class="rec-detail-art">${recArt(r.kind)}</div>
+    <div class="rec-detail-art">${(() => { const p = resolveMedia(`/media/records/${r.slug}.jpg`); return p ? `<figure class="rec-photo"><img src="${p}" alt="${esc(r.title)}: certificate and trophy"${size(p)} decoding="async"></figure>` : recArt(r.kind); })()}</div>
     <div class="rec-detail-body">
       ${d.body.map((t) => `<p>${esc(t)}</p>`).join('')}
       <dl class="rec-facts">

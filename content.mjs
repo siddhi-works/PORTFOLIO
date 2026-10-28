@@ -296,6 +296,7 @@ export default {
       repo: 'BhuSamhita',
       live: null,
       demo: 'https://youtu.be/CldL2wF95Po',
+      post: 'https://www.linkedin.com/posts/siddhikale25_sih2026-smartindiahackathon-sih-ugcPost-7516230406061400064-cw8e/',
       extra: [{ label: 'Earlier prototype', href: 'https://github.com/siddhi-works/land-administration-digitisation' }],
       builtFor: 'Smart India Hackathon, internal round',
       when: '2026',
@@ -858,7 +859,7 @@ export default {
     { when: '2026', what: 'Published at ICAIML-AE 2026, Springer Nature.' },
   ],
 
-  // The warm part. Photos: media/beyond/<file>
+  // The warm part. Photos: media/beyond/<activity>/1.jpg, 2.jpg ... (listed in `photos`; the first one shows first)
   beyond: [
     {
       org: 'NSS, ADYPU',
@@ -866,6 +867,7 @@ export default {
       when: 'September 2024 to present',
       facts: ['8 youth programmes', '100+ children a year', 'Records kept for 100% of attendees'],
       photo: '/media/beyond/nss.jpg',
+      photos: ['/media/beyond/nss/1.jpg', '/media/beyond/nss/2.jpg', '/media/beyond/nss/3.jpg'],
       art: 'research',
     },
     {
@@ -882,6 +884,7 @@ export default {
       when: '',
       facts: ['A tree plantation drive', 'A school painting drive'],
       photo: '/media/beyond/ivolunteer.jpg',
+      photos: ['/media/beyond/ivolunteer/1.jpg', '/media/beyond/ivolunteer/2.jpg', '/media/beyond/ivolunteer/3.jpg'],
       art: 'plant',
     },
     {
@@ -890,6 +893,7 @@ export default {
       when: '',
       facts: ["Children's Day"],
       photo: '/media/beyond/swabhiman.jpg',
+      photos: ['/media/beyond/swabhiman/1.jpg', '/media/beyond/swabhiman/2.jpg', '/media/beyond/swabhiman/3.jpg', '/media/beyond/swabhiman/4.jpg'],
       art: 'balloons',
     },
     {
@@ -898,6 +902,7 @@ export default {
       when: '',
       facts: ['Teaching'],
       photo: '/media/beyond/mad.jpg',
+      photos: ['/media/beyond/mad/1.jpg', '/media/beyond/mad/2.jpg'],
       art: 'book',
     },
   ],
