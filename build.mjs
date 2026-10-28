@@ -272,7 +272,7 @@ ${hud()}
 <script src="/assets/fx.js" defer></script>
 <script src="/assets/scroll.js" defer></script>
 <script src="/assets/form.js" defer></script>
-<script src="/assets/interact.js" defer></script><script src="/assets/site.js" defer></script>
+<script src="/assets/interact.js" defer></script><script src="/assets/honours.js" defer></script><script src="/assets/site.js" defer></script>
 </body>
 </html>`;
 }
@@ -644,19 +644,23 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec proof" id="records" aria-labelledby="records-h">
-    ${secHead('Records', 'Wins and published research.', 'Open a card for the full story.', 'records-h')}
-    <ul class="records">
-      ${C.records.map((r) => `
-      <li class="rec rec-${r.kind}">
-        <a class="rec-link" href="${r.href}" data-label="${esc(r.title.slice(0, 24))}">
-          ${recCardArt(r)}
-          <span class="rec-k">${esc(r.title)}</span>
-          <span class="rec-v">${esc(r.result)}</span>
-          <span class="rec-line">${esc(r.line)}</span>
-          <span class="rec-go" aria-hidden="true">${icon.svc.arrow}</span>
-        </a>
-      </li>`).join('')}
-    </ul>
+    ${secHead('Records', 'Wins and published research.', 'Three milestones from 2026. Open any one for the full story.', 'records-h')}
+    <div class="triptych" data-honours>
+      ${C.records.map((r, i) => `
+      <a class="pan${i === 0 ? ' is-on' : ''}" href="${r.href}" data-label="${esc(r.title.slice(0, 24))}" aria-current="${i === 0}">
+        ${panBackdrop(r)}
+        <span class="pan-shade" aria-hidden="true"></span>
+        <span class="pan-mark" aria-hidden="true">${laurelSvg()}<span class="pan-date"><b>${esc(r.date[0])}</b>${esc(r.date[1])}</span></span>
+        <span class="pan-tab" aria-hidden="true">${esc(r.result)}</span>
+        <span class="pan-body">
+          <span class="pan-kicker">${esc(r.title)}</span>
+          <span class="pan-result">${esc(r.result)}</span>
+          <span class="pan-line">${esc(r.line)}</span>
+          <span class="pan-go">Read the full story</span>
+        </span>
+        <i class="pan-timer" aria-hidden="true"></i>
+      </a>`).join('')}
+    </div>
 
   </section>
 
@@ -727,6 +731,33 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
 }
 
 /* ---------- record detail pages ---------- */
+
+// A laurel wreath: a stem arc on each side with leaves in two rows. Drawn once, animated with CSS.
+function laurelSvg() {
+  const cx = 60, cy = 60, R = 43, pts = (sgn) => Array.from({ length: 9 }, (_, k) => {
+    const th = (205 + k * 16.5) * Math.PI / 180;              // from low on the side up toward the top
+    return { th, x: cx + sgn * R * Math.sin(th), y: cy - R * Math.cos(th), k };
+  });
+  const side = (sgn) => {
+    const p = pts(sgn), a = p[0], z = p[p.length - 1];
+    const stem = `<path class="lv-stem" pathLength="1" d="M${a.x.toFixed(1)} ${a.y.toFixed(1)} A${R} ${R} 0 0 ${sgn > 0 ? 1 : 0} ${z.x.toFixed(1)} ${z.y.toFixed(1)}"/>`;
+    const leaves = p.map((q) => [1, -1].map((o) => {
+      const rr = R + o * 5.5, x = cx + sgn * rr * Math.sin(q.th), y = cy - rr * Math.cos(q.th);
+      const rot = sgn * (q.th * 180 / Math.PI) + 90 + o * sgn * 26;
+      return `<ellipse class="lv-leaf" style="--k:${q.k * 2 + (o > 0 ? 0 : 1)}" cx="0" cy="0" rx="3.1" ry="7.6" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)})"/>`;
+    }).join('')).join('');
+    return stem + leaves;
+  };
+  return `<svg class="laurel-svg" viewBox="0 0 120 120" aria-hidden="true" focusable="false">${side(1)}${side(-1)}</svg>`;
+}
+
+// The picture behind one panel of the wins triptych. A logo becomes a round seal on a dark panel.
+function panBackdrop(r) {
+  const p = resolveMedia(`/media/records/${r.slug}.jpg`);
+  if (!p) return `<span class="pan-bg">${recArt(r.kind)}</span>`;
+  if (/\.webp$/.test(p)) return `<span class="pan-bg is-emblem"><span class="seal"><img src="${p}" alt=""${size(p)} loading="lazy" decoding="async"></span></span>`;
+  return `<span class="pan-bg"><img src="${p}" alt=""${size(p)} loading="lazy" decoding="async"></span>`;
+}
 // A real photo for a record when one exists (media/records/<slug>.jpg), otherwise the drawn art.
 function recCardArt(r) {
   const p = resolveMedia(`/media/records/${r.slug}.jpg`);
@@ -1112,7 +1143,7 @@ function markdownSite(full) {
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 
-for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js'])
+for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js'])
   fs.copyFileSync(path.join(root, 'src', f), path.join(out, 'assets', f));
 if (fs.existsSync(path.join(root, 'media'))) fs.cpSync(path.join(root, 'media'), path.join(out, 'media'), { recursive: true });
 

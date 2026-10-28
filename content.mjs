@@ -780,17 +780,17 @@ export default {
   // The records section: three cards, each opens to its detail.
   records: [
     {
-      slug: 'techverse-2026', kind: 'prize', title: 'TechVerse 2026', result: 'First Prize',
+      slug: 'techverse-2026', date: ['Oct', '2026'], kind: 'prize', title: 'TechVerse 2026', result: 'First Prize',
       line: 'I led Team Moleculens to first place at Ajeenkya DY Patil University with Chicago Crime Analytics: 1.05 million crime records turned into a dashboard anyone can question.',
       href: '/records/techverse-2026/',
     },
     {
-      slug: 'sih-internal-2026', kind: 'rank', title: 'Smart India Hackathon 2026', result: 'Internal winner',
+      slug: 'sih-internal-2026', date: ['Sep', '2026'], kind: 'rank', title: 'Smart India Hackathon 2026', result: 'Internal winner',
       line: 'BhuSamhita: one trusted layer across land records, GIS, courts, tax and payment. I built its backend and every integration.',
       href: '/work/bhusamhita/',
     },
     {
-      slug: 'icaiml-ae-2026', kind: 'paper', title: 'Published research', result: 'ICAIML-AE 2026',
+      slug: 'icaiml-ae-2026', date: ['Jul', '2026'], kind: 'paper', title: 'Published research', result: 'ICAIML-AE 2026',
       line: 'Co-authored a machine learning paper on spotting coordinated bot accounts, published by Atlantis Press (Springer Nature).',
       href: '/records/icaiml-ae-2026/',
     },
