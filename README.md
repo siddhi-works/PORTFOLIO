@@ -78,6 +78,10 @@ which are synthesised in `src/cinema.js`, so there are no extra audio files.
 - It plays once per session and is skipped with reduced motion, data saver and 2G connections.
 - Captions: paste the exact words spoken in the clip into `intro.speech` in `content.mjs`. They type out in quotes on the left and right of the avatar, timed between `speechStart` and `speechEnd` (seconds). Leave it empty for no captions.
 
+## The hero cartoon
+
+The picture beside the name in the hero is a cartoon of Siddhi drawn in SVG (`src/toon.js`, mounted into `[data-hero-toon]` by `build.mjs`). It blinks, sways, twinkles and looks toward the pointer. Colours (skin, hair, blazer) are in the `C` palette at the top of the file. The real photo stays on the ID card and in the social preview.
+
 ## Accessibility and motion
 
 - `prefers-reduced-motion` turns off the intro, the page cross-fade, floating motion and streaming text.

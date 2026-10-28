@@ -544,7 +544,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
       <div class="photo-frame">
         <span class="hud-c hud-tl" aria-hidden="true"></span><span class="hud-c hud-tr" aria-hidden="true"></span>
         <span class="hud-c hud-bl" aria-hidden="true"></span><span class="hud-c hud-br" aria-hidden="true"></span>
-        <div class="photo-inner">${portraitHtml('slot-photo')}</div>
+        <div class="photo-inner"><div class="hero-toon" data-hero-toon></div></div>
         <span class="scan" aria-hidden="true"></span>
       </div>
     </div>
