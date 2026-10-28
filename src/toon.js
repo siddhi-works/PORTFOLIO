@@ -9,7 +9,7 @@
   const ENV = '0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,57,86,47,12,0,0,0,0,0,25,50,41,14,9,28,51,34,2,0,0,0,0,0,0,0,0,0,0,15,69,81,70,25,20,48,13,20,25,30,78,32,50,43,36,35,33,18,14,11,5,2,0,0,0,0,49,66,39,22,32,48,34,35,29,30,33,30,27,18,15,11,1,0,0,0,0,31,39,14,56,69,44,40,30,47,25,27,13,12,6,40,23,16,12,36,5,0,0,20,5,17,24,15,22,23,9,12,2,0,4,1,0,0,0,0,0,0,0,0,11,23,100,88,46,14,28,35,60,20,23,32,23,45,19,25,22,1,0,0,0,0,0,0,0,43,36,44,69,32,36,31,11,6,4,0,0,0,0,0,0,0,0'.split(',').map(Number);
   const STEP = 0.05;
 
-  const C = { hair: '#2c1810', hairHi: '#5e3f2d', skin: '#e6b08a', skinShade: '#c98d68', blush: '#f08a80', top: '#e3a9a2', line: '#4b2d1f', lip: '#c9625a', lipDark: '#8d453f', mouth: '#2e0f14', iris: '#3a2014', silver: '#e3e7eb', spark: '#ffd27a' };
+  const C = { hair: '#2c1810', hairHi: '#5e3f2d', skin: '#dba27c', skinShade: '#b9805c', blush: '#ee8a80', top: '#f8f4ee', skirt: '#2c2a33', line: '#4b2d1f', lip: '#c9625a', lipDark: '#8d453f', mouth: '#2e0f14', iris: '#3a2014', silver: '#e3e7eb', spark: '#ffd27a' };
 
   const art = `
 <svg class="toon-svg" viewBox="0 0 400 460" xmlns="${NS}" role="img" aria-label="A cartoon of Siddhi">
@@ -18,77 +18,79 @@
     <clipPath id="tn-mouth-clip"><path id="tn-mouth-in" d=""/></clipPath>
   </defs>
 
-  <g class="toon-body"><g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M200 26 C130 24 84 78 86 160 C88 226 70 280 76 336 C80 380 72 412 86 436 C104 448 118 430 122 410 C134 430 156 428 164 404 L236 404 C244 428 266 430 278 410 C282 430 296 448 314 436 C328 412 320 380 324 336 C330 280 312 226 314 160 C316 78 270 24 200 26 Z" fill="url(#tn-hair)"/>
-    <rect x="186" y="228" width="28" height="48" rx="10" fill="${C.skinShade}"/>
-    <path d="M160 282 C160 272 240 272 240 282 L250 352 C252 384 248 410 244 424 L156 424 C152 410 148 384 150 352 Z" fill="${C.top}"/>
-    <path d="M160 288 C146 300 140 330 138 374" fill="none" stroke="${C.line}" stroke-width="25"/>
-    <path d="M160 288 C146 300 140 330 138 374" fill="none" stroke="${C.top}" stroke-width="20"/>
-    <path d="M240 288 C254 300 260 330 262 374" fill="none" stroke="${C.line}" stroke-width="25"/>
-    <path d="M240 288 C254 300 260 330 262 374" fill="none" stroke="${C.top}" stroke-width="20"/>
-    <circle cx="138" cy="386" r="10.5" fill="${C.skin}"/><circle cx="262" cy="386" r="10.5" fill="${C.skin}"/>
-    <path d="M182 276 C188 298 196 306 200 308 C204 306 212 298 218 276" fill="${C.skin}"/>
-    <path d="M190 304 C194 316 206 316 210 304" fill="none" stroke="${C.silver}" stroke-width="2" stroke-linecap="round"/>
-    <path d="M200 320 l4 6 l-4 6 l-4 -6 z" fill="${C.spark}" stroke-width="1.6"/>
+  <g class="toon-body"><g stroke="${C.line}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M200 30 C140 28 100 74 100 150 C100 210 84 250 90 300 C94 340 80 366 92 396 C100 418 90 434 104 446 C122 452 134 432 138 414 C150 432 170 428 176 410 L224 410 C230 428 250 432 262 414 C266 432 278 452 296 446 C310 434 300 418 308 396 C320 366 306 340 310 300 C316 250 300 210 300 150 C300 74 260 28 200 30 Z" fill="url(#tn-hair)"/>
+    <rect x="188" y="218" width="24" height="52" rx="9" fill="${C.skinShade}"/>
+    <path d="M152 272 C152 262 248 262 248 272 L258 360 C260 392 256 410 252 426 L148 426 C144 410 140 392 142 360 Z" fill="${C.top}"/>
+    <path d="M146 408 L254 408 L255 426 L145 426 Z" fill="${C.skirt}"/>
+    <path d="M184 264 C190 288 196 298 200 300 C204 298 210 288 216 264 Z" fill="${C.skin}"/>
+    <path d="M154 288 C134 304 128 336 140 358 C170 380 210 376 236 366" fill="none" stroke="${C.line}" stroke-width="29"/>
+    <path d="M154 288 C134 304 128 336 140 358 C170 380 210 376 236 366" fill="none" stroke="${C.top}" stroke-width="24"/>
+    <path d="M246 288 C266 304 272 336 260 358 C230 382 196 380 164 368" fill="none" stroke="${C.line}" stroke-width="29"/>
+    <path d="M246 288 C266 304 272 336 260 358 C230 382 196 380 164 368" fill="none" stroke="${C.top}" stroke-width="24"/>
+    <circle cx="240" cy="366" r="9.5" fill="${C.skin}"/><circle cx="160" cy="368" r="9.5" fill="${C.skin}"/>
+    <path d="M176 262 L198 306 L168 308 L150 276 Z" fill="${C.top}"/>
+    <path d="M224 262 L202 306 L232 308 L250 276 Z" fill="${C.top}"/>
+    <path d="M191 272 C194 286 206 286 209 272" fill="none" stroke="${C.silver}" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M200 286 l3.2 4.8 l-3.2 4.8 l-3.2 -4.8 z" fill="${C.spark}" stroke-width="1.4"/>
   </g></g>
 
   <g class="toon-head">
-    <g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M114 128 C114 68 150 40 200 40 C250 40 286 68 286 128 C286 178 258 224 226 238 C212 244 188 244 174 238 C142 224 114 178 114 128 Z" fill="${C.skin}"/>
+    <g stroke="${C.line}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M125 128 C125 70 158 44 200 44 C242 44 275 70 275 128 C275 176 252 214 222 226 C208 231 192 231 178 226 C148 214 125 176 125 128 Z" fill="${C.skin}"/>
     </g>
-    <ellipse cx="140" cy="178" rx="14" ry="8" fill="${C.blush}" opacity=".6"/><ellipse cx="260" cy="178" rx="14" ry="8" fill="${C.blush}" opacity=".6"/>
+    <ellipse cx="148" cy="170" rx="11" ry="6" fill="${C.blush}" opacity=".55"/><ellipse cx="252" cy="170" rx="11" ry="6" fill="${C.blush}" opacity=".55"/>
 
-    <g class="toon-brows" fill="none" stroke="${C.line}" stroke-width="3.6" stroke-linecap="round">
-      <path d="M146 112 C154 105 166 104 174 108"/>
-      <path d="M254 112 C246 105 234 104 226 108"/>
+    <g class="toon-brows" fill="none" stroke="${C.line}" stroke-width="2.8" stroke-linecap="round">
+      <path d="M152 114 C160 108 171 107 179 110"/>
+      <path d="M248 114 C240 108 229 107 221 110"/>
     </g>
     <g class="toon-eyes">
-      <g class="toon-eye" style="transform-origin:162px 142px">
-        <ellipse cx="162" cy="142" rx="19" ry="23" fill="#fff"/>
+      <g class="toon-eye" style="transform-origin:166px 138px">
+        <ellipse cx="166" cy="138" rx="15" ry="17" fill="#fff"/>
         <g class="toon-iris">
-          <ellipse cx="162" cy="144" rx="16.5" ry="20.5" fill="${C.iris}"/>
-          <ellipse cx="162" cy="146" rx="9.5" ry="12" fill="#1e0f08" opacity=".55"/>
-          <circle cx="155" cy="135" r="6" fill="#fff"/><circle cx="170" cy="153" r="3" fill="#fff" opacity=".95"/>
+          <ellipse cx="166" cy="139" rx="13" ry="15.5" fill="${C.iris}"/>
+          <ellipse cx="166" cy="141" rx="7.5" ry="9" fill="#1e0f08" opacity=".55"/>
+          <circle cx="161" cy="133" r="4.6" fill="#fff"/><circle cx="172" cy="145" r="2.3" fill="#fff" opacity=".95"/>
         </g>
-        <path d="M141 139 C145 118 179 118 183 139" fill="none" stroke="${C.line}" stroke-width="4.6" stroke-linecap="round"/>
-        <path d="M142 141 C138 139 136 136 135 132" fill="none" stroke="${C.line}" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="M149 135 C152 120 180 120 183 135" fill="none" stroke="${C.line}" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M150 137 C146 136 144 133 143 130" fill="none" stroke="${C.line}" stroke-width="2.4" stroke-linecap="round"/>
       </g>
-      <g class="toon-eye" style="transform-origin:238px 142px">
-        <ellipse cx="238" cy="142" rx="19" ry="23" fill="#fff"/>
+      <g class="toon-eye" style="transform-origin:234px 138px">
+        <ellipse cx="234" cy="138" rx="15" ry="17" fill="#fff"/>
         <g class="toon-iris">
-          <ellipse cx="238" cy="144" rx="16.5" ry="20.5" fill="${C.iris}"/>
-          <ellipse cx="238" cy="146" rx="9.5" ry="12" fill="#1e0f08" opacity=".55"/>
-          <circle cx="231" cy="135" r="6" fill="#fff"/><circle cx="246" cy="153" r="3" fill="#fff" opacity=".95"/>
+          <ellipse cx="234" cy="139" rx="13" ry="15.5" fill="${C.iris}"/>
+          <ellipse cx="234" cy="141" rx="7.5" ry="9" fill="#1e0f08" opacity=".55"/>
+          <circle cx="229" cy="133" r="4.6" fill="#fff"/><circle cx="240" cy="145" r="2.3" fill="#fff" opacity=".95"/>
         </g>
-        <path d="M259 139 C255 118 221 118 217 139" fill="none" stroke="${C.line}" stroke-width="4.6" stroke-linecap="round"/>
-        <path d="M258 141 C262 139 264 136 265 132" fill="none" stroke="${C.line}" stroke-width="2.8" stroke-linecap="round"/>
+        <path d="M217 135 C220 120 248 120 251 135" fill="none" stroke="${C.line}" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M250 137 C254 136 256 133 257 130" fill="none" stroke="${C.line}" stroke-width="2.4" stroke-linecap="round"/>
       </g>
     </g>
-    <path d="M198 174 C197 178 199 180 202 179" fill="none" stroke="${C.line}" stroke-width="2.2" stroke-linecap="round" opacity=".7"/>
+    <path d="M199 166 C198 169 200 171 203 170" fill="none" stroke="${C.line}" stroke-width="2" stroke-linecap="round" opacity=".7"/>
 
     <g class="toon-mouth">
       <path class="toon-mouth-bg" d="" fill="${C.mouth}"/>
-      <g clip-path="url(#tn-mouth-clip)"><rect class="toon-teeth" x="184" y="196" width="32" height="6" rx="2" fill="#fff"/><ellipse class="toon-tongue" cx="200" cy="214" rx="8" ry="5" fill="#e07a7a"/></g>
-      <path class="toon-lower" d="" fill="${C.lip}" stroke="${C.lipDark}" stroke-width="1.4" stroke-linejoin="round"/>
-      <path class="toon-upper" d="" fill="${C.lip}" stroke="${C.lipDark}" stroke-width="1.4" stroke-linejoin="round"/>
+      <g clip-path="url(#tn-mouth-clip)"><rect class="toon-teeth" x="188" y="186" width="24" height="5" rx="2" fill="#fff"/><ellipse class="toon-tongue" cx="200" cy="204" rx="6" ry="4" fill="#e07a7a"/></g>
+      <path class="toon-lower" d="" fill="${C.lip}" stroke="${C.lipDark}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path class="toon-upper" d="" fill="${C.lip}" stroke="${C.lipDark}" stroke-width="1.2" stroke-linejoin="round"/>
     </g>
 
-    <g stroke="${C.line}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" fill="url(#tn-hair)">
-      <path d="M184 36 C130 36 98 82 100 140 C102 182 94 216 86 248 C80 270 94 280 106 266 C124 244 122 206 124 178 C126 150 134 124 150 104 C164 88 178 66 184 36 Z"/>
-      <path d="M192 36 C256 34 302 82 300 140 C298 182 306 216 314 248 C320 270 306 280 294 266 C276 244 278 206 276 178 C274 150 266 124 250 104 C234 86 202 74 192 36 Z"/>
-      <path d="M200 30 C192 8 214 -2 230 12 C218 14 212 24 214 38 Z"/>
+    <g stroke="${C.line}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" fill="url(#tn-hair)">
+      <path d="M178 40 C136 40 112 80 112 130 C112 170 106 206 98 240 C92 270 100 300 94 330 C90 356 98 376 110 388 C122 376 118 352 124 328 C130 300 136 262 134 226 C132 196 130 170 134 148 C138 126 160 100 178 40 Z"/>
+      <path d="M186 40 C246 38 290 80 288 130 C288 170 294 206 302 240 C308 270 300 300 306 330 C310 356 302 376 290 388 C278 376 282 352 276 328 C270 300 264 262 266 226 C268 196 270 170 266 148 C262 126 232 100 186 40 Z"/>
     </g>
-    <path d="M172 46 C132 50 110 84 106 136" fill="none" stroke="${C.hairHi}" stroke-width="3.2" stroke-linecap="round" opacity=".7"/>
-    <path d="M206 46 C250 48 290 84 294 136" fill="none" stroke="${C.hairHi}" stroke-width="3.2" stroke-linecap="round" opacity=".7"/>
-    <path d="M97 196 C101 220 97 240 92 256" fill="none" stroke="${C.hairHi}" stroke-width="2.8" stroke-linecap="round" opacity=".5"/>
-    <path d="M303 196 C299 220 303 240 308 256" fill="none" stroke="${C.hairHi}" stroke-width="2.8" stroke-linecap="round" opacity=".5"/>
-    <g class="toon-clip" transform="translate(276 98) rotate(18)"><path d="M0 -12 L3.3 -3.7 L12 -3.3 L5.2 2.2 L7.4 11 L0 6 L-7.4 11 L-5.2 2.2 L-12 -3.3 L-3.3 -3.7 Z" fill="${C.spark}" stroke="#9a6a1c" stroke-width="1.5" stroke-linejoin="round"/></g>
+    <path d="M168 50 C134 54 118 86 116 134" fill="none" stroke="${C.hairHi}" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+    <path d="M194 50 C244 50 280 86 284 134" fill="none" stroke="${C.hairHi}" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+    <path d="M104 260 C110 290 102 320 108 350" fill="none" stroke="${C.hairHi}" stroke-width="2.6" stroke-linecap="round" opacity=".5"/>
+    <path d="M296 260 C290 290 298 320 292 350" fill="none" stroke="${C.hairHi}" stroke-width="2.6" stroke-linecap="round" opacity=".5"/>
+    <g class="toon-clip" transform="translate(262 88) rotate(18)"><path d="M0 -11 L3 -3.4 L11 -3 L4.8 2 L6.8 10 L0 5.5 L-6.8 10 L-4.8 2 L-11 -3 L-3 -3.4 Z" fill="${C.spark}" stroke="#9a6a1c" stroke-width="1.4" stroke-linejoin="round"/></g>
   </g>
 
   <g class="toon-sparks" fill="${C.spark}">
-    <path class="toon-spark" style="transform-origin:44px 110px" d="M44 94 L48 105 L60 110 L48 115 L44 126 L40 115 L28 110 L40 105 Z"/>
-    <path class="toon-spark s2" style="transform-origin:356px 84px" d="M356 72 L359 81 L368 84 L359 87 L356 96 L353 87 L344 84 L353 81 Z"/>
-    <path class="toon-spark s3" style="transform-origin:352px 320px" d="M352 312 L354 318 L360 320 L354 322 L352 328 L350 322 L344 320 L350 318 Z"/>
+    <path class="toon-spark" style="transform-origin:48px 110px" d="M48 94 L52 105 L64 110 L52 115 L48 126 L44 115 L32 110 L44 105 Z"/>
+    <path class="toon-spark s2" style="transform-origin:352px 84px" d="M352 72 L355 81 L364 84 L355 87 L352 96 L349 87 L340 84 L349 81 Z"/>
+    <path class="toon-spark s3" style="transform-origin:350px 320px" d="M350 312 L352 318 L358 320 L352 322 L350 328 L348 322 L342 320 L348 318 Z"/>
   </g>
 </svg>`;
 
@@ -96,7 +98,7 @@
 
   // The mouth: a small smile. The middle line is the smile, the lips hang off it, and the lower lip drops as it opens.
   function setMouth(root, o) {
-    const yc = 205, w = 10 + o * 5;
+    const yc = 192, w = 9 + o * 4.5;
     const smile = (1.0 - o * 0.7) * 4.6;
     const drop = o * 17;
     const N = 12;
