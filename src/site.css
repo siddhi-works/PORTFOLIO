@@ -2016,8 +2016,7 @@ html:not(.js) .pan { flex: 1 1 0; }
 
   /* services: a shorter panel */
   .svc-views { min-height: 0; }
-  :root .svc-panel { max-height: clamp(380px, 62vh, 590px); }
-
+  
   /* contact: a smaller headline, a tighter form, quick links in a 2 by 2 grid */
   :root .sec.contact { padding-top: clamp(22px, 3.6vh, 42px); padding-bottom: clamp(22px, 3.6vh, 42px); }
   :root .cpanel { padding: clamp(18px, 2.8vh, 30px) clamp(20px, 2.6vw, 36px); gap: clamp(18px, 2.4vw, 36px); align-items: center; }
@@ -2041,3 +2040,8 @@ html:not(.js) .pan { flex: 1 1 0; }
   :root .tcard { padding-bottom: 12px; }
   .pmap { margin-top: 8px; }
 }
+
+/* services: all views share one cell, so the panel is always as tall as the tallest one */
+.svc-views { display: grid; }
+.svc-views > .svc-view { grid-area: 1 / 1; }
+.svc-views > .svc-view[hidden] { display: block; visibility: hidden; pointer-events: none; }

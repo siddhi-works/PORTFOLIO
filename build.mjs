@@ -289,7 +289,7 @@ ${hud()}
 <script src="/assets/fx.js" defer></script>
 <script src="/assets/scroll.js" defer></script>
 <script src="/assets/form.js" defer></script>
-<script src="/assets/interact.js" defer></script><script src="/assets/honours.js" defer></script><script src="/assets/mobile.js" defer></script><script src="/assets/site.js" defer></script>
+<script src="/assets/interact.js" defer></script><script src="/assets/honours.js" defer></script><script src="/assets/mobile.js" defer></script><script src="/assets/fit.js" defer></script><script src="/assets/site.js" defer></script>
 </body>
 </html>`;
 }
@@ -1170,7 +1170,7 @@ function markdownSite(full) {
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 
-for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js', 'mobile.js'])
+for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js', 'mobile.js', 'fit.js'])
   fs.copyFileSync(path.join(root, 'src', f), path.join(out, 'assets', f));
 if (fs.existsSync(path.join(root, 'media'))) fs.cpSync(path.join(root, 'media'), path.join(out, 'media'), { recursive: true });
 
