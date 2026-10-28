@@ -649,7 +649,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
       ${C.records.map((r) => `
       <li class="rec rec-${r.kind}">
         <a class="rec-link" href="${r.href}" data-label="${esc(r.title.slice(0, 24))}">
-          ${recArt(r.kind)}
+          ${recCardArt(r)}
           <span class="rec-k">${esc(r.title)}</span>
           <span class="rec-v">${esc(r.result)}</span>
           <span class="rec-line">${esc(r.line)}</span>
@@ -666,7 +666,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
       ${C.beyond.map((b, i) => {
         const shots = (b.photos && b.photos.length ? b.photos : [b.photo]).map(resolveMedia).filter(Boolean);
       const ph = shots[0];
-      const gallery = `<div class="fp-track" tabindex="0" role="group" aria-label="Photos from ${esc(b.org)}">${shots.map((s, k) => `<figure class="fp-slide"><img src="${s}" alt="${esc(b.org)}, photo ${k + 1} of ${shots.length}"${size(s)}${k ? ' loading="lazy"' : ''} decoding="async"></figure>`).join('')}</div>${shots.length > 1 ? `<div class="fp-dots">${shots.map((_, k) => `<button type="button" class="fp-dot${k ? '' : ' is-on'}" aria-label="Photo ${k + 1} of ${shots.length}"></button>`).join('')}</div>` : ''}`;
+      const gallery = `<div class="fp-track" tabindex="0" role="group" aria-label="Photos from ${esc(b.org)}">${shots.map((s, k) => `<figure class="fp-slide"><img src="${s}" alt="${esc(b.org)}, photo ${k + 1} of ${shots.length}"${size(s)}${(C.photoFocus || {})[s] ? ` style="object-position:${C.photoFocus[s]}"` : ''}${k ? ' loading="lazy"' : ''} decoding="async"></figure>`).join('')}</div>${shots.length > 1 ? `<button type="button" class="fp-arrow fp-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="fp-arrow fp-next" aria-label="Next photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="fp-dots">${shots.map((_, k) => `<button type="button" class="fp-dot${k ? '' : ' is-on'}" aria-label="Photo ${k + 1} of ${shots.length}"></button>`).join('')}</div>` : ''}`;
         return `
       <li class="frame" style="--tilt:${[-1.2, 0.8, -0.6, 1.1, -0.9][i % 5]}deg">
         <div class="frame-photo${ph ? '' : ' is-art'}">${ph ? gallery : `<span class="frame-art" role="img" aria-label="${esc(b.org)}">${artFor(b)}</span>`}</div>
@@ -727,6 +727,12 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
 }
 
 /* ---------- record detail pages ---------- */
+// A real photo for a record when one exists (media/records/<slug>.jpg), otherwise the drawn art.
+function recCardArt(r) {
+  const p = resolveMedia(`/media/records/${r.slug}.jpg`);
+  return p ? `<span class="art art-photo"><img src="${p}" alt=""${size(p)} loading="lazy" decoding="async"></span>` : recArt(r.kind);
+}
+
 function recordPage(r) {
   const d = C.recordPages[r.slug];
   const proj = bySlug(d.project);
@@ -738,7 +744,14 @@ function recordPage(r) {
     <p class="page-sub">${esc(d.result)}</p>
   </header>
   <section class="rec-detail">
-    <div class="rec-detail-art">${(() => { const p = resolveMedia(`/media/records/${r.slug}.jpg`); return p ? `<figure class="rec-photo"><img src="${p}" alt="${esc(r.title)}: certificate and trophy"${size(p)} decoding="async"></figure>` : recArt(r.kind); })()}</div>
+    <div class="rec-detail-art">${(() => {
+      const p = resolveMedia(`/media/records/${r.slug}.jpg`);
+      const dir = path.join(root, 'media', 'records');
+      const more = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.startsWith(r.slug + '-') && /\.jpe?g$/i.test(f)).sort() : [];
+      const fig = (src, alt) => `<figure class="rec-photo"><img src="${src}" alt="${esc(alt)}"${size(src)} decoding="async"></figure>`;
+      if (!p) return recArt(r.kind);
+      return fig(p, r.kind === 'paper' ? `${r.title}: receiving the certificate at the conference` : `${r.title}: certificate and trophy`) + more.map((f) => fig('/media/records/' + f, `${r.title}: certificate`)).join('');
+    })()}</div>
     <div class="rec-detail-body">
       ${d.body.map((t) => `<p>${esc(t)}</p>`).join('')}
       <dl class="rec-facts">
@@ -746,7 +759,8 @@ function recordPage(r) {
       </dl>
       <div class="btns">
         <a class="btn btn-solid" href="${caseUrl(proj)}" data-label="${esc(proj.short || proj.name)}">See the project: ${esc(proj.name)}</a>
-        ${r.kind === 'paper' && C.publication.href ? `<a class="btn" href="${C.publication.href}" target="_blank" rel="noopener">Read the paper${icon.ext}</a>` : r.kind === 'paper' && site.showSlotHints ? '<span class="btn btn-slot">Paper link slot</span>' : ''}
+        ${r.kind === 'paper' && C.publication.href ? `<a class="btn" href="${C.publication.href}" target="_blank" rel="noopener">View full paper${icon.ext}</a>` : r.kind === 'paper' && site.showSlotHints ? '<span class="btn btn-slot">Paper link slot</span>' : ''}
+        ${r.kind === 'paper' && C.publication.post ? `<a class="btn" href="${C.publication.post}" target="_blank" rel="noopener">The LinkedIn post${icon.ext}</a>` : ''}
         <a class="btn" href="/#records" data-label="Records">All records</a>
       </div>
     </div>
@@ -853,7 +867,7 @@ function caseStudy(p) {
     postHref && `<a class="btn" href="${postHref}" target="_blank" rel="noopener">The LinkedIn post${icon.ext}</a>`,
     ...(p.extra || []).map((x) => `<a class="btn" href="${x.href}" target="_blank" rel="noopener">${esc(x.label)}${icon.ext}</a>`),
   ].filter(Boolean).join("");
-  const meta = [["Built for", p.builtFor], ["When", p.when], ["Team", p.team]].filter(([, v]) => v);
+  const meta = [["Built for", p.builtFor], ["When", p.when], ["Team", p.team], ["My role", p.role]].filter(([, v]) => v);
   const st = p.study || {};
   const blocks = [["The problem", st.problem], ["The solution", st.solution], ["How it was built", st.build], ["The result", st.result]].filter(([, v]) => v && v.length);
   const related = C.services.filter((s) => s.projects.includes(p.slug));
@@ -870,6 +884,8 @@ function caseStudy(p) {
       ${links ? `<div class="btns case-links">${links}</div>` : ""}
     </div>
   </header>
+
+  ${p.postImage && postHref && exists(p.postImage) ? `<a class="post-snap" href="${postHref}" target="_blank" rel="noopener" aria-label="Open the LinkedIn post about ${esc(p.name)}"><img src="${p.postImage}" alt="Snapshot of the LinkedIn post about the Smart India Hackathon"${size(p.postImage)} loading="lazy" decoding="async"></a>` : ''}
 
   ${meta.length ? `<dl class="case-meta" aria-label="Project details">${meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
 

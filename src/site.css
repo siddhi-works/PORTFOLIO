@@ -1724,3 +1724,19 @@ body { font-family: var(--f-text); font-weight: 400; font-variation-settings: no
 /* record pages: a real photo in place of the drawn art */
 .rec-photo { margin: 0; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); }
 .rec-photo img { display: block; width: 100%; height: auto; }
+
+/* record photos on the home cards, extra images on record pages, and the LinkedIn post snapshot */
+.art-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+.rec-detail-art { display: grid; gap: 16px; align-content: start; }
+.post-snap { display: block; max-width: 760px; margin: clamp(20px, 3vw, 36px) auto; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); transition: border-color 0.25s, transform 0.4s var(--ease-out), box-shadow 0.4s; }
+.post-snap img { display: block; width: 100%; height: auto; }
+.post-snap:hover, .post-snap:focus-visible { border-color: var(--amber); transform: translateY(-4px); box-shadow: 0 30px 60px -36px var(--glow); outline: none; }
+
+/* gallery arrows: always visible on touch screens, fade in on hover for mouse users */
+.fp-arrow { position: absolute; top: 50%; z-index: 2; width: 40px; height: 40px; margin-top: -20px; display: grid; place-items: center; padding: 0; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35); background: rgba(12, 11, 9, 0.62); color: #fff; cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: opacity 0.25s, background-color 0.25s, transform 0.25s; }
+.fp-prev { left: 8px; }
+.fp-next { right: 8px; }
+.fp-arrow:hover:not(:disabled) { background: var(--amber); color: var(--on-amber); transform: scale(1.08); }
+.fp-arrow:disabled { opacity: 0.25; cursor: default; }
+.fp-arrow:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+@media (hover: hover) { .fp-arrow { opacity: 0; } .frame-photo:hover .fp-arrow:not(:disabled), .frame-photo:focus-within .fp-arrow:not(:disabled) { opacity: 1; } .frame-photo:hover .fp-arrow:disabled, .frame-photo:focus-within .fp-arrow:disabled { opacity: 0.25; } }

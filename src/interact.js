@@ -142,7 +142,15 @@
       t = setTimeout(() => {
         const at = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
         dots.forEach((d, i) => d.classList.toggle('is-on', i === at));
+        sync(at);
       }, 60);
     }, { passive: true });
+    const prev = box.querySelector('.fp-prev'), next = box.querySelector('.fp-next');
+    const go = (n) => track.scrollTo({ left: Math.max(0, Math.min(dots.length - 1, n)) * track.clientWidth, behavior: 'smooth' });
+    const here = () => Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+    function sync(at) { if (prev) prev.disabled = at <= 0; if (next) next.disabled = at >= dots.length - 1; }
+    if (prev) prev.addEventListener('click', () => go(here() - 1));
+    if (next) next.addEventListener('click', () => go(here() + 1));
+    sync(0);
   });
 })();

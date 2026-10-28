@@ -50,5 +50,17 @@
       ]
     }
   ],
-  "installCommand": "npm install --no-audit --no-fund"
+  "installCommand": "npm install --no-audit --no-fund",
+  "redirects": [
+    {
+      "source": "/work/land-gpt",
+      "destination": "/work/bhusamhita/",
+      "permanent": true
+    },
+    {
+      "source": "/work/land-gpt/",
+      "destination": "/work/bhusamhita/",
+      "permanent": true
+    }
+  ]
 }

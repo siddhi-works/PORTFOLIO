@@ -25,7 +25,7 @@ export default {
     status: 'Open to work',
     openTo: ['Internships', 'Full-time roles', 'Freelance projects', 'Collaborations'],
     description:
-      'Siddhi Kale is a full-stack and AI engineer in Pune. TECHVERSE 2026 Grand Prize winner, published at ICAIML-AE 2026 (Springer Nature). Builds AI agents, data dashboards and production web apps.',
+      'Siddhi Kale is a full-stack and AI engineer in Pune. TECHVERSE 2026 First Prize winner, published at ICAIML-AE 2026 (Springer Nature). Builds AI agents, data dashboards and production web apps.',
     showSlotHints: false, // true shows marked slots for missing photos and files
   },
 
@@ -53,7 +53,7 @@ export default {
   hero: {
     // *word* gets the highlight.
     quote: 'I build systems that actually make a *difference*.',
-    lede: 'TECHVERSE 2026 Grand Prize. Published with Springer Nature. 20+ projects, 8 live in production.',
+    lede: 'TECHVERSE 2026 First Prize. Published with Springer Nature. 20+ projects, 8 live in production.',
   },
 
   // Let the numbers speak. All from your resume and project notes.
@@ -118,8 +118,8 @@ export default {
     'Generative AI': ['claimmate', 'aria', 'censusguru'],
     'Large language models': ['claimmate', 'aria', 'verdict', 'censusguru'],
     'Agentic AI': ['claimmate', 'aria', 'verdict', 'resolve-iq'],
-    'API design': ['claimmate', 'land-gpt', 'censusguru'],
-    'Database management': ['resolve-iq', 'land-gpt'],
+    'API design': ['claimmate', 'bhusamhita', 'censusguru'],
+    'Database management': ['resolve-iq', 'bhusamhita'],
     'CI/CD with GitHub Actions': ['devops-demo'],
     'Deployment on Vercel': ['chicago-crime', 'censusguru'],
   },
@@ -181,11 +181,12 @@ export default {
     },
     {
       slug: 'chicago-crime',
-      card: 'TECHVERSE Grand Prize. 1.05M crime records, 8 KPIs, 10 charts and a district map.',
+      card: 'TECHVERSE First Prize. 1.05M crime records, 8 KPIs, 10 charts and a district map.',
       name: 'Chicago Crime Analytics',
       short: 'Chicago Crime',
-      line: 'TECHVERSE 2026 Grand Prize winner. 8 KPIs, 10 charts and a district map over 1,048,575 crime reports, with an assistant called Detective Dot and a data-trust page.',
-      badge: 'TECHVERSE 2026 Grand Prize',
+      line: 'TECHVERSE 2026 First Prize winner. 8 KPIs, 10 charts and a district map over 1,048,575 crime reports, with an assistant called Detective Dot and a data-trust page.',
+      badge: 'TECHVERSE 2026 First Prize',
+      role: 'Team leader, in charge of cleaning and visualising the data and drawing the insights.',
       top: true,
       page: true,
       visual: 'chicago',
@@ -224,7 +225,7 @@ export default {
           'Charts are hand-built in SVG and Canvas with d3 for scales and shapes, with Motion for animation, and the whole dashboard is deployed on Vercel.',
         ],
         result: [
-          'The project won the TECHVERSE 2026 Grand Prize at Ajeenkya DY Patil University as part of Team Moleculens, and the live dashboard is open for anyone to filter and question.',
+          'The project won the TECHVERSE 2026 First Prize at Ajeenkya DY Patil University as the leader of Team Moleculens, and the live dashboard is open for anyone to filter and question.',
         ],
       },
       shot: '/media/projects/chicago-crime.png',
@@ -280,11 +281,11 @@ export default {
       gallery: ['/media/projects/gallery/aria-1.jpg'],
     },
     {
-      slug: 'land-gpt',
+      slug: 'bhusamhita',
       card: 'One layer over land records in 3 states and 4 languages, tied by ULPIN and GIS.',
-      name: 'LAND-GPT',
-      short: 'LAND-GPT',
-      line: 'A common layer over fragmented land-record systems. Parcels are tied together by ULPIN across Maharashtra, Uttar Pradesh and Gujarat, with GIS, validation and 4 languages. SIH internal hackathon winner.',
+      name: 'BhuSamhita',
+      short: 'BhuSamhita',
+      line: 'One parcel, one ULPIN, every connected land record. A common layer over fragmented land-record systems. Parcels are tied together by ULPIN across Maharashtra, Uttar Pradesh and Gujarat, with GIS, validation and 4 languages. SIH internal hackathon winner.',
       badge: 'SIH internal hackathon winner',
       top: true,
       page: true,
@@ -297,8 +298,10 @@ export default {
       live: null,
       demo: 'https://youtu.be/CldL2wF95Po',
       post: 'https://www.linkedin.com/posts/siddhikale25_sih2026-smartindiahackathon-sih-ugcPost-7516230406061400064-cw8e/',
-      extra: [{ label: 'Earlier prototype', href: 'https://github.com/siddhi-works/land-administration-digitisation' }],
+      postImage: '/media/projects/bhusamhita-linkedin.jpg',
       builtFor: 'Smart India Hackathon, internal round',
+      team: 'AIgniters',
+      role: 'Backend and integrations: everything behind the interface, except the frontend.',
       when: '2026',
       facts: [
         { n: '3', label: 'states', count: 3 },
@@ -318,18 +321,18 @@ export default {
           'Replacing those systems is not realistic. The problem the hackathon asked us to solve was how to let them speak to each other without forcing every state to rebuild.',
         ],
         solution: [
-          'The project is also known as BhuSamhita: an integrated, GIS-based digital infrastructure for land governance. It federates instead of replacing. A canonical land model sits in the middle, and state adapters for Maharashtra, Uttar Pradesh and Gujarat translate each state’s records into it. Parcels are identified through a ULPIN-based registry, so the same plot can be traced across land records, registration, mutation, planning, tax and utility data.',
+          'BhuSamhita is an integrated, GIS-based digital infrastructure for land governance: one parcel, one ULPIN, every connected land record. It federates instead of replacing. A canonical land model sits in the middle, and state adapters for Maharashtra, Uttar Pradesh and Gujarat translate each state’s records into it. Parcels are identified through a ULPIN-based registry, so the same plot can be traced across land records, registration, mutation, planning, tax and utility data.',
           'On top of that sit Unified Land Profiles that bring land records, registration, mutation, land use and encumbrance together for one parcel, GIS-based parcel visualisation, and a cross-record validation engine that surfaces actionable data-quality findings for government officers. Two portals use it: a citizen portal and a government officer portal with parcel search, e-services, analytics, role-based access and audit trails. The interface runs in English, Hindi, Marathi and Gujarati.',
         ],
         build: [
-          'The backend is a Python API with separate modules for adapters, canonical model, validation rules, glossary and translation, analytics and workflow, covered by tests for normalisation, validation, immutability, GIS and the API. An optional AI assistant, built on the Anthropic API, uses the selected parcel’s records and validation findings as its context.',
-          'An earlier prototype in a separate repository explored OCR of land documents, parcel matching and modules for ULPIN and for national services such as Bhuvan, DigiLocker and API Setu. All data in the demo is replicated government-system data used for demonstration only.',
+          'I built everything except the frontend. That is the integrations that connect three states’ land systems, and the whole Python backend behind them: the state adapters, the canonical land model, the ULPIN parcel registry, the validation engine, glossary and translation, analytics and workflow, role-based access and the audit trail. Tests cover normalisation, validation, immutability, GIS and the API. An optional AI assistant, built on the Anthropic API, uses the selected parcel’s records and validation findings as its context.',
+          'All data in the demo is replicated government-system data used for demonstration only.',
         ],
         result: [
-          'LAND-GPT won the internal round of the Smart India Hackathon.',
+          'BhuSamhita won the internal round of the Smart India Hackathon.',
         ],
       },
-      shot: '/media/projects/land-gpt.png',
+      shot: '/media/projects/bhusamhita.png',
     },
     {
       slug: 'claimmate',
@@ -593,7 +596,7 @@ export default {
     { id: 'agentic', image: '/media/orbit/agentic.jpg', title: 'Agentic AI and LLM systems', line: 'Multi-agent workflows, LangGraph and LangChain, language models with checks and human fallbacks.', projects: ['claimmate', 'aria', 'verdict', 'resolve-iq'] },
     { id: 'data', image: '/media/orbit/data.jpg', title: 'Data analytics and research ML', line: 'Large datasets, dashboards, feature engineering, classical machine learning, a published paper.', projects: ['chicago-crime', 'bot-detection'] },
     { id: 'deep', image: '/media/orbit/deep.jpg', title: 'Deep learning (CV, NLP, etc.)', line: 'CNNs and transfer learning (ResNet-50), image pipelines, models served through a web app.', projects: ['skin-lesion', 'chest-xray'] },
-    { id: 'platforms', image: '/media/orbit/platforms.jpg', title: 'Full-stack platforms and integration', line: 'APIs, multilingual interfaces, GIS, data integration, deployed apps for real users.', projects: ['land-gpt', 'censusguru'] },
+    { id: 'platforms', image: '/media/orbit/platforms.jpg', title: 'Full-stack platforms and integration', line: 'APIs, multilingual interfaces, GIS, data integration, deployed apps for real users.', projects: ['bhusamhita', 'censusguru'] },
     { id: 'more', title: 'More work', line: 'Smaller builds, each with its code on GitHub.', projects: ['plagiarism', 'devops-demo'] },
   ],
 
@@ -636,7 +639,7 @@ export default {
       titleParts: ['Data dashboards and', 'analytics'],
       icon: 'chart',
       line: 'Interactive dashboards and analytics that turn large datasets into clear insight.',
-      pitch: 'The dashboard that won the TECHVERSE 2026 Grand Prize turns 1.05 million records into 8 KPIs, 10 charts and a district map.',
+      pitch: 'The dashboard that won the TECHVERSE 2026 First Prize turns 1.05 million records into 8 KPIs, 10 charts and a district map.',
       deliver: [
         'A dashboard with the KPIs that matter and the detail behind them',
         'Maps and charts that answer a question',
@@ -777,14 +780,14 @@ export default {
   // The records section: three cards, each opens to its detail.
   records: [
     {
-      slug: 'techverse-2026', kind: 'prize', title: 'TECHVERSE 2026', result: 'Grand Prize winner',
-      line: 'Chicago Crime Analytics, by Team Moleculens at Ajeenkya DY Patil University.',
+      slug: 'techverse-2026', kind: 'prize', title: 'TECHVERSE 2026', result: 'First Prize winner',
+      line: 'Chicago Crime Analytics, by Team Moleculens at Ajeenkya DY Patil University. I was the team leader.',
       href: '/records/techverse-2026/',
     },
     {
       slug: 'sih-internal-2026', kind: 'rank', title: 'SIH internal hackathon', result: 'Winner',
-      line: 'LAND-GPT: one trusted layer across land records, GIS, courts, tax and payment.',
-      href: '/work/land-gpt/',
+      line: 'BhuSamhita: one trusted layer across land records, GIS, courts, tax and payment.',
+      href: '/work/bhusamhita/',
     },
     {
       slug: 'icaiml-ae-2026', kind: 'paper', title: 'Research publication', result: 'ICAIML-AE 2026',
@@ -796,15 +799,18 @@ export default {
   recordPages: {
     'techverse-2026': {
       headline: 'TECHVERSE 2026',
-      result: 'Grand Prize winner',
+      result: 'First Prize winner',
       facts: [
-        ['Result', 'Grand Prize'],
+        ['Result', 'First Prize'],
         ['Location', 'Ajeenkya DY Patil University, Pune, India'],
         ['Team', 'Moleculens, ADYPU'],
+        ['Role', 'Team leader'],
+        ['My contribution', 'Data cleaning, visualisation and insights'],
         ['Project', 'Chicago Crime Analytics'],
       ],
       body: [
-        'Team Moleculens won the Grand Prize at TECHVERSE 2026, held at Ajeenkya DY Patil University in Pune.',
+        'I led Team Moleculens to the First Prize at TECHVERSE 2026, held at Ajeenkya DY Patil University in Pune.',
+        'My part was the data, end to end. I cleaned about 1.05 million raw crime records, turned them into the visualisations the dashboard is built on, and drew out the insights it tells.',
         'The winning project, Chicago Crime Analytics, turns about 1.05 million crime records into 8 KPIs, 10 charts and a district map, with an assistant and a data-trust page.',
       ],
       project: 'chicago-crime',
@@ -829,15 +835,15 @@ export default {
   achievements: [
     {
       title: 'TECHVERSE 2026',
-      result: 'Grand Prize',
-      detail: 'Team Moleculens, ADYPU. Chicago Crime Analytics.',
+      result: 'First Prize',
+      detail: 'Team leader, Moleculens, ADYPU. Chicago Crime Analytics.',
       href: '/work/chicago-crime/',
     },
     {
       title: 'SIH internal hackathon 2026',
       result: 'Winner',
-      detail: 'LAND-GPT.',
-      href: '/work/land-gpt/',
+      detail: 'BhuSamhita.',
+      href: '/work/bhusamhita/',
     },
     { title: 'ADYPU internal hackathon', result: 'Winner', detail: 'Semester 1.' },
   ],
@@ -848,16 +854,25 @@ export default {
     organiser: 'International Conference on Artificial Intelligence and Machine Learning for Agro-Ecosystems, organised by Vishwakarma University in collaboration with Binghamton University, USA.',
     title:
       'Hybrid Feature-Based Comparative Analysis of Supervised and Unsupervised ML-Based Intelligent Bot Detection Model for Social Media Data',
-    href: null, // SLOT: link to the paper
+    href: 'https://www.atlantis-press.com/proceedings/icaiml-ae-26/126028086',
+    post: 'https://www.linkedin.com/posts/siddhikale25_research-researchpublication-scopus-ugcPost-7485733002136965120-RzVJ/',
   },
 
   path: [
     { when: 'Nov 2021 to Mar 2023', what: 'Content and marketing volunteer at Bindu Non-Profit. Led 5 creators. Content output up 25%, organic traffic up 15%.' },
     { when: 'Sep 2024', what: 'Research volunteer with NSS at ADYPU. 8 youth programmes, 100+ children a year.' },
-    { when: '2026', what: 'SIH internal hackathon winner, with LAND-GPT.' },
-    { when: '2026', what: 'TECHVERSE Grand Prize with Chicago Crime Analytics.' },
+    { when: '2026', what: 'SIH internal hackathon winner, with BhuSamhita.' },
+    { when: '2026', what: 'TECHVERSE First Prize with Chicago Crime Analytics.' },
     { when: '2026', what: 'Published at ICAIML-AE 2026, Springer Nature.' },
   ],
+
+  // Where each volunteering photo is centred in its frame (CSS object-position), so faces stay in view.
+  photoFocus: {
+    '/media/beyond/nss/1.jpg': '50% 24%', '/media/beyond/nss/2.jpg': '50% 50%', '/media/beyond/nss/3.jpg': '50% 55%',
+    '/media/beyond/ivolunteer/1.jpg': '50% 50%', '/media/beyond/ivolunteer/2.jpg': '55% 40%', '/media/beyond/ivolunteer/3.jpg': '50% 46%',
+    '/media/beyond/swabhiman/1.jpg': '50% 40%', '/media/beyond/swabhiman/2.jpg': '50% 36%', '/media/beyond/swabhiman/3.jpg': '50% 24%', '/media/beyond/swabhiman/4.jpg': '50% 50%',
+    '/media/beyond/mad/1.jpg': '50% 50%', '/media/beyond/mad/2.jpg': '50% 15%',
+  },
 
   // The warm part. Photos: media/beyond/<activity>/1.jpg, 2.jpg ... (listed in `photos`; the first one shows first)
   beyond: [
