@@ -64,21 +64,23 @@ Drop files into `media/` with these names. The build picks them up on its own.
 | `media/projects/gallery/<file>` | extra screens listed under `gallery` |
 | `media/beyond/nss.jpg`, `ivolunteer.jpg`, `swabhiman.jpg`, `mad.jpg`, `bindu.jpg` | the "Beyond the code" frames |
 
-## Opening sequence and music
+## Opening sequence and sound
 
 After the laptop intro the site plays a short cinematic: the avatar clip (`media/intro/avatar.webm`, transparent WebM)
 with the name in 3D layers behind it, then the name flies to the hero and the portrait assembles pixel by pixel.
-`media/intro/theme.mp3` plays across the site (ducked while the avatar speaks, faint after) with a toggle in the top bar.
-Sound effects are synthesised in `src/cinema.js`, so there are no extra files.
+There is no background music. The Sound button in the top bar controls the avatar's voice and the interface sounds,
+which are synthesised in `src/cinema.js`, so there are no extra audio files.
 
-- The site loads straight into the laptop intro. Browsers only allow sound after a click, so if autoplay is blocked a small "Click anywhere for sound" chip appears and the music and avatar voice start on the first click or key press.
-- Replace the two files in `media/intro/` to change the clip or the track. Keep the clip as a transparent WebM (VP9 with alpha).
-- It plays once per session and is skipped with reduced motion.
+- The site loads straight into the laptop intro. Browsers only allow sound after a click, so if autoplay is blocked a small "Click anywhere for sound" chip appears. The first click restarts the avatar clip from its beginning, so the voice never starts mid-sentence.
+- The voice passes through a small processing chain (low cut, presence, gentle compressor) and the scene waits for the last word before it fades.
+- The opening effects are scheduled on the audio clock (`sfx.at(seconds, 'name')`), so they land on the same grid however busy the page is.
+- Replace `media/intro/avatar.webm` to change the clip. Keep it as a transparent WebM (VP9 with alpha).
+- It plays once per session and is skipped with reduced motion, data saver and 2G connections.
 - Captions: paste the exact words spoken in the clip into `intro.speech` in `content.mjs`. They type out in quotes on the left and right of the avatar, timed between `speechStart` and `speechEnd` (seconds). Leave it empty for no captions.
 
 ## Accessibility and motion
 
-- `prefers-reduced-motion` turns off the intro, page transitions, floating motion and streaming text.
+- `prefers-reduced-motion` turns off the intro, the page cross-fade, floating motion and streaming text.
 - The intro plays once per session and has a Skip button (Esc also skips).
 - Projects sit side by side on a rail with arrow buttons. Keyboard, touch and mouse-drag all work.
   With reduced motion, clicking a card is a plain link.
@@ -105,3 +107,7 @@ Sizes come from tokens at the end of `src/site.css` (`--t-micro` to `--t-h2`), s
 ## Image credits
 
 The four round images on the Projects orbit (`media/orbit/`) are free-to-use photos from Pexels (Pexels licence): robotic hand and network (photo 8386440), tablet analytics (20206391), MRI scan (7089298), code on a screen (6424584).
+
+## The calm look
+
+The site avoids the decoration that generated sites share: no cursor effects, no drifting background words, no glow or glass on content, one corner radius for panels, no labels above headings, and headings without full stops. Pages cross-fade with the browser's built-in view transition (`@view-transition` in `src/site.css`). Project pages draw their steps as a pipeline diagram from the `flow` list in `content.mjs`.

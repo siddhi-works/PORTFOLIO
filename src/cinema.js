@@ -8,7 +8,7 @@
   const d = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, r = document) => r.querySelector(s);
-  const SRC = { video: '/media/intro/avatar.webm', music: '/media/intro/theme.mp3' };
+  const SRC = { video: '/media/intro/avatar.webm' };
   const KEY = 'sk-sound'; // 'off' when the visitor chose silence
   const T_KEY = 'sk-music-t';
   const BASE = 0.144, LAPTOP = 0.12, DUCK = 0.022; // 40% quieter than the previous mix
@@ -41,12 +41,14 @@
       ctx.resume().then(() => {
         const p = pendingCue;
         pendingCue = null;
-        if (p && performance.now() - p.t < 4500 && soundOn) sfx[p.n](...p.a);
+        if (p && performance.now() - p.t < 350 && soundOn) sfx[p.n](...p.a);
       }).catch(() => {});
     }
     return !!ctx;
   }
   const live = () => !!ctx && soundOn && ctx.state === 'running';
+  let T = 0;                                   // seconds ahead of now, for scheduling on the audio clock
+  const now = () => ctx.currentTime + T;
   function noise() {
     if (!noiseBuf) {
       noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
@@ -64,7 +66,7 @@
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
   };
   function tone(type, f0, f1, dur, peak, a = 0.01, filter) {
-    const t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+    const t = now(), o = ctx.createOscillator(), g = ctx.createGain();
     o.type = type;
     o.frequency.setValueAtTime(f0, t);
     o.frequency.exponentialRampToValueAtTime(Math.max(1, f1), t + dur);
@@ -81,7 +83,7 @@
     o.start(t); o.stop(t + dur + 0.05);
   }
   function swept(f0, f1, dur, peak, q = 4, type = 'bandpass', a = 0.2) {
-    const t = ctx.currentTime, s = noise(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    const t = now(), s = noise(), f = ctx.createBiquadFilter(), g = ctx.createGain();
     f.type = type; f.Q.value = q;
     f.frequency.setValueAtTime(f0, t);
     f.frequency.exponentialRampToValueAtTime(f1, t + dur);
@@ -95,7 +97,7 @@
     hit() { if (!live()) return; tone('sine', 130, 34, 0.9, 0.9, 0.004); swept(2400, 160, 0.5, 0.4, 0.7, 'lowpass', 0.01); },
     whoosh(dur = 1) {
       if (!live()) return;
-      const t = ctx.currentTime, s = noise(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      const t = now(), s = noise(), f = ctx.createBiquadFilter(), g = ctx.createGain();
       f.type = 'bandpass'; f.Q.value = 1.3;
       f.frequency.setValueAtTime(200, t);
       f.frequency.exponentialRampToValueAtTime(2800, t + dur * 0.5);
@@ -116,8 +118,11 @@
     boot(i = 0) { if (!live()) return; tone('square', 900 + i * 420, 900 + i * 420, 0.07, 0.05, 0.004, [5000, 2500]); },
     soft() { if (!live()) return; swept(900, 2600, 0.28, 0.05, 1.4, 'bandpass', 0.1); },
     pop() { if (!live()) return; tone('sine', 520, 980, 0.14, 0.07, 0.006); },
-    chime() { if (!live()) return; tone('sine', 784, 783, 0.9, 0.09, 0.005); setTimeout(() => { if (live()) tone('sine', 1175, 1174, 1.0, 0.08, 0.005); }, 120); },
+    chime() { if (!live()) return; tone('sine', 784, 783, 0.9, 0.09, 0.005); const t0 = T; T = t0 + 0.12; tone('sine', 1175, 1174, 1.0, 0.08, 0.005); T = t0; },
   };
+
+  // sfx.at(seconds, 'name', ...args) plays an effect that far ahead on the audio clock, so it lands exactly on time
+  sfx.at = (secs, name, ...a) => { if (!ctx || !sfx[name]) return; const p = T; T = secs; try { sfx[name](...a); } finally { T = p; } };
 
   // before the first click the browser keeps audio suspended: remember the last big cue and play it once allowed
   ['riser', 'hit', 'whoosh', 'down', 'chime', 'ping'].forEach((n) => {
@@ -129,10 +134,8 @@
   });
 
   /* ---------- music ---------- */
-  const music = new Audio();
-  music.loop = true;
-  music.preload = 'none';
-  music.volume = 0;
+  // There is no background music. This silent stand-in only keeps the volume and phase code below simple.
+  const music = { paused: true, volume: 0, readyState: 4, error: null, currentTime: 0, play() { return Promise.resolve(); }, pause() {} };
   const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
   const reloaded = !!nav && nav.type === 'reload';
   if (reloaded) ses.set(T_KEY, '0');
@@ -147,16 +150,17 @@
     }, 40);
   }
   const level = () => (!soundOn ? 0 : phase === 'avatar' ? DUCK : phase === 'laptop' ? LAPTOP : BASE);
+  // makes sure sound is allowed (the browser may hold it back until a tap)
   function startMusic(secs = 1.6) {
     if (!soundOn || reduce && phase === 'page' && !userAsked) return Promise.resolve(false);
     unlock();
-    if (!music.src) music.src = SRC.music;
-    if (resumeAt > 1 && music.readyState < 1) {
-      const at = resumeAt;
-      music.addEventListener('loadedmetadata', () => { try { music.currentTime = at % (music.duration || at + 1); } catch { /* ignore */ } }, { once: true });
-      resumeAt = 0;
-    }
-    return music.play().then(() => { audioLive = true; ramp(level(), secs); if (typeof syncToggles === 'function') syncToggles(); return true; }).catch(() => false);
+    if (!ctx) return Promise.resolve(false);
+    const ok = () => {
+      const run = ctx.state === 'running';
+      if (run) { audioLive = true; if (typeof syncToggles === 'function') syncToggles(); }
+      return run;
+    };
+    return Promise.race([ctx.resume().then(ok), new Promise((r) => setTimeout(() => r(ok()), 250))]).catch(() => false);
   }
   let userAsked = false;
   let audioLive = false;
@@ -176,15 +180,36 @@
       if (l) l.textContent = !soundOn ? 'Sound off' : audioLive ? 'Sound on' : 'Tap for sound';
     });
   }
+  // the voice goes through a small chain: low cut, a little presence, a gentle compressor and make-up gain
+  let voiceOut = null;
+  function voiceChain(v) {
+    if (!ctx || v.__chain) return;
+    try {
+      const src = ctx.createMediaElementSource(v);
+      const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 90;
+      const pr = ctx.createBiquadFilter(); pr.type = 'peaking'; pr.frequency.value = 3200; pr.Q.value = 0.8; pr.gain.value = 2.5;
+      const cp = ctx.createDynamicsCompressor(); cp.threshold.value = -28; cp.knee.value = 14; cp.ratio.value = 3.2; cp.attack.value = 0.006; cp.release.value = 0.22;
+      voiceOut = ctx.createGain(); voiceOut.gain.value = 2.0;
+      src.connect(hp); hp.connect(pr); pr.connect(cp); cp.connect(voiceOut); voiceOut.connect(master);
+      v.__chain = true;
+    } catch { /* the clip still plays without the chain */ }
+  }
+  // unmuting in the middle of the clip would drop the listener into a half-said sentence, so the clip starts over
+  function unmuteVoice() {
+    if (!video) return;
+    const was = video.muted;
+    video.muted = false;
+    if (was && !video.paused && video.currentTime > 0.4 && video.duration && video.currentTime < video.duration - 1.5) video.currentTime = 0;
+  }
   function flipSound() {
     userAsked = true;
     // sound is wanted but the browser is still holding it back: this press is the permission
-    if (soundOn && !audioLive) { hideHint(); unlock(); startMusic(1.2); if (video) video.muted = false; sfx.pop(); return; }
+    if (soundOn && !audioLive) { hideHint(); unlock(); startMusic(1.2); unmuteVoice(); sfx.pop(); return; }
     soundOn = !soundOn;
     ses.set(KEY, soundOn ? 'on' : 'off');
     if (master) master.gain.value = soundOn ? 0.7 : 0;
     syncToggles();
-    if (soundOn) { hideHint(); unlock(); startMusic(1.2); if (video) video.muted = false; sfx.pop(); }
+    if (soundOn) { hideHint(); unlock(); startMusic(1.2); unmuteVoice(); sfx.pop(); }
     else { ramp(0, 0.5); if (video) video.muted = true; }
   }
   function makeToggle(cls) {
@@ -230,7 +255,7 @@
       if (!soundOn) return;
       unlock();
       if (music.paused) startMusic(1.8);
-      if (video) video.muted = false;
+      unmuteVoice();
       sfx.powerUp();
     };
     ['pointerdown', 'keydown', 'touchstart', 'touchend', 'click'].forEach((t) => addEventListener(t, go, true));
@@ -241,12 +266,11 @@
     hideHint();
     if (!soundOn) return;
     unlock();
-    if (video) video.muted = false;
+    unmuteVoice();
     if (music.paused) startMusic(1.6);
     if (ctx && ctx.state === 'running') GESTURES.forEach((t) => removeEventListener(t, onFirstGesture, true));
   }
   GESTURES.forEach((t) => addEventListener(t, onFirstGesture, true));
-  music.addEventListener('playing', () => { audioLive = true; syncToggles(); });
 
   /* ---------- the cinematic stage ---------- */
   let stage = null, video = null;
@@ -492,6 +516,8 @@
     d.classList.add('cinema-hold');
     window.scrollTo(0, 0);
     const v = preloadVideo();
+    unlock();
+    voiceChain(v);
     v.muted = !soundOn;
     $('.cn-avatar', stage).appendChild(v);
 
@@ -554,7 +580,8 @@
       if (ended) return;
       ended = true;
       stageEl.classList.add('is-dissolve');
-      sfx.down(1.5);
+      if (voiceOut && ctx) voiceOut.gain.setTargetAtTime(0, ctx.currentTime + 0.25, 0.2);   // the voice fades out instead of being cut
+      sfx.at(0.3, 'down', 1.5);
       phase = 'page';
       apply(3.2);
       later(moveName, 1300);
@@ -566,13 +593,18 @@
     addEventListener('keydown', esc);
 
     // act one: the name arrives in depth
-    sfx.riser(0.75);
-    for (let i = 0; i < 7; i++) later(() => sfx.blip(260 + (6 - i) * 70, 0.045), 120 + (6 - i) * 85 + 260);
+    // the sounds sit on the audio clock: a riser that peaks at 0.70 s, seven rising blips that end just before it, then the hit on the beat
+    sfx.at(0, 'riser', 0.7);
+    for (let i = 0; i < 7; i++) sfx.at((100 + i * 95) / 1000, 'blip', 260 + i * 70, 0.045);
+    sfx.at(0.7, 'hit');
     later(() => stageEl.classList.add('is-in'), 40);
-    later(() => { sfx.hit(); stageEl.classList.add('is-glitch'); later(() => stageEl.classList.remove('is-glitch'), 420); }, 700);
+    later(() => { stageEl.classList.add('is-glitch'); later(() => stageEl.classList.remove('is-glitch'), 420); }, 700);
 
     // act two: the avatar speaks, the music steps back
-    later(() => {
+    let voiced = false;
+    const startVoice = () => {
+      if (voiced || ended) return;
+      voiced = true;
       phase = 'avatar';
       apply(1.2);
       stageEl.classList.add('is-speaking');
@@ -586,12 +618,14 @@
         const q = v.play();
         if (q && q.catch) q.catch(() => later(dissolve, 1200));
       });
-    }, 900);
+    };
+    // wait until the clip is buffered, so the voice never stutters; give up waiting after four seconds
+    later(() => { if (v.readyState >= 3) startVoice(); else { v.addEventListener('canplay', startVoice, { once: true }); later(startVoice, 4000); } }, 900);
 
     v.addEventListener('ended', dissolve, { once: true });
     v.addEventListener('error', () => later(dissolve, 400), { once: true });
     v.addEventListener('timeupdate', () => {
-      if (v.duration && v.currentTime > v.duration - 0.85) dissolve();
+      if (v.duration && v.currentTime > v.duration - 0.4) dissolve();
     });
     later(dissolve, 16000); // never trap anyone behind an animation
   }
@@ -614,6 +648,8 @@
       if (eligible()) preloadVideo();
     },
     phase(p) { phase = p; },
+    // reads the loudness of everything going to the speakers (for testing; it adds an analyser the first time it is called)
+    meter() { if (!ctx || !master) return null; if (!this._an) { this._an = ctx.createAnalyser(); this._an.fftSize = 2048; master.connect(this._an); } const d = new Float32Array(this._an.fftSize); this._an.getFloatTimeDomainData(d); let q = 0; for (const x of d) q += x * x; return +(20 * Math.log10(Math.sqrt(q / d.length) || 1e-6)).toFixed(1); },
     debug() { return { ctx: ctx && ctx.state, musicPaused: music.paused, volume: +music.volume.toFixed(3), soundOn, audioLive, phase, level: level(), readyState: music.readyState, error: music.error && music.error.code }; },
   };
 

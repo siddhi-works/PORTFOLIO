@@ -2043,3 +2043,61 @@ html:not(.js) .pan { flex: 1 1 0; }
 
 /* jumping to a section lands its heading just under the top bar */
 @media (min-width: 761px) { main.home > section[id] { scroll-margin-top: 84px; } }
+
+
+/* ============ v50: the calm layer (this copy only) ============
+   Removes the decoration that every generated site shares, keeps what is yours.
+   Nothing here is needed for the site to work; delete this block to get the old look back. */
+
+/* decoration that carries no information */
+.hud, .grid-floor, .scan, .spine, .marquee, .sec-tag, #field, .fx-wash, .fx-spot, .fx-ring { display: none !important; }
+.hud-c { display: none !important; }
+.badge .id-bars, .badge .id-hole { display: none; }
+
+/* no glow, no glass on content */
+main *, main *::before, main *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+main :is(.cta, .ghost, .btn, .hcard, .hcard-in, .tcard, .tcore, .cbox, .frame, .cpanel, .ctile, .orbit-link, .pan, .svc-panel, .svc-view, .svc-bar, .badge, .case-boxes > *, .flow-boxes li, .chips li, .tchips li, .stat, .tl-item, .pcard):not(:focus-visible) { box-shadow: none !important; }
+.caret { box-shadow: none; }
+
+/* one corner radius for every panel */
+main :is(.hcard-in, .tcard, .tcore, .cbox, .frame, .cpanel, .ctile, .orbit-link, .svc-panel, .svc-view, .badge, .case-boxes > *) { border-radius: 12px; }
+
+/* skills: plain lists, not fake terminal windows */
+.tcard::before, .tcard::after, .tcard .tchips::after { display: none; }
+:root .tcard { padding-top: 18px; }
+:root .tcard-title { position: static; margin: 0 0 12px; }
+
+/* project pages: the steps as a pipeline diagram with a pulse running along it */
+.flow.flow-boxes { position: relative; container-type: inline-size; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; padding-top: 6px; }
+.flow-boxes li { position: relative; border: 0 !important; background: none !important; padding: 44px 18px 0 0 !important; border-radius: 0; }
+.flow-boxes li .flow-i { position: absolute; left: 0; top: 0; width: 30px; height: 30px; background: #0c0b09; color: var(--amber); border: 2px solid var(--amber); z-index: 1; }
+.flow-boxes li:not(:last-child)::after { content: ''; position: absolute; left: 34px; right: 4px; top: 14px; height: 2px; background: linear-gradient(90deg, var(--amber), rgba(228, 167, 63, 0.25)); }
+.flow-boxes::before { content: ''; position: absolute; left: 30px; top: 11px; width: 8px; height: 8px; border-radius: 50%; background: var(--fg); z-index: 2; animation: flow-pulse 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes flow-pulse { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { transform: translateX(calc(100cqw - 64px)); opacity: 0; } }
+.flow-boxes .flow-k { font-weight: 800; font-size: 1.05rem; color: var(--fg); }
+.flow-boxes .flow-v { font-size: 0.95rem; line-height: 1.5; opacity: 0.85; }
+@media (max-width: 860px) {
+  .flow.flow-boxes { grid-auto-flow: row; gap: 0; }
+  .flow-boxes li { padding: 0 0 22px 48px !important; }
+  .flow-boxes li:not(:last-child)::after { left: 14px; right: auto; top: 34px; bottom: 4px; width: 2px; height: auto; background: linear-gradient(180deg, var(--amber), rgba(228, 167, 63, 0.25)); }
+  .flow-boxes::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .flow-boxes::before { animation: none; display: none; } }
+
+/* no page-transition wipe: pages simply appear */
+#veil, .veil { display: none !important; }
+
+/* ============ page transitions: a soft cross-fade ============
+   The browser keeps the top bar (and the bottom bar on phones) still and fades the page content,
+   with a short rise. Browsers without support simply navigate straight away. */
+@view-transition { navigation: auto; }
+.bar { view-transition-name: topbar; }
+.bnav { view-transition-name: bottomnav; }
+::view-transition-group(topbar), ::view-transition-group(bottomnav) { animation-duration: 0s; }
+::view-transition-old(root) { animation: vt-out 0.18s ease-in both; }
+::view-transition-new(root) { animation: vt-in 0.4s cubic-bezier(0.22, 0.9, 0.2, 1) both; }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}

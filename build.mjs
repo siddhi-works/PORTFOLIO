@@ -278,7 +278,6 @@ ${ld}
 <body data-page="${current}">
 <a class="skip" href="#main">Skip to content</a>
 ${portal()}
-${veil()}
 ${bar(current)}
 ${bnav(current)}
 ${body}
@@ -365,7 +364,7 @@ function secHead(tag, title, sub, id) {
   return `
 <header class="sec-head">
   <p class="sec-tag">${scr(tag)}</p>
-  <h2 class="sec-title"${id ? ` id="${id}"` : ''}>${esc(title)}</h2>
+  <h2 class="sec-title"${id ? ` id="${id}"` : ''}>${esc(String(title).replace(/\.$/, ''))}</h2>
   ${sub ? `<p class="sec-sub">${esc(sub)}</p>` : ''}
 </header>`;
 }
@@ -576,7 +575,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
 
   <section class="sec work" id="work" aria-labelledby="work-h">
     <div class="proj-orbit" data-orbit>
-      <div class="orbit-core"><h2 class="orbit-title" id="work-h">Selected projects.</h2></div>
+      <div class="orbit-core"><h2 class="orbit-title" id="work-h">Selected projects</h2></div>
       <div class="orbit-ring">
         ${groupsForOrbit.map((g, i) => `
         <div class="orbit-item" style="--a:${i * 90}deg">

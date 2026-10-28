@@ -287,6 +287,6 @@
     void raf;
   }
 
-  const go = () => { mountField(); document.querySelectorAll('canvas[data-visual]').forEach(mount); };
+  const go = () => { document.querySelectorAll('canvas[data-visual]').forEach(mount); };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go();
 })();

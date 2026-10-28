@@ -593,10 +593,10 @@ export default {
 
   // The Projects section is split by the technology behind the work. Cards are the same as before.
   projectGroups: [
-    { id: 'agentic', image: '/media/orbit/agentic.jpg', title: 'Agentic AI and LLM systems', line: 'Multi-agent workflows, LangGraph and LangChain, language models with checks and human fallbacks.', projects: ['claimmate', 'aria', 'verdict', 'resolve-iq'] },
-    { id: 'data', image: '/media/orbit/data.jpg', title: 'Data analytics and research ML', line: 'Large datasets, dashboards, feature engineering, classical machine learning, a published paper.', projects: ['chicago-crime', 'bot-detection'] },
-    { id: 'deep', image: '/media/orbit/deep.jpg', title: 'Deep learning (CV, NLP, etc.)', line: 'CNNs and transfer learning (ResNet-50), image pipelines, models served through a web app.', projects: ['skin-lesion', 'chest-xray'] },
-    { id: 'platforms', image: '/media/orbit/platforms.jpg', title: 'Full-stack platforms and integration', line: 'APIs, multilingual interfaces, GIS, data integration, deployed apps for real users.', projects: ['bhusamhita', 'censusguru'] },
+    { id: 'agentic', image: '/media/projects/claimmate.png', title: 'Agentic AI and LLM systems', line: 'Multi-agent workflows, LangGraph and LangChain, language models with checks and human fallbacks.', projects: ['claimmate', 'aria', 'verdict', 'resolve-iq'] },
+    { id: 'data', image: '/media/projects/chicago-crime.webp', title: 'Data analytics and research ML', line: 'Large datasets, dashboards, feature engineering, classical machine learning, a published paper.', projects: ['chicago-crime', 'bot-detection'] },
+    { id: 'deep', image: '/media/projects/skin-lesion.jpg', title: 'Deep learning and computer vision', line: 'CNNs and transfer learning (ResNet-50), image pipelines, models served through a web app.', projects: ['skin-lesion', 'chest-xray'] },
+    { id: 'platforms', image: '/media/projects/bhusamhita.webp', title: 'Full-stack platforms and integration', line: 'APIs, multilingual interfaces, GIS, data integration, deployed apps for real users.', projects: ['bhusamhita', 'censusguru'] },
     { id: 'more', title: 'More work', line: 'Smaller builds, each with its code on GitHub.', projects: ['plagiarism', 'devops-demo'] },
   ],
 
