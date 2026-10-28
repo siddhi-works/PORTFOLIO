@@ -1812,3 +1812,187 @@ body { font-family: var(--f-text); font-weight: 400; font-variation-settings: no
   .pan.is-on .pan-timer { animation: none; transform: scaleX(1); }
 }
 html:not(.js) .pan { flex: 1 1 0; }
+
+/* v43: services as vertical bars; each one is a link to its page */
+.svc-bars { list-style: none; margin: clamp(10px, 2vw, 24px) 0 0; padding: 0; border-bottom: 1px solid var(--line); }
+.svc-bars li { border-top: 1px solid var(--line); }
+.svc-bar { position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr) 44px; align-items: center; gap: clamp(14px, 2vw, 26px); padding: clamp(16px, 2vw, 26px) 6px; color: var(--fg); text-decoration: none; overflow: hidden; isolation: isolate; }
+.svc-bar::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(228, 167, 63, 0.16), rgba(228, 167, 63, 0.03)); transform: scaleX(0); transform-origin: left; transition: transform 0.6s cubic-bezier(0.22, 0.9, 0.2, 1); }
+.svc-bar:hover::before, .svc-bar:focus-visible::before { transform: scaleX(1); }
+.svc-bar:focus-visible { outline: 2px solid var(--amber); outline-offset: -3px; }
+.svc-bar-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); color: var(--amber); transition: background-color 0.4s, color 0.4s, border-color 0.4s; }
+.svc-bar-ic svg { width: 26px; height: 26px; }
+.svc-bar:hover .svc-bar-ic, .svc-bar:focus-visible .svc-bar-ic { background: var(--amber); color: var(--on-amber); border-color: var(--amber); }
+.svc-bar-t { display: grid; gap: 3px; min-width: 0; }
+.svc-bar-t b { font: 800 clamp(1.25rem, 2.6vw, 2.1rem)/1.1 var(--f-display); letter-spacing: -0.015em; }
+.svc-bar-t span { font: 400 clamp(0.92rem, 1.1vw, 1.02rem)/1.4 var(--f-text); color: var(--fg-2); }
+.svc-bar-go { display: grid; place-items: center; width: 44px; height: 44px; color: var(--fg-3); transition: transform 0.4s cubic-bezier(0.3, 1.4, 0.5, 1), color 0.3s; }
+.svc-bar:hover .svc-bar-go, .svc-bar:focus-visible .svc-bar-go { color: var(--amber); transform: translateX(6px); }
+@media (prefers-reduced-motion: reduce) { .svc-bar::before, .svc-bar-ic, .svc-bar-go { transition: none; } }
+
+/* ============ v44: the phone layout. It is its own design, not the desktop shrunk. ============
+   Shorter sections, one column, even rhythm, nothing that scrolls sideways, thumb-sized targets. */
+
+/* the intro: centre the character in the frame (it was left-aligned and wider than the screen) */
+@media (max-width: 760px) {
+  .cn-avatar { display: block; }
+  .cn-video { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); height: min(74svh, 160vw); }
+}
+
+@media (max-width: 760px) {
+  :root { --m-gap: 36px; }
+  /* one rhythm: the same space above and below every section, one heading size */
+  :root .sec { padding-top: var(--m-gap); padding-bottom: var(--m-gap); }
+  :root .sec-tag { display: none; }
+  :root .sec-title, :root .sec h2.sec-title { font-size: clamp(1.75rem, 8.2vw, 2.2rem); line-height: 1.05; }
+  :root .sec-sub { font-size: 0.98rem; margin-top: 8px; }
+  .marquee { display: none; }
+
+  /* numbers: a 2 by 2 grid, not four tall rows */
+  .strip { display: grid; grid-template-columns: 1fr 1fr; }
+  .strip .stat { padding: 16px 12px; border-left: 0; border-top: 1px solid var(--line); }
+  .strip .stat:nth-child(-n+2) { border-top: 0; }
+  .strip .stat:nth-child(even) { border-left: 1px solid var(--line); }
+  :root .stat-n { font-size: clamp(2rem, 10vw, 2.6rem); }
+  :root .stat-label, .stat-sub, .stat-a { font-size: 0.88rem; line-height: 1.3; }
+
+  /* about: the words, then the facts. The ID card is desktop decoration. */
+  .badge { display: none; }
+  .about-facts { margin-top: 14px; }
+
+  /* skills: one column, concepts as chips */
+  .tcards { grid-template-columns: 1fr; gap: 12px; }
+  .tcore { grid-template-columns: 1fr; gap: 16px; padding: 16px; }
+  .tcore-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tcore-list li { border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 0.92rem; }
+  .tcore-list li::before { display: none; }
+  .pmap { display: none; }
+
+  /* wins: tighter panels */
+  .triptych .pan { height: 92px; }
+  .triptych .pan.is-on { height: min(400px, 112vw); }
+
+  /* community: no sideways scroll. The cards stack, one after another. */
+  :root .frames { display: grid; grid-template-columns: 1fr; gap: 18px; overflow: visible; padding: 8px 0 0; scroll-snap-type: none; }
+  :root .frame { flex: none; width: 100%; transform: none; padding: 8px 8px 14px; }
+  .frame-facts { display: grid; gap: 4px; }
+
+  /* services: the bars are already thumb-sized; trim the extra line */
+  .svc-bar { grid-template-columns: 44px minmax(0, 1fr) 32px; padding: 14px 2px; gap: 12px; }
+  .svc-bar-ic { width: 44px; height: 44px; } .svc-bar-ic svg { width: 22px; height: 22px; }
+  .svc-bar-t b { font-size: 1.2rem; }
+  .svc-bar-t span { font-size: 0.88rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .svc-bar-go { width: 32px; }
+
+  /* contact: short. Title, three fields, one button, four quick links. */
+  :root .cpanel { padding: 22px 18px; gap: 18px; border-radius: 18px; }
+  :root .cpanel-title { font-size: clamp(1.55rem, 7.4vw, 1.9rem); line-height: 1.1; }
+  .cpanel-main .sec-sub { font-size: 0.92rem; margin: 8px 0 14px; }
+  .cform { gap: 12px; }
+  .cform-row { grid-template-columns: 1fr; gap: 12px; }
+  .cform .cf:has(input[name="organisation"]) { display: none; }
+  .cf input, .cf textarea { padding: 0.7em 0.9em; }
+  .cf textarea { min-height: 5.2rem; }
+  .cf-purpose { gap: 6px; }
+  .cf-purpose legend { font-size: 0.92rem; margin-bottom: 6px; }
+  .chip-radio span { min-height: 40px; padding: 0 0.9em; font-size: 0.9rem; }
+  .cform-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .cform-actions .cta { width: 100%; justify-content: center; min-height: 48px; }
+  .cform-actions .ghost { display: none; }
+  .ctiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ctile { padding: 10px 12px; gap: 10px; min-height: 52px; }
+  .ctile:nth-child(2) { display: none; }          /* the second email */
+  .ctile .copy { display: none; }
+  .ctile-ic { width: 32px; height: 32px; } .ctile-ic svg { width: 20px; height: 20px; }
+  .ctile-k { display: block; font-size: 0.85rem; }
+  .ctile-v { font-size: 0; }                          /* the label says what it is; the link still carries the full text */
+
+  /* footer: two lines */
+  :root .foot { padding: 22px var(--pad) 26px; }
+  .foot-meta { display: grid; gap: 10px; justify-items: start; font-size: 0.92rem; }
+  .foot-links { flex-wrap: wrap; gap: 4px 16px; }
+}
+
+/* v44b: phone fixes after testing at 320px */
+@media (max-width: 760px) {
+  :root .tcore-list { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  :root .tcore-list li { width: auto; }
+  :root .cf-purpose { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  :root .cf-purpose legend { width: 100%; }
+
+  /* community: compact two-up tiles, last one full width; swipe and dots, no arrows */
+  :root .frames { grid-template-columns: 1fr 1fr; gap: 10px; }
+  :root .frame { padding: 6px 6px 10px; min-width: 0; }
+  :root .frame:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .frame-photo { aspect-ratio: 1 / 1; }
+  .frame:last-child:nth-child(odd) .frame-photo { aspect-ratio: 16 / 9; }
+  .fp-arrow { display: none; }
+  :root .frame-org { font-size: 1rem; line-height: 1.15; margin-top: 8px; }
+  :root .frame-role { font-size: 0.84rem; line-height: 1.3; }
+  .frame-facts li:nth-child(n+2) { display: none; }
+  :root .frame-facts { font-size: 0.84rem; margin-top: 6px; }
+}
+
+/* v44c: phone, second pass */
+@media (max-width: 760px) {
+  /* contact: four quick links in a 2 by 2 grid, label only */
+  :root .ctiles { grid-template-columns: 1fr 1fr; }
+  :root .ctile .ctile-v { font-size: 0; }
+  :root .ctile .ctile-k { font-size: 0.95rem; font-weight: 700; color: var(--fg); }
+  :root .ctile { grid-template-columns: auto 1fr; }
+  /* footer: one line and the résumé; the quick links are right above */
+  .foot .socials, .foot .socials-sm, .foot-links li:first-child { display: none; }
+  /* skills: tighter terminal windows, and the generic "working style" list is desktop-only */
+  :root .tcard { padding-top: 2.7rem; padding-bottom: 14px; }
+  .tcore-col:nth-child(3) { display: none; }
+}
+
+/* ============ v45: Android conventions on phones ============
+   Bottom navigation in the thumb zone, a slim top app bar, a bottom sheet for the form, tap ripples,
+   tonal surfaces. Desktop never sees any of this. */
+.bnav, .bar-brand, .sheet-head, .sheet-open { display: none; }
+
+@media (max-width: 760px) {
+  html { -webkit-tap-highlight-color: transparent; }
+  a, button, label, summary { touch-action: manipulation; }
+  body { padding-bottom: 84px; overscroll-behavior-y: none; }
+
+  /* top app bar: the name on the left, the résumé on the right, nothing else */
+  :root .bar { top: 0; left: 0; right: 0; width: auto; height: 56px; padding: 0 14px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-radius: 0; border: 0; border-bottom: 1px solid var(--line); background: rgba(12, 11, 9, 0.9); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transform: none; }
+  .bar-menu, .bar-nav, .bar-tools .socials, .bar-tools .bar-contact { display: none !important; }
+  .bar-brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--fg); text-decoration: none; font: 700 1.02rem/1 var(--f-display); letter-spacing: -0.01em; }
+  .bar-brand-mark { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--amber); color: var(--on-amber); font: 800 0.82rem/1 var(--f-display); }
+  :root .bar-resume { min-height: 40px; padding: 0 18px; border-radius: 999px; background: rgba(228, 167, 63, 0.18); color: var(--amber-hi); border: 0; font-size: 0.95rem; }
+  .hud, .spine { display: none !important; }
+
+  /* bottom navigation */
+  .bnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 120; display: grid; grid-template-columns: repeat(5, 1fr); height: 68px; padding: 6px 4px 8px; background: rgba(22, 19, 14, 0.94); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-top: 1px solid var(--line); }
+  .bnav a { position: relative; display: grid; justify-items: center; align-content: center; gap: 3px; color: var(--fg-3); text-decoration: none; overflow: hidden; border-radius: 14px; min-height: 52px; transition: color 0.25s; }
+  .bn-pill { display: grid; place-items: center; width: 58px; height: 30px; border-radius: 16px; transition: background-color 0.3s, transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1); }
+  .bn-label { font: 600 0.78rem/1 var(--f-display); letter-spacing: 0.01em; }
+  .bnav a.is-on { color: var(--fg); }
+  .bnav a.is-on .bn-pill { background: rgba(228, 167, 63, 0.26); color: var(--amber-hi); transform: scale(1.02); }
+  .bnav a:focus-visible { outline: 2px solid var(--amber); outline-offset: -2px; }
+
+  /* the tap ripple */
+  .ripple { position: absolute; border-radius: 50%; background: rgba(255, 220, 150, 0.28); transform: scale(0); pointer-events: none; animation: ripple 0.6s ease-out forwards; }
+  @keyframes ripple { to { transform: scale(1); opacity: 0; } }
+  .cta, .ghost, .svc-bar, .chip-radio span, .sheet-open, .ctile { position: relative; overflow: hidden; }
+
+  /* contact: the page keeps the quote and the quick links. The form lives in a sheet. */
+  .sheet-open { display: inline-flex; justify-content: center; align-items: center; width: 100%; min-height: 52px; margin: 4px 0 6px; font-size: 1.02rem; }
+  .cform:not(.is-sheet) { display: none; }
+  .cform.is-sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; display: grid; gap: 12px; max-height: 88svh; overflow-y: auto; margin: 0; padding: 0 18px calc(22px + env(safe-area-inset-bottom, 0px)); background: #17130d; border-radius: 26px 26px 0 0; border-top: 1px solid rgba(228, 167, 63, 0.35); box-shadow: 0 -30px 60px -20px rgba(0, 0, 0, 0.8); animation: sheet-up 0.42s cubic-bezier(0.22, 0.9, 0.2, 1) both; overscroll-behavior: contain; }
+  @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+  .sheet-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 22px 0 10px; background: #17130d; font: 800 1.2rem/1 var(--f-display); }
+  .sheet-grab { position: absolute; left: 50%; top: 8px; width: 40px; height: 4px; margin-left: -20px; border-radius: 4px; background: rgba(238, 231, 218, 0.3); }
+  .sheet-close { min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(238, 231, 218, 0.1); color: var(--fg); font: 600 0.95rem/1 var(--f-display); cursor: pointer; }
+  .sheet-scrim { position: fixed; inset: 0; z-index: 290; background: rgba(0, 0, 0, 0); transition: background-color 0.35s; }
+  .sheet-scrim.is-on { background: rgba(0, 0, 0, 0.62); }
+  html.sheet-open, html.sheet-open body { overflow: hidden; }
+  .cform.is-sheet .cform-row { display: grid; grid-template-columns: 1fr; }
+  .cform.is-sheet .cf input, .cform.is-sheet .cf textarea { font-size: 1rem; background: rgba(238, 231, 218, 0.07); border-radius: 14px; }
+  .cform.is-sheet .cform-actions { position: sticky; bottom: 0; padding-top: 8px; background: linear-gradient(to top, #17130d 70%, transparent); }
+  :root .cform.is-sheet .cform-actions .ghost { display: none; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) { .cform.is-sheet { animation: none; } .ripple { display: none; } }

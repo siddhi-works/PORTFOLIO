@@ -25,7 +25,7 @@ export default {
     status: 'Open to work',
     openTo: ['Internships', 'Full-time roles', 'Freelance projects', 'Collaborations'],
     description:
-      'Siddhi Kale is a full-stack and AI engineer in Pune. TechVerse 2026 First Prize winner, published at ICAIML-AE 2026 (Springer Nature). Builds AI agents, data dashboards and production web apps.',
+      'Siddhi Kale is a full-stack and AI engineer in Pune. TechVerse 2026 First Prize winner, author of a published research paper (Springer Nature). Builds AI agents, data dashboards and production web apps.',
     showSlotHints: false, // true shows marked slots for missing photos and files
   },
 
@@ -133,7 +133,7 @@ export default {
       name: 'Bot Detection in R',
       short: 'Bot Detection',
       line: 'A Random Forest model that separates bots from real accounts by reading what they post and how they behave. 90% accuracy on about 10,000 held-out accounts. Published at ICAIML-AE 2026.',
-      badge: 'Published at ICAIML-AE 2026',
+      badge: 'Published research paper',
       top: true,
       page: true,
       visual: 'bots',
@@ -735,7 +735,7 @@ export default {
       tag: 'Main résumé',
       summary: 'Machine learning models, agents and data pipelines.',
       points: [
-        '90% accuracy detecting bot accounts on about 10,000 held-out accounts, published at ICAIML-AE 2026',
+        '90% accuracy detecting bot accounts on about 10,000 held-out accounts, published as a research paper with Springer Nature',
         'Chest X-ray classification with ResNet-50 and transfer learning, served through Flask',
         'Multi-agent systems built with LangGraph, LangChain and Gemini 2.5 Flash',
       ],
@@ -790,8 +790,8 @@ export default {
       href: '/work/bhusamhita/',
     },
     {
-      slug: 'icaiml-ae-2026', date: ['Jul', '2026'], kind: 'paper', title: 'Published research', result: 'ICAIML-AE 2026',
-      line: 'Co-authored a machine learning paper on spotting coordinated bot accounts, published by Atlantis Press (Springer Nature).',
+      slug: 'icaiml-ae-2026', date: ['Jul', '2026'], kind: 'paper', title: 'Research paper, international conference', result: 'Published paper',
+      line: 'Co-authored a machine learning paper on spotting coordinated bot accounts. Presented at an international AI conference (ICAIML-AE 2026) and published by Atlantis Press, part of Springer Nature.',
       href: '/records/icaiml-ae-2026/',
     },
   ],
@@ -818,8 +818,8 @@ export default {
       project: 'chicago-crime',
     },
     'icaiml-ae-2026': {
-      headline: 'ICAIML-AE 2026',
-      result: 'Published research',
+      headline: 'Published research paper',
+      result: 'Springer Nature',
       facts: [
         ['Conference', 'International Conference on Artificial Intelligence and Machine Learning for Agro-Ecosystems (ICAIML-AE 2026)'],
         ['Dates', '2 to 3 July 2026'],
@@ -867,7 +867,7 @@ export default {
     { when: 'Sep 2024', what: 'Research volunteer with NSS at ADYPU. 8 youth programmes, 100+ children a year.' },
     { when: '2026', what: 'Won the Smart India Hackathon internal round with BhuSamhita.' },
     { when: '2026', what: 'Led Team Moleculens to the TechVerse First Prize with Chicago Crime Analytics.' },
-    { when: '2026', what: 'Co-authored a paper published at ICAIML-AE 2026 (Springer Nature).' },
+    { when: '2026', what: 'Co-authored a research paper presented at an international AI conference and published by Springer Nature.' },
   ],
 
   // Where each volunteering photo is centred in its frame (CSS object-position), so faces stay in view.

@@ -116,12 +116,28 @@ function veil() {
   return `<div id="veil" class="veil" aria-hidden="true">${w.map((f) => `<i class="veil-slab" style="--w:${f}"></i>`).join('')}<span class="veil-label"></span></div>`;
 }
 
+
+// Android-style bottom navigation: five places, a tonal pill behind the active one. Phones only (CSS).
+function bnav(current) {
+  const h = current === 'home' ? '' : '/';
+  const it = (id, label, svg, extra = '') => `<a href="${h}#${id}" data-sec="${id}"${extra}><span class="bn-pill">${svg}</span><span class="bn-label">${label}</span></a>`;
+  return `
+<nav class="bnav" aria-label="Sections">
+  ${it('top', 'Home', '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4v-5H9v5H5a1 1 0 0 1-1-1v-7.5Z"/></svg>')}
+  ${it('work', 'Work', '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>')}
+  ${it('services', 'Services', '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>')}
+  ${it('records', 'Wins', '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></svg>')}
+  ${it('contact', 'Contact', '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg>', ' data-sheet')}
+</nav>`;
+}
+
 function bar(current) {
   const h = current === 'home' ? '' : '/';
   const link = (id, label, active) =>
     `<a class="link" href="${h}#${id}" data-section="${id}" data-label="${esc(label)}"${active ? ' aria-current="page"' : ''}>${esc(label)}</a>`;
   return `
 <header class="bar">
+  <a class="bar-brand" href="/" data-label="${esc(site.name)}"><span class="bar-brand-mark">${esc(site.initials)}</span>${esc(site.name)}</a>
   <button class="bar-menu" type="button" aria-expanded="false" aria-controls="bar-nav"><span class="bar-menu-t">Menu</span></button>
   <nav class="bar-nav" id="bar-nav" aria-label="Main">
     ${link('work', 'Projects', current === 'work')}
@@ -264,6 +280,7 @@ ${ld}
 ${portal()}
 ${veil()}
 ${bar(current)}
+${bnav(current)}
 ${body}
 ${footer()}
 ${hud()}
@@ -272,7 +289,7 @@ ${hud()}
 <script src="/assets/fx.js" defer></script>
 <script src="/assets/scroll.js" defer></script>
 <script src="/assets/form.js" defer></script>
-<script src="/assets/interact.js" defer></script><script src="/assets/honours.js" defer></script><script src="/assets/site.js" defer></script>
+<script src="/assets/interact.js" defer></script><script src="/assets/honours.js" defer></script><script src="/assets/mobile.js" defer></script><script src="/assets/site.js" defer></script>
 </body>
 </html>`;
 }
@@ -623,23 +640,15 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
   </section>
 
   <section class="sec services" id="services" aria-labelledby="svc-h">
-    ${secHead('Services', 'What I can build for you.', 'Each service is backed by work I have already shipped.', 'svc-h')}
-    <div class="svc-panel" data-svc>
-      <div class="svc-tabs" role="tablist" aria-label="Services">
-        ${C.services.map((s, i) => `<button class="svc-tab" type="button" role="tab" id="svc-t-${i}" aria-selected="${i === 0}" aria-controls="svc-p-${i}" tabindex="${i === 0 ? 0 : -1}"><span class="svc-tab-ic">${icon.svc[s.icon] || icon.svc.agent}</span><span class="svc-tab-name">${esc(s.titleParts.join(' '))}</span></button>`).join('')}
-      </div>
-      <div class="svc-views">
-        ${C.services.map((s, i) => `
-        <article class="svc-view" role="tabpanel" id="svc-p-${i}" aria-labelledby="svc-t-${i}"${i === 0 ? '' : ' hidden'}>
-          <h3 class="svc-view-title">${esc(s.name)}</h3>
-          <p class="svc-view-line">${esc(s.line)}</p>
-          <p class="svc-view-pitch">${esc(s.pitch)}</p>
-          <ul class="svc-proof">${s.projects.map(bySlug).filter(Boolean).map((p) => { const h = p.page ? caseUrl(p) : github(p.repo); const inner = `<b>${esc(p.short || p.name)}</b><span>${esc(p.card || p.line)}</span>`; return h ? `<li><a href="${h}"${p.page ? ` data-label="${esc(p.short || p.name)}"` : ' target="_blank" rel="noopener"'}>${inner}</a></li>` : `<li><div>${inner}</div></li>`; }).join('')}</ul>
-          <ul class="chips">${s.tools.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-          <a class="cta" href="${serviceUrl(s)}" data-label="${esc(s.short)}">See the full page</a>
-        </article>`).join('')}
-      </div>
-    </div>
+    ${secHead('Services', 'What I can build for you.', 'Pick one to see what I deliver, how I work and the projects behind it.', 'svc-h')}
+    <ul class="svc-bars">
+      ${C.services.map((s) => `
+      <li><a class="svc-bar" href="${serviceUrl(s)}" data-label="${esc(s.short)}">
+        <span class="svc-bar-ic" aria-hidden="true">${icon.svc[s.icon] || icon.svc.agent}</span>
+        <span class="svc-bar-t"><b>${esc(s.name)}</b><span>${esc(s.line)}</span></span>
+        <span class="svc-bar-go" aria-hidden="true">${icon.svc.arrow}</span>
+      </a></li>`).join('')}
+    </ul>
     <p class="svc-more"><a class="textlink" href="#contact">A different project in mind? Say hello.</a></p>
   </section>
 
@@ -688,7 +697,9 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
         <p class="sec-tag">${scr('Contact')}</p>
         <h2 class="cpanel-title" id="contact-h"><span class="q" aria-hidden="true">“</span>Great collaborations start with a hello.<span class="q" aria-hidden="true">”</span></h2>
         <p class="sec-sub">${esc(openLine)} Based in ${esc(site.place)}.</p>
+        <button class="cta sheet-open" type="button">Write a message</button>
         <form class="cform" novalidate data-endpoint="${esc(contact.formEndpoint || '')}" data-to="${(contact.emails || [contact.email]).join(',')}" aria-describedby="cform-status">
+          <div class="sheet-head"><span class="sheet-grab" aria-hidden="true"></span><b>Say hello</b><button class="sheet-close" type="button" aria-label="Close">Close</button></div>
           <div class="cform-row">
             <label class="cf"><span>Your name</span><input name="name" type="text" autocomplete="name" required placeholder="Ada Lovelace"></label>
             <label class="cf"><span>Organisation</span><input name="organisation" type="text" autocomplete="organization" placeholder="Company, college or team"></label>
@@ -1143,7 +1154,7 @@ function markdownSite(full) {
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 
-for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js'])
+for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js', 'mobile.js'])
   fs.copyFileSync(path.join(root, 'src', f), path.join(out, 'assets', f));
 if (fs.existsSync(path.join(root, 'media'))) fs.cpSync(path.join(root, 'media'), path.join(out, 'media'), { recursive: true });
 
