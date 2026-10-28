@@ -520,6 +520,9 @@
     voiceChain(v);
     v.muted = !soundOn;
     $('.cn-avatar', stage).appendChild(v);
+    // the picture is a cartoon drawn in code; the clip keeps playing for its voice and drives the mouth
+    let stopToon = () => {};
+    if (window.SKToon) { v.classList.add('is-voice-only'); stopToon = SKToon.drive(v, SKToon.mount($('.cn-avatar', stage))); }
 
     const heroName = $('.hero .name');
     const sizer = $('.cn-sizer', stage);
@@ -543,6 +546,7 @@
       d.classList.add('cinema-landed');
       d.classList.remove('is-cinema');
       stopFx();
+      stopToon();
       stopCaps();
       sfx.chime();
       try { v.pause(); } catch { /* ignore */ }

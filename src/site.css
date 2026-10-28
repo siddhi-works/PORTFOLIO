@@ -2101,3 +2101,18 @@ main :is(.hcard-in, .tcard, .tcore, .cbox, .frame, .cpanel, .ctile, .orbit-link,
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+
+/* ============ the cartoon in the intro ============
+   The clip still plays, but only for its voice. The picture is the drawn character. */
+.cn-video.is-voice-only { position: absolute; width: 2px; height: 2px; opacity: 0.01; pointer-events: none; }
+.cn-toon { height: min(80svh, 780px); aspect-ratio: 400 / 540; filter: drop-shadow(0 0 36px rgba(228, 167, 63, 0.22)); }
+.cn-toon .toon-svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.cn-toon .toon-eye { transition: transform 0.06s ease-out; }
+@media (min-width: 981px) { .cn-toon { transform: translateX(min(35vw, 560px)); } }
+@media (max-width: 760px) { .cn-toon { height: min(46svh, 100vw); } }
+/* phones: the character stands on the bottom edge of the screen */
+@media (max-width: 760px) {
+  .cn-avatar { display: grid; place-items: end center; }
+  .cn-toon { margin-bottom: -2px; }
+}
