@@ -91,7 +91,6 @@ export default {
 
   // Experience, newest first. From the resume.
   experience: [
-    { when: 'Sep 2026 – Present', type: 'Internship', role: 'AI Product Analyst Intern', org: 'NK Company, Pune', what: 'Real estate analytics: ML pricing forecasts (accuracy up 14%), CRM buyer analysis (engagement up 20%), a lead-scoring model that cut sales response time by 35%, and dashboards that save leadership 8+ hours a week.' },
     { when: 'Apr 2025 – Nov 2025', type: 'Position', role: 'Content Editor and Management Coordinator', org: 'Abhivyakti Editorial Team, ADYPU', what: 'Ran the content calendar across 5 platforms. Engagement up 25% year over year, errors down 15%, production efficiency up 30%.' },
     { when: 'Sep 2024 – Present', type: 'Volunteer', role: 'Research Volunteer', org: 'NSS, ADYPU', what: 'Supported 8 youth programmes reaching 100+ children a year.' },
     { when: 'Nov 2021 – Mar 2023', type: 'Volunteer', role: 'Content and Marketing Volunteer', org: 'Bindu Non-Profit Organisation', what: 'Led 5 creators. Content output up 25%, organic traffic up 15%, lead generation up 10%.' },
