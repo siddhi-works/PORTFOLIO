@@ -2101,3 +2101,4 @@ main :is(.hcard-in, .tcard, .tcore, .cbox, .frame, .cpanel, .ctile, .orbit-link,
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+@media (pointer: coarse) { .fp-dot { width: 44px; height: 44px; margin: -10px; } }
