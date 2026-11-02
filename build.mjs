@@ -284,7 +284,7 @@ ${body}
 ${footer()}
 ${hud()}
 <script src="/assets/visuals.js" defer></script>
-<script src="/assets/toon.js" defer></script><script src="/assets/cinema.js" defer></script>
+<script src="/assets/cinema.js" defer></script>
 <script src="/assets/fx.js" defer></script>
 <script src="/assets/scroll.js" defer></script>
 <script src="/assets/form.js" defer></script>
@@ -544,7 +544,7 @@ ${(C.intro && C.intro.speech) ? `<script type="application/json" id="sk-intro">$
       <div class="photo-frame">
         <span class="hud-c hud-tl" aria-hidden="true"></span><span class="hud-c hud-tr" aria-hidden="true"></span>
         <span class="hud-c hud-bl" aria-hidden="true"></span><span class="hud-c hud-br" aria-hidden="true"></span>
-        <div class="photo-inner"><div class="hero-toon" data-hero-toon></div></div>
+        <div class="photo-inner">${portraitHtml('slot-photo')}</div>
         <span class="scan" aria-hidden="true"></span>
       </div>
     </div>
@@ -1169,7 +1169,7 @@ function markdownSite(full) {
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 
-for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js', 'mobile.js', 'toon.js'])
+for (const f of ['site.css', 'site.js', 'visuals.js', 'cinema.js', 'fx.js', 'scroll.js', 'form.js', 'interact.js', 'honours.js', 'mobile.js'])
   fs.copyFileSync(path.join(root, 'src', f), path.join(out, 'assets', f));
 if (fs.existsSync(path.join(root, 'media'))) fs.cpSync(path.join(root, 'media'), path.join(out, 'media'), { recursive: true });
 
